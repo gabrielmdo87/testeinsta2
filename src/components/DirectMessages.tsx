@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DirectHeader from "./DirectHeader";
 import SearchBar from "./SearchBar";
 import Notes from "./Notes";
@@ -15,6 +15,11 @@ interface DirectMessagesProps {
 const DirectMessages = ({ onBack, onChatOpen, onVIPClick }: DirectMessagesProps) => {
   const { profileData } = useAppContext();
   const [showVIPModal, setShowVIPModal] = useState(false);
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleLockedClick = () => {
     setShowVIPModal(true);
