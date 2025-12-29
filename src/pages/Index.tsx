@@ -83,14 +83,14 @@ const IndexContent = () => {
       fer: "Fer***",
       bru: "ana*****",
       cri: "Cri***",
-      val: "Val***",
+      val: "Ana******",
     };
     
     const ambiguousStatus: Record<string, string> = {
       fer: "Online há 35 min",
       bru: "Online há 44 min",
       cri: "Online há 2 h",
-      val: "Online há 6 h",
+      val: "Online há 2 h",
       hop: "Online há 22 h",
     };
     
