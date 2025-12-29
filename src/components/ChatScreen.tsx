@@ -55,7 +55,7 @@ const ferMessages: Message[] = [
   { id: 10, type: "image", sent: false, isBlurred: true, reaction: "❤️" },
   { id: 11, type: "text", content: "Disso??", sent: false, showAvatar: true },
   { id: 12, type: "text", content: "😍😍😍😍😍😍", sent: true },
-  { id: 13, type: "text", content: "****** Tubarão", sent: false },
+  { id: 13, type: "text", content: "Te amo tanto ██████", sent: false },
   { id: 14, type: "audio", sent: true, audioDuration: "0:11" },
   { id: 15, type: "text", content: "Dboa, amanhã ou domingo", sent: true, reaction: "👍" },
   
