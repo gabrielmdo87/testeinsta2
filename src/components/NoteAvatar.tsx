@@ -13,6 +13,10 @@ const NoteAvatar = ({ image, name, note, isOwn = false }: NoteAvatarProps) => {
           src={image}
           alt={name}
           className="w-[72px] h-[72px] rounded-full object-cover"
+          referrerPolicy="no-referrer"
+          onError={(e) => {
+            e.currentTarget.src = '/placeholder.svg';
+          }}
         />
         {note && (
           <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-muted rounded-full px-2.5 py-1.5 max-w-[90px]">
