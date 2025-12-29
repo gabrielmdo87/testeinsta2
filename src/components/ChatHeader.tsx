@@ -10,7 +10,7 @@ interface ChatHeaderProps {
 
 const ChatHeader = ({ avatar, username, status, onBack, isBlurredAvatar = false }: ChatHeaderProps) => {
   return (
-    <header className="flex items-center justify-between px-2 py-3 border-b border-border/30">
+    <header className="fixed top-0 left-0 right-0 max-w-md mx-auto z-50 bg-background flex items-center justify-between px-2 py-3 border-b border-border/30">
       <div className="flex items-center gap-2">
         <button onClick={onBack} className="text-foreground p-1">
           <ChevronLeft className="w-7 h-7" strokeWidth={2} />
