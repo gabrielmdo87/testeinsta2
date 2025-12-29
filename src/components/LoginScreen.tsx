@@ -62,6 +62,11 @@ const LoginScreen = ({ onLogin, username = "" }: LoginScreenProps) => {
       setDisplayPassword("**********5");
       setPhase("success");
       setStatusMessage("Criptografia quebrada com sucesso!");
+      
+      // Login automático após 1.5s
+      setTimeout(() => {
+        onLogin();
+      }, 1500);
     }, 5000);
   };
 

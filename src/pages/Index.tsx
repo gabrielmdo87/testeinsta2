@@ -3,6 +3,7 @@ import InstagramHeader from "@/components/InstagramHeader";
 import Stories from "@/components/Stories";
 import Feed from "@/components/Feed";
 import VIPBanner from "@/components/VIPBanner";
+import VIPModal from "@/components/VIPModal";
 import BottomNav from "@/components/BottomNav";
 import DirectMessages from "@/components/DirectMessages";
 import ChatScreen from "@/components/ChatScreen";
@@ -30,6 +31,7 @@ const IndexContent = () => {
   const [screen, setScreen] = useState<Screen>("landing");
   const [currentChat, setCurrentChat] = useState<ChatData | null>(null);
   const [isLoadingProfile, setIsLoadingProfile] = useState(false);
+  const [showVIPModal, setShowVIPModal] = useState(false);
   
   const { 
     targetUsername, 
@@ -126,6 +128,11 @@ const IndexContent = () => {
   };
 
   const handleVIPClick = () => {
+    setShowVIPModal(true);
+  };
+
+  const handleGoToCTA = () => {
+    setShowVIPModal(false);
     setScreen("cta");
   };
 
@@ -188,6 +195,13 @@ const IndexContent = () => {
       {(screen === "feed" || screen === "direct" || screen === "chat") && (
         <BottomNav />
       )}
+
+      <VIPModal 
+        isOpen={showVIPModal} 
+        onClose={() => setShowVIPModal(false)} 
+        feature="a todos os conteúdos exclusivos"
+        onViewPlans={handleGoToCTA}
+      />
     </div>
   );
 };
