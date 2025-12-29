@@ -2,13 +2,13 @@ import { useEffect } from "react";
 import CTAHeader from "./CTAHeader";
 import CTAProfileCard from "./CTAProfileCard";
 import CTABanner from "./CTABanner";
-import CTAWarning from "./CTAWarning";
 import CTAMediaSection from "./CTAMediaSection";
 import CTALocationSection from "./CTALocationSection";
 import CTAStoriesSection from "./CTAStoriesSection";
 import CTADirectSection from "./CTADirectSection";
 import CTAPricingSection from "./CTAPricingSection";
 import CTATestimonials from "./CTATestimonials";
+import CTAWarning from "./CTAWarning";
 import CTAFaq from "./CTAFaq";
 import CTAFooter from "./CTAFooter";
 
@@ -23,13 +23,13 @@ const CTAPage = () => {
       <CTAHeader />
       <CTAProfileCard />
       <CTABanner />
-      <CTAWarning />
       <CTAMediaSection />
       <CTALocationSection />
       <CTAStoriesSection />
       <CTADirectSection />
       <CTAPricingSection />
       <CTATestimonials />
+      <CTAWarning />
       <CTAFaq />
       <CTAFooter />
     </div>

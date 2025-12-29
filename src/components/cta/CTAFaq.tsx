@@ -7,11 +7,11 @@ import {
 
 const faqs = [
   {
-    question: "A ferramenta é realmente funcional?",
+    question: "A ferramenta realmente funciona?",
     answer: "Sim! Nossa ferramenta utiliza tecnologia avançada para acessar informações públicas e privadas de perfis do Instagram de forma totalmente segura e anônima.",
   },
   {
-    question: "A pessoa vai saber que eu estou espionando?",
+    question: "A pessoa vai saber que eu stalkeei o perfil dela?",
     answer: "Não. Todo o processo é 100% anônimo. A pessoa nunca saberá que você acessou as informações do perfil dela.",
   },
   {
@@ -19,16 +19,16 @@ const faqs = [
     answer: "Sim! Nossa tecnologia consegue acessar tanto perfis públicos quanto privados, incluindo stories, direct e localização.",
   },
   {
-    question: "Posso espionar qualquer pessoa?",
-    answer: "Sim, você pode espionar qualquer perfil do Instagram, independente das configurações de privacidade.",
+    question: "Preciso instalar alguma coisa?",
+    answer: "Não! Tudo funciona diretamente pelo navegador. Você não precisa instalar nenhum aplicativo ou extensão.",
   },
   {
-    question: "Quanto tempo para ter acesso?",
-    answer: "O acesso é liberado em até 5 minutos após a confirmação do pagamento. Você receberá tudo por email.",
+    question: "Como funciona a garantia?",
+    answer: "Oferecemos garantia de 30 dias. Se não ficar satisfeito por qualquer motivo, devolvemos 100% do seu dinheiro sem perguntas.",
   },
   {
-    question: "O que me garante segurança?",
-    answer: "Oferecemos garantia de 7 dias. Se não ficar satisfeito, devolvemos 100% do seu dinheiro sem perguntas.",
+    question: "Quanto tempo tenho acesso?",
+    answer: "O acesso é vitalício! Uma vez que você adquire, tem acesso para sempre às funcionalidades da plataforma.",
   },
 ];
 
