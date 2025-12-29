@@ -1,3 +1,4 @@
+import { useRef, useEffect } from "react";
 import ChatHeader from "./ChatHeader";
 import ChatBubble from "./ChatBubble";
 import ChatInput from "./ChatInput";
@@ -300,6 +301,8 @@ const hopMessages: Message[] = [
 ];
 
 const ChatScreen = ({ onBack, chatData }: ChatScreenProps) => {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
   const getMessages = () => {
     switch (chatData.type) {
       case "fer": return ferMessages;
@@ -313,6 +316,11 @@ const ChatScreen = ({ onBack, chatData }: ChatScreenProps) => {
 
   const messages = getMessages();
   const avatar = chatData.avatar;
+
+  // Scroll to bottom when chat opens
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
+  }, []);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -373,6 +381,9 @@ const ChatScreen = ({ onBack, chatData }: ChatScreenProps) => {
             />
           );
         })}
+        
+        {/* Ref for auto-scroll to bottom */}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Input fixo no bottom - acima do VIPBanner */}
