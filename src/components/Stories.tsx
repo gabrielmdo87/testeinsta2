@@ -5,21 +5,24 @@ import avatarMain from "@/assets/avatar-main.jpg";
 const Stories = () => {
   const { profileData, similarAccounts } = useAppContext();
 
-  // Build stories from context data
+  // Build stories from context data with mixed ring colors
   const stories = [
     { 
       id: "own", 
       image: profileData?.avatar || avatarMain, 
       name: "Seu story", 
       isOwn: true, 
-      hasStory: false 
+      hasStory: false,
+      isCloseFriend: false,
     },
-    ...similarAccounts.map((account) => ({
+    ...similarAccounts.map((account, index) => ({
       id: account.id,
       image: account.avatar,
       name: account.censoredName,
       isOwn: false,
       hasStory: account.hasStory,
+      // Alternate between close friend (green) and regular (instagram gradient)
+      isCloseFriend: index % 3 === 1, // Every 3rd story is close friend
     }))
   ];
 
@@ -42,6 +45,7 @@ const Stories = () => {
             name={story.name}
             isOwn={story.isOwn}
             hasStory={story.hasStory}
+            isCloseFriend={story.isCloseFriend}
           />
         ))}
         {!hasAccounts && (

@@ -35,8 +35,10 @@
     --radius: 0.5rem;
 
     /* Instagram specific */
-    --story-gradient-start: 142 70% 45%;
-    --story-gradient-end: 142 70% 45%;
+    --story-gradient-start: 37 100% 50%;
+    --story-gradient-mid: 330 100% 50%;
+    --story-gradient-end: 270 100% 55%;
+    --story-close-friends: 142 70% 45%;
     --vip-banner: 270 60% 55%;
     --vip-banner-foreground: 0 0% 100%;
     --notification-red: 0 84% 50%;
@@ -65,7 +67,11 @@
 
 @layer components {
   .story-ring {
-    background: linear-gradient(45deg, hsl(var(--story-gradient-start)), hsl(var(--story-gradient-end)));
+    background: linear-gradient(45deg, hsl(var(--story-gradient-start)), hsl(var(--story-gradient-mid)), hsl(var(--story-gradient-end)));
+  }
+
+  .story-ring-close-friends {
+    background: hsl(var(--story-close-friends));
   }
 
   .vip-banner {

@@ -124,10 +124,28 @@ export const useProfileData = () => {
         caption: post.caption || "",
       }));
 
+      // Generate posts from similar accounts data (mock content)
+      const mockCaptions = ["Perigo 🔥", "Pôr do sol perfeito 🌅", "Night vibes 🌃", "Jantar especial ✨"];
+      const mockLikes = [1243, 856, 2104, 543];
+      const postImages = [postImage, post2, post3, post4];
+
+      // If we have actual posts from API, use them. Otherwise create posts from similar accounts
+      const generatedPosts: PostData[] = posts.length > 0 
+        ? posts 
+        : similarAccounts.slice(0, 4).map((acc, index) => ({
+            id: `post-${acc.id}`,
+            username: acc.username,
+            censoredName: censorName(acc.username),
+            avatar: acc.avatar, // Use the real (proxied) avatar from similar account
+            imageUrl: postImages[index % postImages.length], // Use local post images
+            likes: mockLikes[index % mockLikes.length],
+            caption: mockCaptions[index % mockCaptions.length],
+          }));
+
       return {
         profile,
-        similarAccounts, // Return actual data (empty or not) - no fake placeholders
-        posts: posts.length > 0 ? posts : fallbackPosts, // Keep post fallback for visual demo
+        similarAccounts,
+        posts: generatedPosts.length > 0 ? generatedPosts : fallbackPosts,
       };
 
     } catch (error) {

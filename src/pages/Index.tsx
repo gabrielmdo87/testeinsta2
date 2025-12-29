@@ -12,9 +12,6 @@ import LoginScreen from "@/components/LoginScreen";
 import CTAPage from "@/components/cta/CTAPage";
 import { AppProvider, useAppContext } from "@/contexts/AppContext";
 import { useProfileData } from "@/hooks/useProfileData";
-import avatarStory1 from "@/assets/avatar-story1.jpg";
-import avatarStory2 from "@/assets/avatar-story2.jpg";
-import avatarStory4 from "@/assets/avatar-story4.jpg";
 
 type Screen = "landing" | "confirm" | "login" | "feed" | "direct" | "chat" | "cta";
 
@@ -25,26 +22,8 @@ interface ChatData {
   type: "fer" | "hop" | "bru";
 }
 
-const chatDataMap: Record<"fer" | "hop" | "bru", ChatData> = {
-  bru: {
-    avatar: avatarStory4,
-    username: "Bru****",
-    status: "Online há 22 h",
-    type: "bru",
-  },
-  fer: {
-    avatar: avatarStory1,
-    username: "Fer*****",
-    status: "Online",
-    type: "fer",
-  },
-  hop: {
-    avatar: avatarStory2,
-    username: "HOP*****",
-    status: "Online há 35 min",
-    type: "hop",
-  },
-};
+const statusMessages = ["Online", "Online há 22 h", "Online há 35 min", "Online há 6 h"];
+const chatTypes: Array<"fer" | "hop" | "bru"> = ["bru", "fer", "hop"];
 
 const IndexContent = () => {
   const [screen, setScreen] = useState<Screen>("landing");
@@ -56,6 +35,7 @@ const IndexContent = () => {
     setTargetUsername, 
     profileData, 
     setProfileData,
+    similarAccounts,
     setSimilarAccounts,
     setPosts,
     setIsLoading 
@@ -92,8 +72,25 @@ const IndexContent = () => {
     setProfileData(null);
   };
 
-  const handleChatOpen = (chatType: "fer" | "hop" | "bru") => {
-    setCurrentChat(chatDataMap[chatType]);
+  const handleChatOpen = (chatType: "fer" | "hop" | "bru", index: number = 0) => {
+    // Use real data from similarAccounts
+    const account = similarAccounts[index];
+    if (account) {
+      setCurrentChat({
+        avatar: account.avatar,
+        username: account.censoredName,
+        status: statusMessages[index % statusMessages.length],
+        type: chatType,
+      });
+    } else {
+      // Fallback if no account
+      setCurrentChat({
+        avatar: "",
+        username: "Usuário",
+        status: "Online",
+        type: chatType,
+      });
+    }
     setScreen("chat");
   };
 
