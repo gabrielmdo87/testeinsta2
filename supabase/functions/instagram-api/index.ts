@@ -97,8 +97,8 @@ async function getSimilarAccounts(userId: number) {
       return [];
     }
 
-    // Return up to 20 similar accounts for more content
-    return users.slice(0, 20).map((user: any) => ({
+    // Return up to 50 similar accounts to have more options for finding public ones
+    return users.slice(0, 50).map((user: any) => ({
       id: String(user.pk || user.pk_id || user.id),
       username: user.username,
       fullName: user.full_name || '',
@@ -129,7 +129,7 @@ async function getUserMedia(username: string, count: number = 12) {
 
     return items
       .filter((item: any) => item.media_type === 1) // Only photos
-      .slice(0, 4)
+      .slice(0, count)
       .map((item: any) => ({
         id: item.id || item.pk,
         imageUrl: item.image_versions2?.candidates?.[0]?.url || 
@@ -237,33 +237,47 @@ serve(async (req) => {
         
         // Filter only PUBLIC accounts to fetch their posts
         const publicAccounts = similarAccounts.filter((acc: any) => !acc.isPrivate);
-        console.log(`Found ${publicAccounts.length} public accounts out of ${similarAccounts.length}`);
+        console.log(`Found ${publicAccounts.length} public accounts out of ${similarAccounts.length} total`);
         
-        // Get posts from up to 10 public accounts (1 post each for variety)
+        // Iterate through public accounts until we have 10 posts
         const allPosts: any[] = [];
-        for (const account of publicAccounts.slice(0, 10)) {
+        let accountIndex = 0;
+        
+        while (allPosts.length < 10 && accountIndex < publicAccounts.length) {
+          const account = publicAccounts[accountIndex];
           try {
-            const media = await getUserMedia(account.username, 1); // 1 post per account
-            if (media.length > 0) {
-              allPosts.push({
-                ...media[0],
-                username: account.username,
-                avatar: account.avatar,
-              });
+            // Get up to 3 posts per account for variety
+            const postsPerAccount = Math.min(3, 10 - allPosts.length);
+            const media = await getUserMedia(account.username, postsPerAccount);
+            
+            for (const item of media) {
+              if (allPosts.length >= 10) break;
+              // Only add if has valid image
+              if (item.imageUrl) {
+                allPosts.push({
+                  ...item,
+                  username: account.username,
+                  avatar: account.avatar,
+                });
+              }
             }
+            
+            console.log(`Got ${media.length} posts from ${account.username}, total now: ${allPosts.length}`);
+            
             // Small delay between calls to avoid rate limiting
             await delay(150);
           } catch (e) {
             console.error(`Failed to get media for ${account.username}:`, e);
           }
+          accountIndex++;
         }
         
-        console.log(`Total posts collected from ${allPosts.length} public accounts`);
+        console.log(`Total posts collected: ${allPosts.length} from ${accountIndex} public accounts`);
 
         result = {
           profile,
           similarAccounts,
-          posts: allPosts.slice(0, 10), // Max 10 unique posts
+          posts: allPosts,
         };
         break;
 
