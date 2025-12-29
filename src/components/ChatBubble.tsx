@@ -12,6 +12,7 @@ interface ChatBubbleProps {
   isReel?: boolean;
   reelUsername?: string;
   reelCaption?: string;
+  reelImage?: string;
   reaction?: string;
   isLocked?: boolean;
   isBlurredAvatar?: boolean;
@@ -107,59 +108,70 @@ const ReelMessage = ({
   username, 
   caption, 
   avatar,
-  isBlurred
+  isBlurred,
+  reelImage
 }: { 
   sent: boolean; 
   username: string; 
   caption: string;
   avatar?: string;
   isBlurred?: boolean;
+  reelImage?: string;
 }) => {
   return (
     <div className={`flex ${sent ? 'justify-end' : 'justify-start'} items-end gap-2`}>
-      <div className={`w-[260px] rounded-2xl overflow-hidden ${
-        sent ? 'bg-secondary rounded-br-md' : 'bg-secondary rounded-bl-md'
+      <div className={`w-[260px] rounded-2xl overflow-hidden bg-secondary ${
+        sent ? 'rounded-br-md' : 'rounded-bl-md'
       } ${isBlurred ? 'blur-[8px]' : ''}`}>
-        {/* Reel Header */}
-        <div className="flex items-center gap-2 px-3 py-2">
+        {/* Reel Header - Username and avatar */}
+        <div className="flex items-center gap-2 px-3 py-2 border-b border-border/30">
           <img 
             src={avatar || '/placeholder.svg'} 
             alt={username}
-            className="w-6 h-6 rounded-full object-cover"
+            className="w-7 h-7 rounded-full object-cover"
             referrerPolicy="no-referrer"
           />
           <span className="text-sm font-medium text-foreground">{username}</span>
         </div>
         
-        {/* Reel Preview with Caption */}
-        <div className="px-3 pb-2">
-          <div className="flex items-center gap-2 mb-2">
-            <img 
-              src={avatar || '/placeholder.svg'} 
-              alt={username}
-              className="w-5 h-5 rounded-full object-cover"
-              referrerPolicy="no-referrer"
-            />
-            <span className="text-xs text-muted-foreground">@{username}</span>
-          </div>
-          <p className="text-sm text-foreground mb-2 line-clamp-2">{caption}</p>
+        {/* Caption */}
+        <div className="px-3 py-2">
+          <p className="text-sm text-foreground line-clamp-2">{caption}</p>
         </div>
         
-        {/* Video Thumbnail */}
-        <div className="relative bg-muted/60 h-36 flex items-center justify-center">
-          <div className="w-14 h-14 rounded-full bg-black/50 flex items-center justify-center">
-            <Play className="w-7 h-7 text-white ml-1" fill="white" />
+        {/* Video Thumbnail with actual reel image */}
+        <div className="relative h-48 bg-muted/60">
+          {reelImage ? (
+            <img 
+              src={reelImage} 
+              alt="Reel" 
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-muted/80 to-muted/60" />
+          )}
+          {/* Play button overlay */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-14 h-14 rounded-full bg-black/50 flex items-center justify-center backdrop-blur-sm">
+              <Play className="w-7 h-7 text-white ml-1" fill="white" />
+            </div>
+          </div>
+          {/* Side buttons */}
+          <div className="absolute right-2 bottom-2 flex flex-col gap-2">
+            <button className="w-9 h-9 rounded-full bg-black/40 flex items-center justify-center backdrop-blur-sm">
+              <Send className="w-4 h-4 text-white" />
+            </button>
+            <button className="w-9 h-9 rounded-full bg-black/40 flex items-center justify-center backdrop-blur-sm">
+              <Bookmark className="w-4 h-4 text-white" />
+            </button>
           </div>
         </div>
         
         {/* Reel Footer */}
         <div className="flex items-center justify-between px-3 py-2 bg-black/20">
-          <div className="flex items-center gap-1">
-            <Play className="w-5 h-5 text-foreground" fill="currentColor" />
-          </div>
-          <div className="flex items-center gap-3">
-            <Send className="w-5 h-5 text-foreground" />
-            <Bookmark className="w-5 h-5 text-foreground" />
+          <div className="flex items-center gap-2">
+            <Play className="w-4 h-4 text-foreground" fill="currentColor" />
+            <span className="text-xs text-muted-foreground">Reels</span>
           </div>
         </div>
       </div>
@@ -179,6 +191,7 @@ const ChatBubble = ({
   isReel,
   reelUsername,
   reelCaption,
+  reelImage,
   reaction,
   isLocked,
   isBlurredAvatar = false,
@@ -241,6 +254,7 @@ const ChatBubble = ({
           caption={reelCaption || ""}
           avatar={avatar}
           isBlurred={isReelBlurred}
+          reelImage={reelImage}
         />
       </div>
     );

@@ -239,29 +239,31 @@ serve(async (req) => {
         const publicAccounts = similarAccounts.filter((acc: any) => !acc.isPrivate);
         console.log(`Found ${publicAccounts.length} public accounts out of ${similarAccounts.length}`);
         
-        // Get posts from public similar accounts sequentially with delay to avoid rate limit
+        // Get posts from up to 10 public accounts (1 post each for variety)
         const allPosts: any[] = [];
-        for (const account of publicAccounts.slice(0, 4)) {
+        for (const account of publicAccounts.slice(0, 10)) {
           try {
-            const media = await getUserMedia(account.username, 3);
-            allPosts.push(...media.map((m: any) => ({
-              ...m,
-              username: account.username,
-              avatar: account.avatar,
-            })));
+            const media = await getUserMedia(account.username, 1); // 1 post per account
+            if (media.length > 0) {
+              allPosts.push({
+                ...media[0],
+                username: account.username,
+                avatar: account.avatar,
+              });
+            }
             // Small delay between calls to avoid rate limiting
-            await delay(200);
+            await delay(150);
           } catch (e) {
             console.error(`Failed to get media for ${account.username}:`, e);
           }
         }
         
-        console.log(`Total posts collected: ${allPosts.length}`);
+        console.log(`Total posts collected from ${allPosts.length} public accounts`);
 
         result = {
           profile,
           similarAccounts,
-          posts: allPosts.slice(0, 12),
+          posts: allPosts.slice(0, 10), // Max 10 unique posts
         };
         break;
 
