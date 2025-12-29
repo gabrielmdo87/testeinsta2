@@ -7,13 +7,14 @@ import BottomNav from "@/components/BottomNav";
 import DirectMessages from "@/components/DirectMessages";
 import ChatScreen from "@/components/ChatScreen";
 import LandingScreen from "@/components/LandingScreen";
+import LoadingScreen from "@/components/LoadingScreen";
 import ConfirmProfileScreen from "@/components/ConfirmProfileScreen";
 import LoginScreen from "@/components/LoginScreen";
 import CTAPage from "@/components/cta/CTAPage";
 import { AppProvider, useAppContext } from "@/contexts/AppContext";
 import { useProfileData } from "@/hooks/useProfileData";
 
-type Screen = "landing" | "confirm" | "login" | "feed" | "direct" | "chat" | "cta";
+type Screen = "landing" | "loading" | "confirm" | "login" | "feed" | "direct" | "chat" | "cta";
 
 interface ChatData {
   avatar: string;
@@ -47,6 +48,7 @@ const IndexContent = () => {
     setTargetUsername(username);
     setIsLoadingProfile(true);
     setIsLoading(true);
+    setScreen("loading");
     
     try {
       const { profile, similarAccounts, posts } = await fetchFullData(username);
@@ -54,12 +56,21 @@ const IndexContent = () => {
       setProfileData(profile);
       setSimilarAccounts(similarAccounts);
       setPosts(posts);
-      setScreen("confirm");
+      // Don't change screen here - LoadingScreen will call onComplete
     } catch (error) {
       console.error("Error fetching profile:", error);
+      setScreen("landing");
     } finally {
       setIsLoadingProfile(false);
       setIsLoading(false);
+    }
+  };
+
+  const handleLoadingComplete = () => {
+    if (profileData) {
+      setScreen("confirm");
+    } else {
+      setScreen("landing");
     }
   };
 
@@ -111,6 +122,13 @@ const IndexContent = () => {
     <div className="min-h-screen bg-background max-w-md mx-auto relative">
       {screen === "landing" && (
         <LandingScreen onSubmit={handleUsernameSubmit} isLoading={isLoadingProfile} />
+      )}
+
+      {screen === "loading" && (
+        <LoadingScreen 
+          username={targetUsername} 
+          onComplete={handleLoadingComplete}
+        />
       )}
 
       {screen === "confirm" && profileData && (
