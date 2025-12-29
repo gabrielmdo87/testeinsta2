@@ -21,8 +21,8 @@ const Stories = () => {
       name: account.censoredName,
       isOwn: false,
       hasStory: account.hasStory,
-      // Alternate between close friend (green) and regular (instagram gradient)
-      isCloseFriend: index % 3 === 1, // Every 3rd story is close friend
+      // First two stories are close friends (green), rest are regular (instagram gradient)
+      isCloseFriend: index < 2,
     }))
   ];
 
