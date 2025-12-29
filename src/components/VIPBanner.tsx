@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
 import { Crown, Zap } from "lucide-react";
 
-const VIPBanner = () => {
+interface VIPBannerProps {
+  onVIPClick?: () => void;
+}
+
+const VIPBanner = ({ onVIPClick }: VIPBannerProps) => {
   const [timeLeft, setTimeLeft] = useState(10 * 60); // 10 minutes in seconds
 
   useEffect(() => {
@@ -35,7 +39,10 @@ const VIPBanner = () => {
       <p className="text-vip-foreground/80 text-sm mb-3">
         Desbloqueie conversas completas, fotos e vídeos salvos.
       </p>
-      <button className="w-full bg-white/20 hover:bg-white/30 py-3 rounded-xl text-sm font-semibold text-vip-foreground transition-colors">
+      <button 
+        onClick={onVIPClick}
+        className="w-full bg-white/20 hover:bg-white/30 py-3 rounded-xl text-sm font-semibold text-vip-foreground transition-colors"
+      >
         Ver planos VIP
       </button>
     </div>

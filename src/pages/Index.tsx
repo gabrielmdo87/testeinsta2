@@ -9,13 +9,14 @@ import ChatScreen from "@/components/ChatScreen";
 import LandingScreen from "@/components/LandingScreen";
 import ConfirmProfileScreen from "@/components/ConfirmProfileScreen";
 import LoginScreen from "@/components/LoginScreen";
+import CTAPage from "@/components/cta/CTAPage";
 import { AppProvider, useAppContext } from "@/contexts/AppContext";
 import { useProfileData } from "@/hooks/useProfileData";
 import avatarStory1 from "@/assets/avatar-story1.jpg";
 import avatarStory2 from "@/assets/avatar-story2.jpg";
 import avatarStory4 from "@/assets/avatar-story4.jpg";
 
-type Screen = "landing" | "confirm" | "login" | "feed" | "direct" | "chat";
+type Screen = "landing" | "confirm" | "login" | "feed" | "direct" | "chat" | "cta";
 
 interface ChatData {
   avatar: string;
@@ -103,6 +104,10 @@ const IndexContent = () => {
     setScreen("feed");
   };
 
+  const handleVIPClick = () => {
+    setScreen("cta");
+  };
+
   return (
     <div className="min-h-screen bg-background max-w-md mx-auto relative">
       {screen === "landing" && (
@@ -144,10 +149,14 @@ const IndexContent = () => {
         </div>
       )}
 
+      {screen === "cta" && (
+        <CTAPage />
+      )}
+
       {/* VIP Banner - visible on feed, direct and chat screens */}
       {(screen === "feed" || screen === "direct" || screen === "chat") && (
         <div className="fixed bottom-12 left-0 right-0 z-40 max-w-md mx-auto">
-          <VIPBanner />
+          <VIPBanner onVIPClick={handleVIPClick} />
         </div>
       )}
 
