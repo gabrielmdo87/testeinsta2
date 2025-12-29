@@ -26,19 +26,19 @@ const VIPBanner = ({ onVIPClick }: VIPBannerProps) => {
   };
 
   return (
-    <div className="mx-4 vip-banner rounded-2xl p-4">
-      <div className="flex items-center gap-2 mb-2">
-        <Zap className="w-5 h-5 text-vip-foreground fill-vip-foreground" />
-        <span className="text-vip-foreground font-bold">
-          Prévia disponível por {formatTime(timeLeft)} minutos
+    <div className="mx-4 vip-banner rounded-2xl p-3">
+      <div className="flex items-center gap-2 mb-1">
+        <Zap className="w-4 h-4 text-vip-foreground fill-vip-foreground" />
+        <span className="text-vip-foreground font-bold text-sm">
+          Prévia disponível por {formatTime(timeLeft)}
         </span>
       </div>
-      <p className="text-vip-foreground/80 text-sm mb-3 leading-relaxed">
-        Você ganhou 10 minutos para testar gratuitamente nossa ferramenta, mas para liberar todas as funcionalidades e ter acesso permanente é necessário ser um membro VIP.
+      <p className="text-vip-foreground/80 text-xs mb-2 leading-relaxed">
+        Teste grátis por 10 min. Para acesso completo, seja VIP.
       </p>
       <button 
         onClick={onVIPClick}
-        className="w-full bg-white/20 hover:bg-white/30 py-3 rounded-xl text-sm font-semibold text-vip-foreground transition-colors"
+        className="w-full bg-white/20 hover:bg-white/30 py-2.5 rounded-xl text-sm font-semibold text-vip-foreground transition-colors"
       >
         Ver planos VIP
       </button>

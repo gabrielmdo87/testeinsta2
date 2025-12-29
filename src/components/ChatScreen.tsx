@@ -1,7 +1,8 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import ChatHeader from "./ChatHeader";
 import ChatBubble from "./ChatBubble";
 import ChatInput from "./ChatInput";
+import VIPModal from "./VIPModal";
 import { reelImages } from "@/hooks/useProfileData";
 
 interface ChatScreenProps {
@@ -302,6 +303,9 @@ const hopMessages: Message[] = [
 
 const ChatScreen = ({ onBack, chatData }: ChatScreenProps) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [showVIPModal, setShowVIPModal] = useState(false);
+
+  const handleVIPClick = () => setShowVIPModal(true);
 
   const getMessages = () => {
     switch (chatData.type) {
@@ -378,6 +382,7 @@ const ChatScreen = ({ onBack, chatData }: ChatScreenProps) => {
               quoteLabel={msg.quoteLabel}
               isReelBlurred={msg.isReelBlurred}
               isHeart={msg.type === "heart"}
+              onVIPClick={handleVIPClick}
             />
           );
         })}
@@ -388,8 +393,14 @@ const ChatScreen = ({ onBack, chatData }: ChatScreenProps) => {
 
       {/* Input fixo no bottom */}
       <div className="fixed bottom-12 left-0 right-0 max-w-md mx-auto z-10">
-        <ChatInput />
+        <ChatInput onVIPClick={handleVIPClick} />
       </div>
+
+      <VIPModal
+        isOpen={showVIPModal}
+        onClose={() => setShowVIPModal(false)}
+        feature="a esta funcionalidade"
+      />
     </div>
   );
 };
