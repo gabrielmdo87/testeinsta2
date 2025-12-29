@@ -9,10 +9,10 @@ const CTAFooter = () => {
           <Shield className="w-8 h-8 text-green-500" />
         </div>
         <h3 className="text-green-500 font-bold text-lg mb-1">
-          Garantia de 07 Dias
+          Garantia de 30 Dias
         </h3>
         <p className="text-foreground/80 text-sm">
-          Adquira a ferramenta Stalkea.ai com total segurança. Se não ficar satisfeito, 
+          Teste sem risco! Se não gostar ou por algum motivo não se adaptar, 
           devolvemos 100% do seu dinheiro.
         </p>
       </div>
