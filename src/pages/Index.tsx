@@ -6,11 +6,12 @@ import VIPBanner from "@/components/VIPBanner";
 import BottomNav from "@/components/BottomNav";
 import DirectMessages from "@/components/DirectMessages";
 import ChatScreen from "@/components/ChatScreen";
+import LoginScreen from "@/components/LoginScreen";
 import avatarStory1 from "@/assets/avatar-story1.jpg";
 import avatarStory2 from "@/assets/avatar-story2.jpg";
 import avatarStory4 from "@/assets/avatar-story4.jpg";
 
-type Screen = "feed" | "direct" | "chat";
+type Screen = "login" | "feed" | "direct" | "chat";
 
 interface ChatData {
   avatar: string;
@@ -41,7 +42,7 @@ const chatDataMap: Record<"fer" | "hop" | "bru", ChatData> = {
 };
 
 const Index = () => {
-  const [screen, setScreen] = useState<Screen>("feed");
+  const [screen, setScreen] = useState<Screen>("login");
   const [currentChat, setCurrentChat] = useState<ChatData | null>(null);
 
   const handleChatOpen = (chatType: "fer" | "hop" | "bru") => {
@@ -54,8 +55,15 @@ const Index = () => {
     setCurrentChat(null);
   };
 
+  const handleLogin = () => {
+    setScreen("feed");
+  };
+
   return (
     <div className="min-h-screen bg-background max-w-md mx-auto relative">
+      {screen === "login" && (
+        <LoginScreen onLogin={handleLogin} />
+      )}
       {screen === "feed" && (
         <div className="pb-48">
           <InstagramHeader onDirectClick={() => setScreen("direct")} />
