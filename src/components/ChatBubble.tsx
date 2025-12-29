@@ -282,7 +282,7 @@ const ChatBubble = ({
         {!sent && !showAvatar && <div className="w-7" />}
         <div className="relative">
           <div
-            className={`w-[200px] h-[150px] rounded-2xl ${
+            className={`w-[160px] h-[220px] rounded-2xl ${
               sent ? 'rounded-br-md' : 'rounded-bl-md'
             } flex items-center justify-center relative overflow-hidden`}
           >
