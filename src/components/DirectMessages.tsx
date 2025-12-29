@@ -2,6 +2,7 @@ import DirectHeader from "./DirectHeader";
 import SearchBar from "./SearchBar";
 import Notes from "./Notes";
 import MessageList from "./MessageList";
+import { useAppContext } from "@/contexts/AppContext";
 
 interface DirectMessagesProps {
   onBack: () => void;
@@ -9,9 +10,11 @@ interface DirectMessagesProps {
 }
 
 const DirectMessages = ({ onBack, onChatOpen }: DirectMessagesProps) => {
+  const { profileData } = useAppContext();
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <DirectHeader username="gabrielmedina" onBack={onBack} />
+      <DirectHeader username={profileData?.username || "usuário"} onBack={onBack} />
       <SearchBar />
       <Notes />
       <MessageList onChatOpen={onChatOpen} />

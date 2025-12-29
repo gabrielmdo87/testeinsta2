@@ -1,4 +1,5 @@
 import { Camera } from "lucide-react";
+import avatarMain from "@/assets/avatar-main.jpg";
 
 interface MessageItemProps {
   avatar: string;
@@ -20,6 +21,10 @@ const MessageItem = ({ avatar, username, message, time, unread = false, onClick 
           src={avatar}
           alt={username}
           className="w-14 h-14 rounded-full object-cover flex-shrink-0"
+          referrerPolicy="no-referrer"
+          onError={(e) => {
+            e.currentTarget.src = avatarMain;
+          }}
         />
         <div className="flex-1 min-w-0">
           <h3 className="text-sm font-semibold text-foreground">{username}</h3>

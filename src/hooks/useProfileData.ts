@@ -108,14 +108,14 @@ export const useProfileData = () => {
 
       return {
         profile,
-        similarAccounts: similarAccounts.length > 0 ? similarAccounts : fallbackSimilarAccounts,
-        posts: posts.length > 0 ? posts : fallbackPosts,
+        similarAccounts, // Return actual data (empty or not) - no fake placeholders
+        posts: posts.length > 0 ? posts : fallbackPosts, // Keep post fallback for visual demo
       };
 
     } catch (error) {
       console.error('Error fetching data, using fallbacks:', error);
       
-      // Return fallback data
+      // Return minimal fallback data - no fake similar accounts
       return {
         profile: {
           id: 0,
@@ -128,7 +128,7 @@ export const useProfileData = () => {
           following: Math.floor(Math.random() * 1000) + 100,
           isPrivate: false,
         },
-        similarAccounts: fallbackSimilarAccounts,
+        similarAccounts: [], // No fake placeholders on error either
         posts: fallbackPosts,
       };
     }

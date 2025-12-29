@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef, forwardRef } from "react";
 
-const MatrixBackground = () => {
+const MatrixBackground = forwardRef<HTMLCanvasElement>((_, ref) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -53,11 +53,20 @@ const MatrixBackground = () => {
 
   return (
     <canvas
-      ref={canvasRef}
+      ref={(node) => {
+        (canvasRef as React.MutableRefObject<HTMLCanvasElement | null>).current = node;
+        if (typeof ref === "function") {
+          ref(node);
+        } else if (ref) {
+          ref.current = node;
+        }
+      }}
       className="fixed inset-0 w-full h-full pointer-events-none"
       style={{ zIndex: 0 }}
     />
   );
-};
+});
+
+MatrixBackground.displayName = "MatrixBackground";
 
 export default MatrixBackground;

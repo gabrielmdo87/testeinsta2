@@ -1,6 +1,7 @@
 import { useAppContext } from "@/contexts/AppContext";
 import { useProfileData } from "@/hooks/useProfileData";
 import { BadgeCheck } from "lucide-react";
+import avatarMain from "@/assets/avatar-main.jpg";
 
 const CTAProfileCard = () => {
   const { profileData } = useAppContext();
@@ -15,6 +16,10 @@ const CTAProfileCard = () => {
           src={profileData.avatar}
           alt={profileData.username}
           className="w-20 h-20 rounded-full object-cover border-2 border-accent"
+          referrerPolicy="no-referrer"
+          onError={(e) => {
+            e.currentTarget.src = avatarMain;
+          }}
         />
         <div className="flex-1">
           <div className="flex items-center gap-1">
