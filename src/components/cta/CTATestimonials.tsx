@@ -55,7 +55,7 @@ const CTATestimonials = () => {
         Veja o que falam as pessoas que usam o InstaEspião
       </h2>
       
-      <div className="mt-4 bg-secondary rounded-2xl p-4">
+      <div key={currentIndex} className="mt-4 bg-secondary rounded-2xl p-4 animate-fade-in">
         <div className="flex items-center gap-3 mb-3">
           <img
             src={current.avatar}
