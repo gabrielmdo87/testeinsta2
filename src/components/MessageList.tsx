@@ -9,7 +9,7 @@ interface MessageListProps {
 // 5 conversas abertas (clicáveis) - todas com blur no avatar
 const recentMessages = [
   { id: 1, username: "Fer***", message: "Oi delícia, adivinha o que vc...", time: "Agora", unread: true, chatType: "fer" as const, isAmbiguous: true },
-  { id: 2, username: "Bru***", message: "Calma que a gente se vê logo", time: "33 min", unread: true, chatType: "bru" as const, isAmbiguous: true },
+  { id: 2, username: "ana*****", message: "Encaminhou um reel de jonas.milgrau", time: "44 min", unread: true, chatType: "bru" as const, isAmbiguous: true },
   { id: 3, username: "Cri***", message: "Sei que está evitando falar comigo", time: "2 h", unread: true, chatType: "cri" as const, isAmbiguous: true },
   { id: 4, username: "Val***", message: "Se apaixonar por amante é foda né", time: "6 h", unread: false, chatType: "val" as const, isAmbiguous: true },
   { id: 5, username: "HOP***", message: "Encaminhou um reel de jon...", time: "22 h", unread: false, chatType: "hop" as const, isAmbiguous: false },

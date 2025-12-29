@@ -81,16 +81,24 @@ const IndexContent = () => {
     
     const ambiguousNames: Record<string, string> = {
       fer: "Fer***",
-      bru: "Bru***",
+      bru: "ana*****",
       cri: "Cri***",
       val: "Val***",
+    };
+    
+    const ambiguousStatus: Record<string, string> = {
+      fer: "Online há 35 min",
+      bru: "Online há 44 min",
+      cri: "Online há 2 h",
+      val: "Online há 6 h",
+      hop: "Online há 22 h",
     };
     
     if (account) {
       setCurrentChat({
         avatar: account.avatar,
         username: isAmbiguous ? ambiguousNames[chatType] || "***" : account.censoredName,
-        status: statusMessages[index % statusMessages.length],
+        status: ambiguousStatus[chatType] || statusMessages[index % statusMessages.length],
         type: chatType,
         isAmbiguous,
       });
