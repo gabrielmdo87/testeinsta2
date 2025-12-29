@@ -147,7 +147,11 @@ export const useProfileData = () => {
         caption: post.caption || "",
       }));
 
-      // Generate posts from similar accounts data (mock content) - one per account, no repeats
+      // Filter only PUBLIC accounts for generating posts
+      const publicAccounts = similarAccounts.filter(acc => !acc.isPrivate);
+      console.log(`Found ${publicAccounts.length} public accounts for feed posts`);
+
+      // Generate posts from PUBLIC similar accounts data (mock content) - one per account, no repeats
       const mockCaptions = [
         "Perigo 🔥", "Pôr do sol perfeito 🌅", "Night vibes 🌃", "Jantar especial ✨",
         "Momentos especiais 💖", "Squad reunido 🔥", "Vibes de verão ☀️", "Curtindo a vida 🍹",
@@ -156,10 +160,10 @@ export const useProfileData = () => {
       const mockLikes = [1243, 856, 2104, 543, 1876, 432, 987, 654, 1543, 765];
       const postImages = [postImage, post2, post3, post4, postImage, post2, post3, post4, postImage, post2];
 
-      // If we have actual posts from API, use them. Otherwise create 10 posts from similar accounts (one per account)
+      // If we have actual posts from API, use them. Otherwise create posts from PUBLIC accounts only
       const generatedPosts: PostData[] = posts.length > 0 
         ? posts 
-        : similarAccounts.slice(0, 10).map((acc, index) => ({
+        : publicAccounts.slice(0, 10).map((acc, index) => ({
             id: `post-${acc.id}`,
             username: acc.username,
             censoredName: censorName(acc.username),

@@ -1,6 +1,7 @@
 import ChatHeader from "./ChatHeader";
 import ChatBubble from "./ChatBubble";
 import ChatInput from "./ChatInput";
+import { reelImages } from "@/hooks/useProfileData";
 
 interface ChatScreenProps {
   onBack: () => void;
@@ -23,6 +24,7 @@ interface Message {
   audioDuration?: string;
   reelUsername?: string;
   reelCaption?: string;
+  reelImage?: string;
   reaction?: string;
   isLocked?: boolean;
   dateBreak?: string;
@@ -120,8 +122,8 @@ const criMessages: Message[] = [
   { id: 10, type: "audio", sent: true, audioDuration: "0:05" },
   { id: 11, type: "text", content: "É um desperdício jogar fora tudo isso", sent: false },
   { id: 12, type: "text", content: "Jamais eu me sujeitaria a tudo isso se o sentimento nao tivesse no topo da minha vida.", sent: false, showAvatar: true },
-  { id: 13, type: "reel", sent: false, reelUsername: "relacionamenen...", reelCaption: "O amor é uma escolha diária...", isReelBlurred: true },
-  { id: 14, type: "reel", sent: false, reelUsername: "relacionamenen...", reelCaption: "No fundo, eu ainda te amo...", showAvatar: true, isReelBlurred: true },
+  { id: 13, type: "reel", sent: false, reelUsername: "relacionamenen...", reelCaption: "O amor é uma escolha diária...", reelImage: reelImages.reel3, isReelBlurred: true },
+  { id: 14, type: "reel", sent: false, reelUsername: "relacionamenen...", reelCaption: "No fundo, eu ainda te amo...", reelImage: reelImages.reel4, showAvatar: true, isReelBlurred: true },
   { id: 15, type: "text", content: "", sent: false, dateBreak: "2 DE DEZ., 15:55" },
   { id: 16, type: "text", content: "Oi boa tarde", sent: false },
   { id: 17, type: "text", content: "Sei que está evitando falar comigo", sent: false },
@@ -155,12 +157,20 @@ const valMessages: Message[] = [
 
 // Conversa 5 - HOP*** (Normal - só reels)
 const hopMessages: Message[] = [
-  { id: 1, type: "reel", sent: false, reelUsername: "jondouglas", reelCaption: "Quando o chefe fala que vai ter reunião às 17h de sexta 😂", showAvatar: true },
+  { id: 1, type: "reel", sent: false, reelUsername: "jondouglas", reelCaption: "Quando o chefe fala que vai ter reunião às 17h de sexta 😂", reelImage: reelImages.reel1, showAvatar: true },
   { id: 2, type: "text", content: "Mano olha esse reel kkkkk", sent: false, showAvatar: true },
   { id: 3, type: "text", content: "Kkkkkkkkk muito bom", sent: true },
-  { id: 4, type: "reel", sent: true, reelUsername: "viraisdobrasil", reelCaption: "Todo mundo fazendo trend e eu aqui..." },
+  { id: 4, type: "reel", sent: true, reelUsername: "viraisdobrasil", reelCaption: "Todo mundo fazendo trend e eu aqui...", reelImage: reelImages.reel2 },
   { id: 5, type: "text", content: "Esse achei triste", sent: true },
-  { id: 6, type: "audio", sent: false, audioDuration: "0:23", isLocked: true, showAvatar: true },
+  { id: 6, type: "reel", sent: false, reelUsername: "gamesbrasil", reelCaption: "POV: você esperando o GTA 6 🎮", reelImage: reelImages.reel5, showAvatar: true },
+  { id: 7, type: "text", content: "Kkkkk real demais", sent: true },
+  { id: 8, type: "reel", sent: true, reelUsername: "humordiario", reelCaption: "Segundou com força total 💪", reelImage: reelImages.reel6 },
+  { id: 9, type: "reel", sent: false, reelUsername: "memesbrasileiros", reelCaption: "Quando alguém pergunta se estou bem...", reelImage: reelImages.reel7, showAvatar: true },
+  { id: 10, type: "text", content: "Esse é vc kkkkk", sent: false },
+  { id: 11, type: "reel", sent: true, reelUsername: "risogarantido", reelCaption: "Eu fingindo que entendi a explicação", reelImage: reelImages.reel8 },
+  { id: 12, type: "reel", sent: false, reelUsername: "comédiabr", reelCaption: "Acordar cedo de fds vs semana", reelImage: reelImages.reel9, showAvatar: true },
+  { id: 13, type: "reel", sent: true, reelUsername: "zoeirabrasil", reelCaption: "Minha cara quando falam que é rápido", reelImage: reelImages.reel10 },
+  { id: 14, type: "audio", sent: false, audioDuration: "0:23", isLocked: true, showAvatar: true },
 ];
 
 const ChatScreen = ({ onBack, chatData }: ChatScreenProps) => {
@@ -222,6 +232,7 @@ const ChatScreen = ({ onBack, chatData }: ChatScreenProps) => {
               isReel={msg.type === "reel"}
               reelUsername={msg.reelUsername}
               reelCaption={msg.reelCaption}
+              reelImage={msg.reelImage}
               reaction={msg.reaction}
               isLocked={msg.isLocked}
               isBlurredAvatar={chatData.isAmbiguous}
