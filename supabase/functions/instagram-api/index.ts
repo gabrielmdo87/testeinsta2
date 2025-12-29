@@ -97,7 +97,8 @@ async function getSimilarAccounts(userId: number) {
       return [];
     }
 
-    return users.slice(0, 10).map((user: any) => ({
+    // Return up to 20 similar accounts for more content
+    return users.slice(0, 20).map((user: any) => ({
       id: String(user.pk || user.pk_id || user.id),
       username: user.username,
       fullName: user.full_name || '',

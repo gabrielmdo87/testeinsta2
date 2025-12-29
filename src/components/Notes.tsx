@@ -1,17 +1,39 @@
 import NoteAvatar from "./NoteAvatar";
+import { useAppContext } from "@/contexts/AppContext";
 import avatarMain from "@/assets/avatar-main.jpg";
-import avatarStory4 from "@/assets/avatar-story4.jpg";
-import avatarStory5 from "@/assets/avatar-story5.jpg";
-import avatarStory6 from "@/assets/avatar-story6.jpg";
 
-const notes = [
-  { id: 1, image: avatarMain, name: "Sua nota", isOwn: true, note: "Conte as novidades" },
-  { id: 2, image: avatarStory4, name: "Ana*******", note: "Preguiça Hoje 😭😭" },
-  { id: 3, image: avatarStory5, name: "Val*******", note: "🎵 (Ao Vivo)" },
-  { id: 4, image: avatarStory6, name: "Swi*******", note: "O vontade fudê a 3 🔥" },
+const noteTexts = [
+  "Preguiça Hoje 😭😭",
+  "🎵 (Ao Vivo)",
+  "O vontade... 🔥",
+  "Saudades 💕",
+  "Festinha hj 🎉",
+  "Tô on 😏",
+  "Entediada...",
+  "🥱🥱🥱",
 ];
 
 const Notes = () => {
+  const { profileData, similarAccounts } = useAppContext();
+
+  // Build notes from real data
+  const notes = [
+    { 
+      id: "own", 
+      image: profileData?.avatar || avatarMain, 
+      name: "Sua nota", 
+      isOwn: true, 
+      note: "Conte as n..." 
+    },
+    ...similarAccounts.slice(0, 7).map((account, index) => ({
+      id: account.id,
+      image: account.avatar,
+      name: account.censoredName,
+      note: noteTexts[index % noteTexts.length],
+      isOwn: false,
+    }))
+  ];
+
   return (
     <div className="px-3 py-3 overflow-x-auto scrollbar-hide">
       <div className="flex gap-2">
