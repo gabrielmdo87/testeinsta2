@@ -24,6 +24,7 @@ const StoryAvatar = ({ image, name, isOwn = false, hasStory = true, isCloseFrien
                 alt={name}
                 className={`w-[68px] h-[68px] rounded-full object-cover pointer-events-none ${isBlocked ? 'blur-[6px]' : ''}`}
                 draggable={false}
+                loading="lazy"
                 referrerPolicy="no-referrer"
                 onError={(e) => {
                   e.currentTarget.src = avatarMain;
@@ -45,6 +46,7 @@ const StoryAvatar = ({ image, name, isOwn = false, hasStory = true, isCloseFrien
               alt={name}
               className={`w-[72px] h-[72px] rounded-full object-cover pointer-events-none ${!hasStory && !isOwn ? 'grayscale opacity-80' : ''}`}
               draggable={false}
+              loading="lazy"
               referrerPolicy="no-referrer"
               onError={(e) => {
                 e.currentTarget.src = avatarMain;
