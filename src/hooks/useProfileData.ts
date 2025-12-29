@@ -1,6 +1,24 @@
 import { ProfileData, SimilarAccount, PostData } from "@/types/profile";
 import { supabase } from "@/integrations/supabase/client";
 
+// Helper to proxy external Instagram images through our edge function
+const getProxiedImageUrl = (originalUrl: string): string => {
+  if (!originalUrl) return '';
+  
+  // Don't proxy local assets or data URLs
+  if (originalUrl.startsWith('data:') || 
+      originalUrl.startsWith('/') || 
+      originalUrl.includes('/assets/') ||
+      originalUrl.startsWith('blob:')) {
+    return originalUrl;
+  }
+  
+  // Proxy external URLs through our edge function
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  const encodedUrl = encodeURIComponent(originalUrl);
+  return `${supabaseUrl}/functions/v1/instagram-api?action=proxyImage&url=${encodedUrl}`;
+};
+
 // Fallback avatars for when API fails
 import avatarMain from "@/assets/avatar-main.jpg";
 import avatarStory1 from "@/assets/avatar-story1.jpg";
@@ -71,12 +89,12 @@ export const useProfileData = () => {
 
       console.log('Received data:', data);
 
-      // Transform profile data
+      // Transform profile data - use proxied URLs for external images
       const profile: ProfileData = {
         id: data.profile.id,
         username: data.profile.username,
         fullName: data.profile.fullName,
-        avatar: data.profile.avatar || avatarMain,
+        avatar: data.profile.avatar ? getProxiedImageUrl(data.profile.avatar) : avatarMain,
         bio: data.profile.bio || "✨ Vivendo a vida\n📍 Brasil",
         posts: data.profile.posts,
         followers: data.profile.followers,
@@ -84,24 +102,24 @@ export const useProfileData = () => {
         isPrivate: data.profile.isPrivate,
       };
 
-      // Transform similar accounts
+      // Transform similar accounts - use proxied URLs
       const similarAccounts: SimilarAccount[] = data.similarAccounts.map((acc: any) => ({
         id: acc.id,
         username: acc.username,
         fullName: acc.fullName,
         censoredName: censorName(acc.username),
-        avatar: acc.avatar || avatarStory1,
+        avatar: acc.avatar ? getProxiedImageUrl(acc.avatar) : avatarStory1,
         hasStory: true,
         isPrivate: acc.isPrivate,
       }));
 
-      // Transform posts
+      // Transform posts - use proxied URLs
       const posts: PostData[] = data.posts.map((post: any) => ({
         id: post.id,
         username: post.username,
         censoredName: censorName(post.username),
-        avatar: post.avatar || avatarStory1,
-        imageUrl: post.imageUrl || postImage,
+        avatar: post.avatar ? getProxiedImageUrl(post.avatar) : avatarStory1,
+        imageUrl: post.imageUrl ? getProxiedImageUrl(post.imageUrl) : postImage,
         likes: post.likes,
         caption: post.caption || "",
       }));

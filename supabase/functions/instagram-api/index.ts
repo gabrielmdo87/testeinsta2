@@ -72,29 +72,49 @@ async function getSimilarAccounts(userId: number) {
   try {
     const body = await callRocketAPI('/user/get_similar_accounts', { id: userId });
     
-    // Log full response structure for debugging
-    console.log('Similar accounts response keys:', body ? Object.keys(body) : 'null');
+    console.log('Similar accounts response keys:', Object.keys(body || {}));
+    console.log('Similar accounts body.data type:', typeof body?.data);
+    console.log('Similar accounts full response (first 1000 chars):', JSON.stringify(body).substring(0, 1000));
     
-    // Try different possible field names
-    const users = body?.users || body?.similar_accounts || body?.data || [];
+    // Try different possible response structures - RocketAPI may nest data differently
+    let users: any[] = [];
     
-    if (!users || users.length === 0) {
-      console.log('No similar accounts found in response');
+    if (Array.isArray(body?.users)) {
+      users = body.users;
+      console.log('Found users in body.users');
+    } else if (Array.isArray(body?.data)) {
+      users = body.data;
+      console.log('Found users in body.data (array)');
+    } else if (body?.data && typeof body.data === 'object') {
+      // body.data might be an object with users inside
+      if (Array.isArray(body.data.users)) {
+        users = body.data.users;
+        console.log('Found users in body.data.users');
+      } else if (Array.isArray(body.data.similar_accounts)) {
+        users = body.data.similar_accounts;
+        console.log('Found users in body.data.similar_accounts');
+      } else if (Array.isArray(body.data.chaining_info?.accounts)) {
+        users = body.data.chaining_info.accounts;
+        console.log('Found users in body.data.chaining_info.accounts');
+      } else {
+        // Log all keys in body.data to understand structure
+        console.log('body.data keys:', Object.keys(body.data));
+      }
+    }
+    
+    console.log(`Found ${users.length} similar accounts to process`);
+
+    if (users.length === 0) {
       return [];
     }
 
-    console.log(`Found ${users.length} similar accounts, processing...`);
-
-    // Return all accounts (including private) but mark them
-    return users
-      .slice(0, 10)
-      .map((user: any) => ({
-        id: String(user.pk || user.pk_id || user.id),
-        username: user.username,
-        fullName: user.full_name || '',
-        avatar: user.profile_pic_url || user.profile_pic_url_hd || '',
-        isPrivate: user.is_private || false,
-      }));
+    return users.slice(0, 10).map((user: any) => ({
+      id: String(user.pk || user.pk_id || user.id),
+      username: user.username,
+      fullName: user.full_name || '',
+      avatar: user.profile_pic_url || user.profile_pic_url_hd || '',
+      isPrivate: user.is_private || false,
+    }));
   } catch (error) {
     console.error('Error fetching similar accounts:', error);
     return [];
@@ -165,6 +185,23 @@ serve(async (req) => {
   }
 
   try {
+    // Handle GET requests for image proxy (allows using in <img src="">)
+    if (req.method === 'GET') {
+      const reqUrl = new URL(req.url);
+      const action = reqUrl.searchParams.get('action');
+      const imageUrl = reqUrl.searchParams.get('url');
+      
+      if (action === 'proxyImage' && imageUrl) {
+        console.log('GET proxy request for:', imageUrl.substring(0, 100));
+        return await proxyImage(imageUrl);
+      }
+      
+      return new Response(JSON.stringify({ error: 'Invalid GET request' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     const { action, username, userId, count, url } = await req.json();
     console.log(`Instagram API action: ${action}`, { username, userId, count, url: url?.substring(0, 50) });
 
