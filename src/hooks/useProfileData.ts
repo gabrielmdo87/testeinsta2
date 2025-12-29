@@ -1,20 +1,31 @@
 import { ProfileData, SimilarAccount, PostData } from "@/types/profile";
 import { supabase } from "@/integrations/supabase/client";
 
-// Use direct Instagram CDN URLs - they work in most browsers
-// Only proxy if absolutely necessary (CORS issues)
+// Proxy Instagram CDN images through our edge function to avoid CORS/hotlink blocking
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+
 const getImageUrl = (originalUrl: string, fallback: string): string => {
   if (!originalUrl) return fallback;
   
   // Don't modify local assets or data URLs
   if (originalUrl.startsWith('data:') || 
       originalUrl.startsWith('/') || 
-      originalUrl.includes('/assets/') ||
-      originalUrl.startsWith('blob:')) {
+      originalUrl.startsWith('blob:') ||
+      originalUrl.includes('/assets/')) {
     return originalUrl;
   }
   
-  // Use direct URL - Instagram CDN images work directly in most cases
+  // Check if it's an Instagram/Facebook CDN URL that needs proxying
+  const needsProxy = originalUrl.includes('cdninstagram.com') || 
+                     originalUrl.includes('fbcdn.net') ||
+                     originalUrl.includes('instagram.com');
+  
+  if (needsProxy && SUPABASE_URL) {
+    // Use our image proxy to avoid CORS/hotlink issues
+    return `${SUPABASE_URL}/functions/v1/instagram-api?action=proxyImage&url=${encodeURIComponent(originalUrl)}`;
+  }
+  
+  // For other URLs, return as-is
   return originalUrl;
 };
 
