@@ -1,4 +1,5 @@
 import { Plus } from "lucide-react";
+import avatarMain from "@/assets/avatar-main.jpg";
 
 interface StoryAvatarProps {
   image: string;
@@ -19,6 +20,10 @@ const StoryAvatar = ({ image, name, isOwn = false, hasStory = true }: StoryAvata
                 alt={name}
                 className="w-[68px] h-[68px] rounded-full object-cover pointer-events-none"
                 draggable={false}
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  e.currentTarget.src = avatarMain;
+                }}
               />
             </div>
           </div>
@@ -29,6 +34,10 @@ const StoryAvatar = ({ image, name, isOwn = false, hasStory = true }: StoryAvata
               alt={name}
               className={`w-[72px] h-[72px] rounded-full object-cover pointer-events-none ${!hasStory && !isOwn ? 'grayscale opacity-80' : ''}`}
               draggable={false}
+              referrerPolicy="no-referrer"
+              onError={(e) => {
+                e.currentTarget.src = avatarMain;
+              }}
             />
           </div>
         )}

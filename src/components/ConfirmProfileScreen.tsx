@@ -1,6 +1,7 @@
 import { AlertTriangle, ChevronLeft } from "lucide-react";
 import MatrixBackground from "./MatrixBackground";
 import { ProfileData } from "@/types/profile";
+import avatarMain from "@/assets/avatar-main.jpg";
 
 interface ConfirmProfileScreenProps {
   profileData: ProfileData;
@@ -43,6 +44,10 @@ const ConfirmProfileScreen = ({ profileData, onConfirm, onBack }: ConfirmProfile
                 src={profileData.avatar} 
                 alt={profileData.username}
                 className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  e.currentTarget.src = avatarMain;
+                }}
               />
             </div>
           </div>

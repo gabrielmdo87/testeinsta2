@@ -113,7 +113,7 @@ const IndexContent = () => {
   return (
     <div className="min-h-screen bg-background max-w-md mx-auto relative">
       {screen === "landing" && (
-        <LandingScreen onSubmit={handleUsernameSubmit} />
+        <LandingScreen onSubmit={handleUsernameSubmit} isLoading={isLoadingProfile} />
       )}
 
       {screen === "confirm" && profileData && (

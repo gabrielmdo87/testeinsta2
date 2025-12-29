@@ -28,6 +28,8 @@ const MessageList = ({ onChatOpen }: MessageListProps) => {
     chatType: chatTypes[index % chatTypes.length],
   }));
 
+  const hasMessages = messages.length > 0;
+
   return (
     <div className="flex-1">
       <div className="flex items-center justify-between px-4 py-3">
@@ -36,19 +38,25 @@ const MessageList = ({ onChatOpen }: MessageListProps) => {
           Pedidos ({messages.length})
         </button>
       </div>
-      <div>
-        {messages.map((msg) => (
-          <MessageItem
-            key={msg.id}
-            avatar={msg.avatar}
-            username={msg.username}
-            message={msg.message}
-            time={msg.time}
-            unread={msg.unread}
-            onClick={() => onChatOpen(msg.chatType)}
-          />
-        ))}
-      </div>
+      {hasMessages ? (
+        <div>
+          {messages.map((msg) => (
+            <MessageItem
+              key={msg.id}
+              avatar={msg.avatar}
+              username={msg.username}
+              message={msg.message}
+              time={msg.time}
+              unread={msg.unread}
+              onClick={() => onChatOpen(msg.chatType)}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="px-4 py-8 text-center text-muted-foreground text-sm">
+          Nenhuma mensagem encontrada
+        </div>
+      )}
     </div>
   );
 };

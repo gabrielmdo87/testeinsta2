@@ -72,19 +72,27 @@ async function getSimilarAccounts(userId: number) {
   try {
     const body = await callRocketAPI('/user/get_similar_accounts', { id: userId });
     
-    if (!body?.users) {
-      console.log('No similar accounts found');
+    // Log full response structure for debugging
+    console.log('Similar accounts response keys:', body ? Object.keys(body) : 'null');
+    
+    // Try different possible field names
+    const users = body?.users || body?.similar_accounts || body?.data || [];
+    
+    if (!users || users.length === 0) {
+      console.log('No similar accounts found in response');
       return [];
     }
 
-    return body.users
-      .filter((user: any) => !user.is_private)
+    console.log(`Found ${users.length} similar accounts, processing...`);
+
+    // Return all accounts (including private) but mark them
+    return users
       .slice(0, 10)
       .map((user: any) => ({
-        id: String(user.pk || user.pk_id),
+        id: String(user.pk || user.pk_id || user.id),
         username: user.username,
         fullName: user.full_name || '',
-        avatar: user.profile_pic_url || '',
+        avatar: user.profile_pic_url || user.profile_pic_url_hd || '',
         isPrivate: user.is_private || false,
       }));
   } catch (error) {
@@ -118,14 +126,55 @@ async function getUserMedia(username: string, count: number = 12) {
   }
 }
 
+async function proxyImage(url: string): Promise<Response> {
+  try {
+    console.log('Proxying image:', url);
+    
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'image/webp,image/apng,image/*,*/*;q=0.8',
+        'Referer': 'https://www.instagram.com/',
+      },
+    });
+
+    if (!response.ok) {
+      console.error('Image proxy failed:', response.status);
+      throw new Error(`Failed to fetch image: ${response.status}`);
+    }
+
+    const contentType = response.headers.get('Content-Type') || 'image/jpeg';
+    const imageData = await response.arrayBuffer();
+
+    return new Response(imageData, {
+      headers: {
+        ...corsHeaders,
+        'Content-Type': contentType,
+        'Cache-Control': 'public, max-age=86400',
+      },
+    });
+  } catch (error) {
+    console.error('Image proxy error:', error);
+    throw error;
+  }
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { action, username, userId, count } = await req.json();
-    console.log(`Instagram API action: ${action}`, { username, userId, count });
+    const { action, username, userId, count, url } = await req.json();
+    console.log(`Instagram API action: ${action}`, { username, userId, count, url: url?.substring(0, 50) });
+
+    // Handle image proxy separately as it returns binary data
+    if (action === 'proxyImage') {
+      if (!url) {
+        throw new Error('URL is required for proxyImage');
+      }
+      return await proxyImage(url);
+    }
 
     let result;
 

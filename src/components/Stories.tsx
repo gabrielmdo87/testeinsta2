@@ -23,6 +23,9 @@ const Stories = () => {
     }))
   ];
 
+  // If no similar accounts, show a message
+  const hasAccounts = similarAccounts.length > 0;
+
   return (
     <div
       className="px-3 py-3 overflow-x-auto scrollbar-hide"
@@ -41,6 +44,11 @@ const Stories = () => {
             hasStory={story.hasStory}
           />
         ))}
+        {!hasAccounts && (
+          <div className="flex items-center justify-center px-4 text-muted-foreground text-sm">
+            Nenhuma conta relacionada encontrada
+          </div>
+        )}
       </div>
     </div>
   );

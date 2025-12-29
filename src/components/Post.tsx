@@ -1,4 +1,6 @@
 import { MoreHorizontal, Heart, MessageCircle, Send, Bookmark } from "lucide-react";
+import avatarMain from "@/assets/avatar-main.jpg";
+import postImage from "@/assets/post-image.jpg";
 
 interface PostProps {
   avatar: string;
@@ -18,6 +20,10 @@ const Post = ({ avatar, username, image, likes = 0, caption }: PostProps) => {
             src={avatar}
             alt={username}
             className="w-9 h-9 rounded-full object-cover"
+            referrerPolicy="no-referrer"
+            onError={(e) => {
+              e.currentTarget.src = avatarMain;
+            }}
           />
           <span className="text-sm font-medium text-foreground">{username}</span>
         </div>
@@ -32,6 +38,10 @@ const Post = ({ avatar, username, image, likes = 0, caption }: PostProps) => {
           src={image}
           alt="Post content"
           className="w-full object-cover"
+          referrerPolicy="no-referrer"
+          onError={(e) => {
+            e.currentTarget.src = postImage;
+          }}
         />
       </div>
 
