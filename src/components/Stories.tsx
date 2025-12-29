@@ -47,8 +47,9 @@ const Stories = ({ onVIPClick }: StoriesProps) => {
     ...blockedStories,
   ];
 
-  const handleStoryClick = (isBlocked: boolean) => {
-    if (isBlocked) {
+  const handleStoryClick = (story: typeof stories[0]) => {
+    // Todos os stories (exceto o próprio) devem abrir o modal VIP
+    if (!story.isOwn) {
       setShowVIPModal(true);
     }
   };
@@ -69,8 +70,8 @@ const Stories = ({ onVIPClick }: StoriesProps) => {
           {stories.map((story) => (
             <div 
               key={story.id} 
-              onClick={() => handleStoryClick(story.isBlocked)}
-              className={story.isBlocked ? 'cursor-pointer opacity-60' : ''}
+              onClick={() => handleStoryClick(story)}
+              className={!story.isOwn ? 'cursor-pointer' : ''}
             >
               <StoryAvatar
                 image={story.image}
