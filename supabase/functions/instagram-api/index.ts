@@ -177,9 +177,36 @@ async function getUserMedia(username: string, count: number = 6) {
   }
 }
 
+// Allowed hosts for image proxy (security)
+const ALLOWED_IMAGE_HOSTS = [
+  'cdninstagram.com',
+  'fbcdn.net',
+  'instagram.com',
+  'scontent.cdninstagram.com',
+  'scontent-',
+];
+
+function isAllowedImageHost(urlString: string): boolean {
+  try {
+    const url = new URL(urlString);
+    return ALLOWED_IMAGE_HOSTS.some(host => url.hostname.includes(host));
+  } catch {
+    return false;
+  }
+}
+
 async function proxyImage(url: string): Promise<Response> {
   try {
-    console.log('Proxying image:', url);
+    console.log('Proxying image:', url.substring(0, 80));
+    
+    // Validate URL is from allowed hosts
+    if (!isAllowedImageHost(url)) {
+      console.error('Blocked proxy request for non-allowed host:', url.substring(0, 80));
+      return new Response(JSON.stringify({ error: 'Host not allowed' }), {
+        status: 403,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
     
     const response = await fetch(url, {
       headers: {
