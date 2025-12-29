@@ -68,7 +68,7 @@ const ferMessages: Message[] = [
   { id: 20, type: "text", content: "Perai que ██████ tá aqui do lado", sent: false },
   { id: 21, type: "text", content: "kkkkkkkkk", sent: true },
   { id: 22, type: "text", content: "🦌🦌🦌 kkkk", sent: false, reaction: "😂" },
-  { id: 23, type: "text", content: "Tô em Braço do Norte já, só pra avisar ██████", sent: false, showAvatar: true, reaction: "❤️" },
+  { id: 23, type: "text", content: "Tô pertinho de você já, só pra avisar ██████", sent: false, showAvatar: true, reaction: "❤️" },
   { id: 24, type: "heart", sent: false },
   { id: 25, type: "text", content: "Tá aonde", sent: true },
   { id: 26, type: "text", content: "Na sua prima?", sent: true },
@@ -286,7 +286,7 @@ const hopMessages: Message[] = [
   { id: 13, type: "text", content: "Oi boa tarde", sent: false },
   { id: 14, type: "text", content: "Sei que esta evitando falar comigo", sent: false },
   { id: 15, type: "text", content: "Mais hj faz um mês do nosso último beijo", sent: false },
-  { id: 16, type: "text", content: "Dia 31 quarta feira devo ir pra Braço do Norte de novo", sent: false, showAvatar: true },
+  { id: 16, type: "text", content: "Dia 31 quarta feira devo ir aí na sua cidade de novo", sent: false, showAvatar: true },
   
   // Reel
   { id: 17, type: "reel", sent: false, reelUsername: "sentimentos_div...", reelCaption: "apesar de tudo que ele deixou... não consigo odia-lo pq ele foi o único que eu amei com a alma.", reelImage: reelImages.reel7, showAvatar: true },
@@ -298,7 +298,7 @@ const hopMessages: Message[] = [
   { id: 19, type: "text", content: "???", sent: false },
   { id: 20, type: "text", content: "Bom dia.", sent: false },
   { id: 21, type: "text", content: "Porque não me responde mais?????", sent: false },
-  { id: 22, type: "text", content: "Estou na cidade e queria te ver", sent: false, showAvatar: true },
+  { id: 22, type: "text", content: "Estou aqui pertinho e queria te ver", sent: false, showAvatar: true },
 ];
 
 const ChatScreen = ({ onBack, chatData }: ChatScreenProps) => {
