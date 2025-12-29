@@ -42,6 +42,7 @@ const Post = ({ avatar, username, image, likes = 0, caption, onCommentClick, onL
           src={image}
           alt="Post content"
           className="w-full object-cover"
+          loading="lazy"
           referrerPolicy="no-referrer"
           onError={(e) => {
             e.currentTarget.src = postImage;

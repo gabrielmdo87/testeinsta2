@@ -1,11 +1,12 @@
 import { ProfileData, SimilarAccount, PostData } from "@/types/profile";
 import { supabase } from "@/integrations/supabase/client";
 
-// Helper to proxy external Instagram images through our edge function
-const getProxiedImageUrl = (originalUrl: string): string => {
-  if (!originalUrl) return '';
+// Use direct Instagram CDN URLs - they work in most browsers
+// Only proxy if absolutely necessary (CORS issues)
+const getImageUrl = (originalUrl: string, fallback: string): string => {
+  if (!originalUrl) return fallback;
   
-  // Don't proxy local assets or data URLs
+  // Don't modify local assets or data URLs
   if (originalUrl.startsWith('data:') || 
       originalUrl.startsWith('/') || 
       originalUrl.includes('/assets/') ||
@@ -13,10 +14,8 @@ const getProxiedImageUrl = (originalUrl: string): string => {
     return originalUrl;
   }
   
-  // Proxy external URLs through our edge function
-  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-  const encodedUrl = encodeURIComponent(originalUrl);
-  return `${supabaseUrl}/functions/v1/instagram-api?action=proxyImage&url=${encodedUrl}`;
+  // Use direct URL - Instagram CDN images work directly in most cases
+  return originalUrl;
 };
 
 // Fallback avatars for when API fails
@@ -95,10 +94,13 @@ export const useProfileData = () => {
   }> => {
     try {
       console.log(`Fetching full data for: ${username}`);
+      const startTime = Date.now();
       
       const { data, error } = await supabase.functions.invoke('instagram-api', {
         body: { action: 'getFullData', username }
       });
+
+      console.log(`API call completed in ${Date.now() - startTime}ms`);
 
       if (error) {
         console.error('Edge function error:', error);
@@ -112,12 +114,12 @@ export const useProfileData = () => {
 
       console.log('Received data:', data);
 
-      // Transform profile data - use proxied URLs for external images
+      // Transform profile data - use direct URLs
       const profile: ProfileData = {
         id: data.profile.id,
         username: data.profile.username,
         fullName: data.profile.fullName,
-        avatar: data.profile.avatar ? getProxiedImageUrl(data.profile.avatar) : avatarMain,
+        avatar: getImageUrl(data.profile.avatar, avatarMain),
         bio: data.profile.bio || "✨ Vivendo a vida\n📍 Brasil",
         posts: data.profile.posts,
         followers: data.profile.followers,
@@ -125,42 +127,40 @@ export const useProfileData = () => {
         isPrivate: data.profile.isPrivate,
       };
 
-      // Transform similar accounts - use proxied URLs
+      // Transform similar accounts - use direct URLs
       const similarAccounts: SimilarAccount[] = data.similarAccounts.map((acc: any) => ({
         id: acc.id,
         username: acc.username,
         fullName: acc.fullName,
         censoredName: censorName(acc.username),
-        avatar: acc.avatar ? getProxiedImageUrl(acc.avatar) : avatarStory1,
+        avatar: getImageUrl(acc.avatar, avatarStory1),
         hasStory: true,
         isPrivate: acc.isPrivate,
       }));
 
-      // Transform posts - use proxied URLs
+      // Transform posts - use direct URLs
       const posts: PostData[] = data.posts.map((post: any) => ({
         id: post.id,
         username: post.username,
         censoredName: censorName(post.username),
-        avatar: post.avatar ? getProxiedImageUrl(post.avatar) : avatarStory1,
-        imageUrl: post.imageUrl ? getProxiedImageUrl(post.imageUrl) : postImage,
+        avatar: getImageUrl(post.avatar, avatarStory1),
+        imageUrl: getImageUrl(post.imageUrl, postImage),
         likes: post.likes,
         caption: post.caption || "",
       }));
 
-      // Use only real posts from API - no fallbacks
-      // Keep original API order (most relevant profiles first)
+      console.log(`Data transformation completed in ${Date.now() - startTime}ms`);
       console.log(`Received ${posts.length} real posts from API`);
 
       return {
         profile,
-        similarAccounts, // Keep original API order
-        posts, // Only real posts, no fallbacks
+        similarAccounts,
+        posts,
       };
 
     } catch (error) {
       console.error('Error fetching data, using fallbacks:', error);
       
-      // Return minimal fallback data - no fake similar accounts
       return {
         profile: {
           id: 0,
@@ -173,7 +173,7 @@ export const useProfileData = () => {
           following: Math.floor(Math.random() * 1000) + 100,
           isPrivate: false,
         },
-        similarAccounts: [], // No fake placeholders on error either
+        similarAccounts: [],
         posts: fallbackPosts,
       };
     }
