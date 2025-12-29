@@ -112,14 +112,21 @@ async function getSimilarAccounts(userId: number) {
 
 async function getUserMedia(username: string, count: number = 12) {
   try {
-    const body = await callRocketAPI('/user/get_media', { username, count });
+    const body = await callRocketAPI('/user/get_media_by_username', { username, count });
     
-    if (!body?.items) {
+    console.log(`Media response keys for ${username}:`, Object.keys(body || {}));
+    
+    // Try different response structures
+    const items = body?.items || body?.data?.items || body?.media?.items || [];
+    
+    if (!items.length) {
       console.log(`No media found for ${username}`);
       return [];
     }
 
-    return body.items
+    console.log(`Found ${items.length} media items for ${username}`);
+
+    return items
       .filter((item: any) => item.media_type === 1) // Only photos
       .slice(0, 4)
       .map((item: any) => ({
@@ -133,6 +140,11 @@ async function getUserMedia(username: string, count: number = 12) {
     console.error(`Error fetching media for ${username}:`, error);
     return [];
   }
+}
+
+// Helper to add delay between API calls
+function delay(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function proxyImage(url: string): Promise<Response> {
@@ -222,23 +234,33 @@ serve(async (req) => {
         const profile = await getProfileInfo(username);
         const similarAccounts = await getSimilarAccounts(profile.id);
         
-        // Get posts from public similar accounts
-        const postsPromises = similarAccounts.slice(0, 6).map(async (account: any) => {
-          const media = await getUserMedia(account.username, 4);
-          return media.map((m: any) => ({
-            ...m,
-            username: account.username,
-            avatar: account.avatar,
-          }));
-        });
+        // Filter only PUBLIC accounts to fetch their posts
+        const publicAccounts = similarAccounts.filter((acc: any) => !acc.isPrivate);
+        console.log(`Found ${publicAccounts.length} public accounts out of ${similarAccounts.length}`);
         
-        const postsArrays = await Promise.all(postsPromises);
-        const allPosts = postsArrays.flat().slice(0, 12);
+        // Get posts from public similar accounts sequentially with delay to avoid rate limit
+        const allPosts: any[] = [];
+        for (const account of publicAccounts.slice(0, 4)) {
+          try {
+            const media = await getUserMedia(account.username, 3);
+            allPosts.push(...media.map((m: any) => ({
+              ...m,
+              username: account.username,
+              avatar: account.avatar,
+            })));
+            // Small delay between calls to avoid rate limiting
+            await delay(200);
+          } catch (e) {
+            console.error(`Failed to get media for ${account.username}:`, e);
+          }
+        }
+        
+        console.log(`Total posts collected: ${allPosts.length}`);
 
         result = {
           profile,
           similarAccounts,
-          posts: allPosts,
+          posts: allPosts.slice(0, 12),
         };
         break;
 
