@@ -332,7 +332,7 @@ const ChatScreen = ({ onBack, chatData }: ChatScreenProps) => {
         isBlurredAvatar={chatData.isAmbiguous}
       />
 
-      <div className="flex-1 overflow-y-auto px-3 py-4 space-y-2 pt-20 pb-28">
+      <div className="flex-1 overflow-y-auto px-3 py-4 space-y-2 pt-20 pb-20">
         {/* Data inicial */}
         <div className="text-center py-3">
           <span className="text-[11px] text-muted-foreground tracking-wide uppercase">
