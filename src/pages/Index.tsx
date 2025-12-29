@@ -56,28 +56,30 @@ const IndexContent = () => {
     setTargetUsername, 
     profileData, 
     setProfileData,
-    setSimilarAccounts 
+    setSimilarAccounts,
+    setPosts,
+    setIsLoading 
   } = useAppContext();
   
-  const { fetchProfileData, fetchSimilarAccounts } = useProfileData();
+  const { fetchFullData } = useProfileData();
 
   const handleUsernameSubmit = async (username: string) => {
     setTargetUsername(username);
     setIsLoadingProfile(true);
+    setIsLoading(true);
     
     try {
-      const [profile, similar] = await Promise.all([
-        fetchProfileData(username),
-        fetchSimilarAccounts(username)
-      ]);
+      const { profile, similarAccounts, posts } = await fetchFullData(username);
       
       setProfileData(profile);
-      setSimilarAccounts(similar);
+      setSimilarAccounts(similarAccounts);
+      setPosts(posts);
       setScreen("confirm");
     } catch (error) {
       console.error("Error fetching profile:", error);
     } finally {
       setIsLoadingProfile(false);
+      setIsLoading(false);
     }
   };
 
