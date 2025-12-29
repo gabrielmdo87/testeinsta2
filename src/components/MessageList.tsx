@@ -12,7 +12,7 @@ const recentMessages = [
   { id: 2, username: "ana*****", message: "Encaminhou um reel de jonas.milgrau", time: "44 min", unread: true, chatType: "bru" as const, isAmbiguous: true },
   { id: 3, username: "And*****", message: "Não amnda mais nada blz", time: "2 h", unread: true, chatType: "cri" as const, isAmbiguous: true },
   { id: 4, username: "Ana******", message: "Blz depois a gente se fala", time: "6 h", unread: false, chatType: "val" as const, isAmbiguous: true },
-  { id: 5, username: "HOP***", message: "Encaminhou um reel de jon...", time: "22 h", unread: false, chatType: "hop" as const, isAmbiguous: false },
+  { id: 5, username: "Bru****", message: "Estou na cidade e queria te ver", time: "22 h", unread: true, chatType: "hop" as const, isAmbiguous: true },
 ];
 
 // 8+ conversas bloqueadas (com cadeado) - todas com blur no avatar
