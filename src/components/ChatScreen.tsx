@@ -324,7 +324,7 @@ const ChatScreen = ({ onBack, chatData }: ChatScreenProps) => {
         isBlurredAvatar={chatData.isAmbiguous}
       />
 
-      <div className="flex-1 overflow-y-auto px-3 py-4 space-y-2 pb-32">
+      <div className="flex-1 overflow-y-auto px-3 py-4 space-y-2 pb-48">
         {/* Data inicial */}
         <div className="text-center py-3">
           <span className="text-[11px] text-muted-foreground tracking-wide uppercase">
@@ -375,8 +375,8 @@ const ChatScreen = ({ onBack, chatData }: ChatScreenProps) => {
         })}
       </div>
 
-      {/* Input fixo no bottom */}
-      <div className="fixed bottom-16 left-0 right-0 max-w-md mx-auto z-10">
+      {/* Input fixo no bottom - acima do VIPBanner */}
+      <div className="fixed bottom-36 left-0 right-0 max-w-md mx-auto z-10">
         <ChatInput />
       </div>
     </div>

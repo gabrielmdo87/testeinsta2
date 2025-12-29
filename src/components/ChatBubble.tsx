@@ -127,59 +127,43 @@ import reelsLogo from '@/assets/reels-logo.png';
 
 const ReelMessage = ({ 
   sent, 
-  username, 
-  caption, 
-  avatar,
   isBlurred,
   reelImage
 }: { 
   sent: boolean; 
-  username: string; 
-  caption: string;
+  username?: string; 
+  caption?: string;
   avatar?: string;
   isBlurred?: boolean;
   reelImage?: string;
 }) => {
   return (
     <div className={`flex ${sent ? 'justify-end' : 'justify-start'} items-end gap-2`}>
-      <div className={`w-[260px] rounded-2xl overflow-hidden bg-secondary ${
+      {/* Formato simplificado: apenas imagem + play + logo */}
+      <div className={`w-[140px] h-[200px] rounded-2xl overflow-hidden relative ${
         sent ? 'rounded-br-md' : 'rounded-bl-md'
       } ${isBlurred ? 'blur-[8px]' : ''}`}>
-        {/* Reel Header - Username and avatar */}
-        <div className="flex items-center gap-2 px-3 py-2 border-b border-border/30">
+        {/* Imagem do reel */}
+        {reelImage ? (
           <img 
-            src={avatar || '/placeholder.svg'} 
-            alt={username}
-            className="w-7 h-7 rounded-full object-cover"
-            referrerPolicy="no-referrer"
+            src={reelImage} 
+            alt="Reel" 
+            className="w-full h-full object-cover"
           />
-          <span className="text-sm font-medium text-foreground">{username}</span>
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-muted/80 to-muted/60" />
+        )}
+        
+        {/* Play button centralizado */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-full bg-black/30 flex items-center justify-center backdrop-blur-[2px]">
+            <Play className="w-6 h-6 text-white ml-0.5" fill="white" />
+          </div>
         </div>
         
-        {/* Caption */}
-        <div className="px-3 py-2">
-          <p className="text-sm text-foreground line-clamp-2">{caption}</p>
-        </div>
-        
-        {/* Video Thumbnail with actual reel image */}
-        <div className="relative h-48 bg-muted/60">
-          {reelImage ? (
-            <img 
-              src={reelImage} 
-              alt="Reel" 
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className="w-full h-full bg-gradient-to-br from-muted/80 to-muted/60" />
-          )}
-          {/* White play button in center */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <Play className="w-16 h-16 text-white drop-shadow-lg" fill="white" />
-          </div>
-          {/* Reels logo in bottom left */}
-          <div className="absolute left-2 bottom-2">
-            <img src={reelsLogo} alt="Reels" className="w-6 h-6" />
-          </div>
+        {/* Logo Reels no canto inferior esquerdo */}
+        <div className="absolute left-2 bottom-2">
+          <img src={reelsLogo} alt="Reels" className="w-5 h-5" />
         </div>
       </div>
     </div>
