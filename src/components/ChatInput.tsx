@@ -1,10 +1,17 @@
 import { Camera, Mic, Image, Smile, Heart } from "lucide-react";
 
-const ChatInput = () => {
+interface ChatInputProps {
+  onVIPClick?: () => void;
+}
+
+const ChatInput = ({ onVIPClick }: ChatInputProps) => {
   return (
     <div className="px-3 py-2 bg-background">
-      <div className="flex items-center gap-3 bg-secondary/80 rounded-full px-3 py-2 border border-border/30">
-        <button className="flex-shrink-0">
+      <div 
+        className="flex items-center gap-3 bg-secondary/80 rounded-full px-3 py-2 border border-border/30 cursor-not-allowed"
+        onClick={onVIPClick}
+      >
+        <button className="flex-shrink-0 pointer-events-none">
           <div className="w-10 h-10 rounded-full bg-[#0095F6] flex items-center justify-center">
             <Camera className="w-5 h-5 text-white" strokeWidth={2} />
           </div>
@@ -12,9 +19,10 @@ const ChatInput = () => {
         <input
           type="text"
           placeholder="Mensagem..."
-          className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground text-[15px] outline-none"
+          className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground text-[15px] outline-none pointer-events-none cursor-not-allowed"
+          readOnly
         />
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 pointer-events-none">
           <button className="text-foreground">
             <Mic className="w-6 h-6" strokeWidth={1.5} />
           </button>

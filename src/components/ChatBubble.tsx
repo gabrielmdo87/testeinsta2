@@ -24,6 +24,7 @@ interface ChatBubbleProps {
   quoteLabel?: string;
   isReelBlurred?: boolean;
   isHeart?: boolean;
+  onVIPClick?: () => void;
 }
 
 // Generate random waveform bars
@@ -36,14 +37,17 @@ const generateWaveform = () => {
   return bars;
 };
 
-const AudioMessage = ({ sent, duration, isLocked, isBlurred }: { sent: boolean; duration: string; isLocked?: boolean; isBlurred?: boolean }) => {
+const AudioMessage = ({ sent, duration, isLocked, isBlurred, onVIPClick }: { sent: boolean; duration: string; isLocked?: boolean; isBlurred?: boolean; onVIPClick?: () => void }) => {
   const waveform = generateWaveform();
   
   return (
     <div className={`flex flex-col gap-1 ${sent ? 'items-end' : 'items-start'}`}>
-      <div className={`relative flex items-center gap-3 px-4 py-3 rounded-2xl ${
-        sent ? 'bg-accent rounded-br-md' : 'bg-secondary rounded-bl-md'
-      } ${isBlurred ? 'blur-[8px]' : ''}`}>
+      <div 
+        className={`relative flex items-center gap-3 px-4 py-3 rounded-2xl ${
+          sent ? 'bg-accent rounded-br-md' : 'bg-secondary rounded-bl-md'
+        } ${isBlurred ? 'blur-[8px]' : ''} cursor-pointer`}
+        onClick={onVIPClick}
+      >
         <button className="flex-shrink-0">
           <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
             sent ? 'bg-white/20' : 'bg-muted'
@@ -73,13 +77,13 @@ const AudioMessage = ({ sent, duration, isLocked, isBlurred }: { sent: boolean; 
       </div>
       {/* Ver transcrição - para todos os áudios não bloqueados */}
       {!isLocked && !isBlurred && (
-        <span className="text-xs text-muted-foreground ml-2">Ver transcrição</span>
+        <span className="text-xs text-muted-foreground ml-2 cursor-pointer" onClick={onVIPClick}>Ver transcrição</span>
       )}
     </div>
   );
 };
 
-const VideoCallMessage = ({ duration, isMissed, isEnded }: { duration?: string; isMissed?: boolean; isEnded?: boolean }) => {
+const VideoCallMessage = ({ duration, isMissed, isEnded, onVIPClick }: { duration?: string; isMissed?: boolean; isEnded?: boolean; onVIPClick?: () => void }) => {
   if (isMissed) {
     return (
       <div className="flex flex-col gap-2 px-4 py-3 rounded-2xl bg-secondary border border-border/30">
@@ -89,7 +93,10 @@ const VideoCallMessage = ({ duration, isMissed, isEnded }: { duration?: string; 
           </div>
           <span className="text-sm text-foreground font-medium">Ligação de vídeo perdida</span>
         </div>
-        <button className="w-full py-2 rounded-lg bg-muted/50 text-sm text-foreground font-medium">
+        <button 
+          className="w-full py-2 rounded-lg bg-muted/50 text-sm text-foreground font-medium"
+          onClick={onVIPClick}
+        >
           Ligar de volta
         </button>
       </div>
@@ -128,7 +135,8 @@ import reelsLogo from '@/assets/reels-logo.png';
 const ReelMessage = ({ 
   sent, 
   isBlurred,
-  reelImage
+  reelImage,
+  onVIPClick
 }: { 
   sent: boolean; 
   username?: string; 
@@ -136,13 +144,17 @@ const ReelMessage = ({
   avatar?: string;
   isBlurred?: boolean;
   reelImage?: string;
+  onVIPClick?: () => void;
 }) => {
   return (
     <div className={`flex ${sent ? 'justify-end' : 'justify-start'} items-end gap-2`}>
       {/* Formato simplificado: apenas imagem + play + logo */}
-      <div className={`w-[140px] h-[200px] rounded-2xl overflow-hidden relative ${
-        sent ? 'rounded-br-md' : 'rounded-bl-md'
-      } ${isBlurred ? 'blur-[8px]' : ''}`}>
+      <div 
+        className={`w-[140px] h-[200px] rounded-2xl overflow-hidden relative cursor-pointer ${
+          sent ? 'rounded-br-md' : 'rounded-bl-md'
+        } ${isBlurred ? 'blur-[8px]' : ''}`}
+        onClick={onVIPClick}
+      >
         {/* Imagem do reel */}
         {reelImage ? (
           <img 
@@ -202,7 +214,8 @@ const ChatBubble = ({
   quoteText,
   quoteLabel,
   isReelBlurred,
-  isHeart
+  isHeart,
+  onVIPClick
 }: ChatBubbleProps) => {
   
   // Componente de avatar com suporte a blur
@@ -240,7 +253,7 @@ const ChatBubble = ({
       <div className={`flex ${sent ? "justify-end" : "justify-start"} items-end gap-2`}>
         {!sent && showAvatar && avatar && <AvatarImage />}
         {!sent && !showAvatar && <div className="w-7" />}
-        <VideoCallMessage duration={videoCallDuration} isMissed={isMissedCall} isEnded={isEndedCall} />
+        <VideoCallMessage duration={videoCallDuration} isMissed={isMissedCall} isEnded={isEndedCall} onVIPClick={onVIPClick} />
       </div>
     );
   }
@@ -251,7 +264,7 @@ const ChatBubble = ({
       <div className={`flex ${sent ? "justify-end" : "justify-start"} items-end gap-2`}>
         {!sent && showAvatar && avatar && <AvatarImage />}
         {!sent && !showAvatar && <div className="w-7" />}
-        <AudioMessage sent={sent} duration={audioDuration} isLocked={isLocked} isBlurred={isBlurred} />
+        <AudioMessage sent={sent} duration={audioDuration} isLocked={isLocked} isBlurred={isBlurred} onVIPClick={onVIPClick} />
       </div>
     );
   }
@@ -269,6 +282,7 @@ const ChatBubble = ({
           avatar={avatar}
           isBlurred={isReelBlurred}
           reelImage={reelImage}
+          onVIPClick={onVIPClick}
         />
       </div>
     );
@@ -280,7 +294,7 @@ const ChatBubble = ({
       <div className={`flex ${sent ? "justify-end" : "justify-start"} items-end gap-2`}>
         {!sent && showAvatar && avatar && <AvatarImage />}
         {!sent && !showAvatar && <div className="w-7" />}
-        <div className="relative">
+        <div className="relative cursor-pointer" onClick={onVIPClick}>
           <div
             className={`w-[160px] h-[220px] rounded-2xl ${
               sent ? 'rounded-br-md' : 'rounded-bl-md'
