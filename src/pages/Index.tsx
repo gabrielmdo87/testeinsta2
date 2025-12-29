@@ -20,12 +20,11 @@ interface ChatData {
   avatar: string;
   username: string;
   status: string;
-  type: "fer" | "hop" | "bru";
+  type: "fer" | "hop" | "bru" | "cri" | "val";
   isAmbiguous?: boolean;
 }
 
 const statusMessages = ["Online", "Online há 22 h", "Online há 35 min", "Online há 6 h"];
-const chatTypes: Array<"fer" | "hop" | "bru"> = ["bru", "fer", "hop"];
 
 const IndexContent = () => {
   const [screen, setScreen] = useState<Screen>("landing");
@@ -57,7 +56,6 @@ const IndexContent = () => {
       setProfileData(profile);
       setSimilarAccounts(similarAccounts);
       setPosts(posts);
-      // Navigate to confirm screen once data is loaded
       setScreen("confirm");
     } catch (error) {
       console.error("Error fetching profile:", error);
@@ -77,16 +75,15 @@ const IndexContent = () => {
     setProfileData(null);
   };
 
-  const handleChatOpen = (chatType: "fer" | "hop" | "bru", index: number = 0) => {
-    // Conversas ambíguas (fer, bru) = avatar com blur
-    // Conversas normais (hop) = avatar real sem blur
-    const isAmbiguous = chatType === "fer" || chatType === "bru";
+  const handleChatOpen = (chatType: "fer" | "hop" | "bru" | "cri" | "val", index: number = 0) => {
+    const isAmbiguous = chatType !== "hop";
     const account = similarAccounts[index];
     
-    // Nomes ambíguos para conversas suspeitas
     const ambiguousNames: Record<string, string> = {
       fer: "Fer***",
       bru: "Bru***",
+      cri: "Cri***",
+      val: "Val***",
     };
     
     if (account) {
@@ -98,7 +95,6 @@ const IndexContent = () => {
         isAmbiguous,
       });
     } else {
-      // Fallback if no account
       setCurrentChat({
         avatar: "/placeholder.svg",
         username: isAmbiguous ? ambiguousNames[chatType] || "***" : "Usuário",
@@ -148,8 +144,8 @@ const IndexContent = () => {
       {screen === "feed" && (
         <div className="pb-48">
           <InstagramHeader onDirectClick={() => setScreen("direct")} />
-          <Stories />
-          <Feed />
+          <Stories onVIPClick={handleVIPClick} />
+          <Feed onVIPClick={handleVIPClick} />
         </div>
       )}
 
@@ -158,6 +154,7 @@ const IndexContent = () => {
           <DirectMessages
             onBack={() => setScreen("feed")}
             onChatOpen={handleChatOpen}
+            onVIPClick={handleVIPClick}
           />
         </div>
       )}
@@ -172,7 +169,6 @@ const IndexContent = () => {
         <CTAPage />
       )}
 
-      {/* VIP Banner - visible on feed, direct and chat screens */}
       {(screen === "feed" || screen === "direct" || screen === "chat") && (
         <div className="fixed bottom-12 left-0 right-0 z-40 max-w-md mx-auto">
           <VIPBanner onVIPClick={handleVIPClick} />

@@ -8,9 +8,10 @@ interface PostProps {
   image: string;
   likes?: number;
   caption?: string;
+  onCommentClick?: () => void;
 }
 
-const Post = ({ avatar, username, image, likes = 0, caption }: PostProps) => {
+const Post = ({ avatar, username, image, likes = 0, caption, onCommentClick }: PostProps) => {
   return (
     <article className="border-b border-border/20">
       {/* Post Header */}
@@ -52,7 +53,7 @@ const Post = ({ avatar, username, image, likes = 0, caption }: PostProps) => {
             <button className="text-foreground">
               <Heart className="w-6 h-6" strokeWidth={1.5} />
             </button>
-            <button className="text-foreground">
+            <button className="text-foreground" onClick={onCommentClick}>
               <MessageCircle className="w-6 h-6" strokeWidth={1.5} />
             </button>
             <button className="text-foreground">
@@ -73,6 +74,13 @@ const Post = ({ avatar, username, image, likes = 0, caption }: PostProps) => {
             <span className="font-semibold">{username}</span> {caption}
           </p>
         )}
+        {/* Ver comentários link */}
+        <button 
+          onClick={onCommentClick}
+          className="text-sm text-muted-foreground mt-1"
+        >
+          Ver todos os comentários
+        </button>
       </div>
     </article>
   );
