@@ -11,7 +11,7 @@ const CTAHeader = () => {
         />
       </div>
       <h1 className="text-xl font-bold text-foreground">
-        A maior ferramenta de <span className="text-accent">Stalker</span> do Brasil
+        A maior ferramenta <span className="text-accent">Espiã</span> do Brasil
       </h1>
     </div>
   );
