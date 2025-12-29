@@ -85,40 +85,56 @@ const ferMessages: Message[] = [
   { id: 36, type: "text", content: "Oi delícia, adivinha o que vc esqueceu aqui? kkkk", sent: false, showAvatar: true },
 ];
 
-// Conversa 2 - Bru*** (Chamadas de vídeo + íntimo)
-const bruMessages: Message[] = [
-  // Mensagens antigas com blur
-  { id: 1, type: "text", content: "Bom dia bb", sent: false, isBlurred: true },
-  { id: 2, type: "image", sent: true, isBlurred: true },
-  { id: 3, type: "audio", sent: false, audioDuration: "0:08", isBlurred: true },
-  { id: 4, type: "text", content: "", sent: false, dateBreak: "ONTEM, 09:30" },
-  // Chamadas de vídeo
-  { id: 5, type: "videoCall", sent: false, videoCallDuration: "09:32" },
-  { id: 6, type: "missedCall", sent: false },
-  { id: 7, type: "text", content: "Net tá ruim", sent: true },
-  { id: 8, type: "text", content: "To no 4G", sent: true },
-  { id: 9, type: "text", content: "Liga de novo", sent: true },
-  { id: 10, type: "videoCall", sent: false, videoCallDuration: "09:34" },
-  { id: 11, type: "videoCall", sent: false, videoCallDuration: "07:48" },
-  { id: 12, type: "text", content: "Delíciaaaaaaaaa", sent: true },
-  { id: 13, type: "text", content: "😍😍😍", sent: true },
-  { id: 14, type: "text", content: "Olha como me deixou", sent: false },
-  { id: 15, type: "image", sent: false, isBlurred: true, reaction: "❤️" },
-  { id: 16, type: "text", content: "Kkkkk", sent: false, showAvatar: true },
-  { id: 17, type: "text", content: "CARALHOOOOO", sent: true },
-  { id: 18, type: "text", content: "Delícia demais", sent: true },
-  { id: 19, type: "text", content: "🔥🔥🔥", sent: true },
-  { id: 20, type: "text", content: "Manda mais sua tbm", sent: false },
-  { id: 21, type: "image", sent: true, isBlurred: true },
-  { id: 22, type: "image", sent: true, isBlurred: true },
-  { id: 23, type: "image", sent: true, isBlurred: true, reaction: "👍" },
-  { id: 24, type: "text", content: "Pedi uma e mando 3", sent: true },
-  { id: 25, type: "text", content: "Por isso que te amo", sent: false, showAvatar: true },
-  { id: 26, type: "text", content: "Vou ter que sair aqui ta perigoso", sent: true },
-  { id: 27, type: "text", content: "****** tá chegando", sent: true },
-  { id: 28, type: "text", content: "Calma que a gente se vê logo", sent: false, showAvatar: true },
-  { id: 29, type: "text", content: "Não aguento mais", sent: true },
-  { id: 30, type: "text", content: "Não manda mais nada blz", sent: true },
+// Conversa 2 - ana***** (Troca de reels/memes entre amigos)
+const anaMessages: Message[] = [
+  // Mensagens antigas com blur (topo)
+  { id: 1, type: "image", sent: false, isBlurred: true },
+  { id: 2, type: "image", sent: false, isBlurred: true },
+  
+  // Reel tinhooficial
+  { id: 3, type: "reel", sent: false, reelUsername: "tinhooficial", reelCaption: "Vou morrer burro e solteiro 🥺🥺🥺", reelImage: reelImages.reel1, showAvatar: true, reaction: "😂" },
+  
+  // Separador 25 DE NOV, 15:22
+  { id: 4, type: "text", content: "", sent: false, dateBreak: "25 DE NOV, 15:22" },
+  
+  // Reel ikarozets
+  { id: 5, type: "reel", sent: false, reelUsername: "ikarozets", reelCaption: "Nunca pensei que um dia ia passar por isso", reelImage: reelImages.reel2, showAvatar: true },
+  
+  // Separador 27 DE NOV, 20:15
+  { id: 6, type: "text", content: "", sent: false, dateBreak: "27 DE NOV, 20:15" },
+  
+  // Reel tettrem com reação
+  { id: 7, type: "reel", sent: false, reelUsername: "tettrem", reelCaption: "", reelImage: reelImages.reel3, showAvatar: true, reaction: "🥲" },
+  
+  // Texto enviado
+  { id: 8, type: "text", content: "Esse achei triste", sent: true },
+  
+  // Reel signodaputaria (enviado)
+  { id: 9, type: "reel", sent: true, reelUsername: "signodaputaria", reelCaption: "Quando ela fica D4 e você consegue ver tudo", reelImage: reelImages.reel4 },
+  
+  // Reel tettrem (casal)
+  { id: 10, type: "reel", sent: false, reelUsername: "tettrem", reelCaption: "", reelImage: reelImages.reel5, showAvatar: true },
+  
+  // Reel safadodesejo (enviado) com reação
+  { id: 11, type: "reel", sent: true, reelUsername: "safadodesejo", reelCaption: "No pêlo e no ritmo 👍", reelImage: reelImages.reel6, reaction: "😂" },
+  
+  // Texto enviado
+  { id: 12, type: "text", content: "kkkkkkkkkkk", sent: true },
+  
+  // Áudio recebido com reação
+  { id: 13, type: "audio", sent: false, audioDuration: "0:23", showAvatar: true, reaction: "😂" },
+  
+  // Separador ONTEM 22:11
+  { id: 14, type: "text", content: "", sent: false, dateBreak: "ONTEM 22:11" },
+  
+  // Reel morimura
+  { id: 15, type: "reel", sent: false, reelUsername: "morimura", reelCaption: "Traduzindo a linguagem das mulheres:", reelImage: reelImages.reel7, showAvatar: true },
+  
+  // Separador 15:48
+  { id: 16, type: "text", content: "", sent: false, dateBreak: "15:48" },
+  
+  // Reel jonas.milgrau (último)
+  { id: 17, type: "reel", sent: false, reelUsername: "jonas.milgrau", reelCaption: "João Pedro está no prime.", reelImage: reelImages.reel8, showAvatar: true },
 ];
 
 // Conversa 3 - Cri*** (Emocional/dramática)
@@ -137,8 +153,8 @@ const criMessages: Message[] = [
   { id: 10, type: "audio", sent: true, audioDuration: "0:05" },
   { id: 11, type: "text", content: "É um desperdício jogar fora tudo isso", sent: false },
   { id: 12, type: "text", content: "Jamais eu me sujeitaria a tudo isso se o sentimento nao tivesse no topo da minha vida.", sent: false, showAvatar: true },
-  { id: 13, type: "reel", sent: false, reelUsername: "relacionamenen...", reelCaption: "O amor é uma escolha diária...", reelImage: reelImages.reel3, isReelBlurred: true },
-  { id: 14, type: "reel", sent: false, reelUsername: "relacionamenen...", reelCaption: "No fundo, eu ainda te amo...", reelImage: reelImages.reel4, showAvatar: true, isReelBlurred: true },
+  { id: 13, type: "reel", sent: false, reelUsername: "relacionamenen...", reelCaption: "O amor é uma escolha diária...", reelImage: reelImages.reel9, isReelBlurred: true },
+  { id: 14, type: "reel", sent: false, reelUsername: "relacionamenen...", reelCaption: "No fundo, eu ainda te amo...", reelImage: reelImages.reel10, showAvatar: true, isReelBlurred: true },
   { id: 15, type: "text", content: "", sent: false, dateBreak: "2 DE DEZ., 15:55" },
   { id: 16, type: "text", content: "Oi boa tarde", sent: false },
   { id: 17, type: "text", content: "Sei que está evitando falar comigo", sent: false },
@@ -192,7 +208,7 @@ const ChatScreen = ({ onBack, chatData }: ChatScreenProps) => {
   const getMessages = () => {
     switch (chatData.type) {
       case "fer": return ferMessages;
-      case "bru": return bruMessages;
+      case "bru": return anaMessages; // ana***** usa o tipo "bru"
       case "cri": return criMessages;
       case "val": return valMessages;
       case "hop": return hopMessages;
