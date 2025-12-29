@@ -56,21 +56,14 @@ const IndexContent = () => {
       setProfileData(profile);
       setSimilarAccounts(similarAccounts);
       setPosts(posts);
-      // Don't change screen here - LoadingScreen will call onComplete
+      // Navigate to confirm screen once data is loaded
+      setScreen("confirm");
     } catch (error) {
       console.error("Error fetching profile:", error);
       setScreen("landing");
     } finally {
       setIsLoadingProfile(false);
       setIsLoading(false);
-    }
-  };
-
-  const handleLoadingComplete = () => {
-    if (profileData) {
-      setScreen("confirm");
-    } else {
-      setScreen("landing");
     }
   };
 
@@ -125,10 +118,7 @@ const IndexContent = () => {
       )}
 
       {screen === "loading" && (
-        <LoadingScreen 
-          username={targetUsername} 
-          onComplete={handleLoadingComplete}
-        />
+        <LoadingScreen username={targetUsername} />
       )}
 
       {screen === "confirm" && profileData && (

@@ -95,4 +95,20 @@
   .message-received {
     background-color: hsl(var(--message-received));
   }
+
+  @keyframes loading-bar {
+    0% {
+      width: 0%;
+    }
+    50% {
+      width: 70%;
+    }
+    100% {
+      width: 95%;
+    }
+  }
+
+  .animate-loading-bar {
+    animation: loading-bar 3s ease-out infinite;
+  }
 }
