@@ -14,6 +14,7 @@ interface ChatBubbleProps {
   reelCaption?: string;
   reaction?: string;
   isLocked?: boolean;
+  isBlurredAvatar?: boolean;
 }
 
 // Generate random waveform bars
@@ -144,23 +145,32 @@ const ChatBubble = ({
   reelUsername,
   reelCaption,
   reaction,
-  isLocked
+  isLocked,
+  isBlurredAvatar = false
 }: ChatBubbleProps) => {
+  
+  // Componente de avatar com suporte a blur
+  const AvatarImage = ({ className = "w-7 h-7" }: { className?: string }) => (
+    <div className="relative flex-shrink-0">
+      <img 
+        src={avatar} 
+        alt="" 
+        className={`${className} rounded-full object-cover ${isBlurredAvatar ? 'blur-[4px]' : ''}`}
+        referrerPolicy="no-referrer"
+        onError={(e) => {
+          e.currentTarget.src = '/placeholder.svg';
+        }}
+      />
+      {isBlurredAvatar && (
+        <div className="absolute inset-0 rounded-full bg-black/10" />
+      )}
+    </div>
+  );
   // Audio message
   if (isAudio) {
     return (
       <div className={`flex ${sent ? "justify-end" : "justify-start"} items-end gap-2`}>
-        {!sent && showAvatar && avatar && (
-          <img 
-            src={avatar} 
-            alt="" 
-            className="w-7 h-7 rounded-full object-cover flex-shrink-0"
-            referrerPolicy="no-referrer"
-            onError={(e) => {
-              e.currentTarget.src = '/placeholder.svg';
-            }}
-          />
-        )}
+        {!sent && showAvatar && avatar && <AvatarImage />}
         {!sent && !showAvatar && <div className="w-7" />}
         <AudioMessage sent={sent} duration={audioDuration} isLocked={isLocked} />
       </div>
@@ -171,17 +181,7 @@ const ChatBubble = ({
   if (isReel) {
     return (
       <div className={`flex ${sent ? "justify-end" : "justify-start"} items-end gap-2`}>
-        {!sent && showAvatar && avatar && (
-          <img 
-            src={avatar} 
-            alt="" 
-            className="w-7 h-7 rounded-full object-cover flex-shrink-0"
-            referrerPolicy="no-referrer"
-            onError={(e) => {
-              e.currentTarget.src = '/placeholder.svg';
-            }}
-          />
-        )}
+        {!sent && showAvatar && avatar && <AvatarImage />}
         {!sent && !showAvatar && <div className="w-7" />}
         <ReelMessage 
           sent={sent} 
@@ -197,17 +197,7 @@ const ChatBubble = ({
   if (isImage) {
     return (
       <div className={`flex ${sent ? "justify-end" : "justify-start"} items-end gap-2`}>
-        {!sent && showAvatar && avatar && (
-          <img 
-            src={avatar} 
-            alt="" 
-            className="w-7 h-7 rounded-full object-cover flex-shrink-0"
-            referrerPolicy="no-referrer"
-            onError={(e) => {
-              e.currentTarget.src = '/placeholder.svg';
-            }}
-          />
-        )}
+        {!sent && showAvatar && avatar && <AvatarImage />}
         {!sent && !showAvatar && <div className="w-7" />}
         <div
           className={`w-[200px] h-[120px] rounded-2xl ${
@@ -225,17 +215,7 @@ const ChatBubble = ({
   // Text message
   return (
     <div className={`flex ${sent ? "justify-end" : "justify-start"} items-end gap-2`}>
-      {!sent && showAvatar && avatar && (
-        <img 
-          src={avatar} 
-          alt="" 
-          className="w-7 h-7 rounded-full object-cover flex-shrink-0"
-          referrerPolicy="no-referrer"
-          onError={(e) => {
-            e.currentTarget.src = '/placeholder.svg';
-          }}
-        />
-      )}
+      {!sent && showAvatar && avatar && <AvatarImage />}
       {!sent && !showAvatar && <div className="w-7" />}
       <div className="relative">
         <div

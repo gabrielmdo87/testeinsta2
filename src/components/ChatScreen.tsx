@@ -9,6 +9,7 @@ interface ChatScreenProps {
     username: string;
     status: string;
     type: "fer" | "hop" | "bru";
+    isAmbiguous?: boolean;
   };
 }
 
@@ -103,6 +104,7 @@ const ChatScreen = ({ onBack, chatData }: ChatScreenProps) => {
         username={chatData.username}
         status={chatData.status}
         onBack={onBack}
+        isBlurredAvatar={chatData.isAmbiguous}
       />
 
       <div className="flex-1 overflow-y-auto px-3 py-4 space-y-2 pb-24">
@@ -141,6 +143,7 @@ const ChatScreen = ({ onBack, chatData }: ChatScreenProps) => {
               reelCaption={msg.reelCaption}
               reaction={msg.reaction}
               isLocked={msg.isLocked}
+              isBlurredAvatar={chatData.isAmbiguous}
             />
           );
         })}
