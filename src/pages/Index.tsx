@@ -188,7 +188,7 @@ const IndexContent = () => {
 
       {(screen === "feed" || screen === "direct") && (
         <div className="fixed bottom-12 left-0 right-0 z-40 max-w-md mx-auto">
-          <VIPBanner onVIPClick={handleVIPClick} />
+          <VIPBanner onVIPClick={handleGoToCTA} />
         </div>
       )}
 
