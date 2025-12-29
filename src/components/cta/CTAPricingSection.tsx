@@ -1,12 +1,15 @@
 import { Check, Zap, Shield, Clock } from "lucide-react";
 import { useAppContext } from "@/contexts/AppContext";
+import instaespiaoLogo from "@/assets/instaespiao-logo.webp";
+
+const CHECKOUT_URL = "https://go.perfectpay.com.br/PPU38CQ5BAT";
 
 const CTAPricingSection = () => {
   const { profileData } = useAppContext();
   const name = profileData?.fullName?.split(" ")[0] || "Usuário";
 
   const tags = [
-    { icon: Zap, text: "∞ imediato" },
+    { icon: Zap, text: "Acesso imediato" },
     { icon: Shield, text: "Pagamento seguro" },
     { icon: Clock, text: "30 dias de garantia" },
   ];
@@ -19,14 +22,20 @@ const CTAPricingSection = () => {
     "2 bônus surpresa avaliados em R$120,00",
   ];
 
+  const handleCheckout = () => {
+    window.open(CHECKOUT_URL, "_blank");
+  };
+
   return (
     <div className="mx-4 mt-8">
       <div className="bg-gradient-to-b from-secondary to-background border border-border/50 rounded-3xl p-6 text-center">
         {/* Logo */}
         <div className="flex justify-center mb-4">
-          <div className="bg-purple-500/20 px-4 py-2 rounded-xl">
-            <span className="text-purple-400 font-bold text-lg tracking-wider">STALKEA.AI</span>
-          </div>
+          <img 
+            src={instaespiaoLogo} 
+            alt="InstaEspião" 
+            className="w-16 h-16 object-contain"
+          />
         </div>
         
         {/* Heading */}
@@ -66,7 +75,10 @@ const CTAPricingSection = () => {
         </div>
         
         {/* CTA Button */}
-        <button className="w-full bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 text-white font-bold py-4 px-6 rounded-xl transition-all shadow-lg shadow-purple-500/30">
+        <button 
+          onClick={handleCheckout}
+          className="w-full bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 text-white font-bold py-4 px-6 rounded-xl transition-all shadow-lg shadow-purple-500/30"
+        >
           Acessar tudo agora mesmo
         </button>
         

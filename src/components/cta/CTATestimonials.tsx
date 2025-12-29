@@ -48,7 +48,7 @@ const CTATestimonials = () => {
   return (
     <div className="mx-4 mt-8">
       <h2 className="text-foreground font-bold text-lg mb-1 text-center">
-        Veja o que falam as pessoas que usam o Stalkea.ai
+        Veja o que falam as pessoas que usam o InstaEspião
       </h2>
       
       <div className="mt-4 bg-secondary rounded-2xl p-4">

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, forwardRef } from "react";
-import { Search, Send, Shield, Key, Sparkles, Loader2 } from "lucide-react";
+import { Send, Shield, Key, Sparkles, Loader2 } from "lucide-react";
 import MatrixBackground from "./MatrixBackground";
+import instaespiaoLogo from "@/assets/instaespiao-logo.webp";
 
 interface LandingScreenProps {
   onSubmit: (username: string) => void;
@@ -39,12 +40,11 @@ const LandingScreen = forwardRef<HTMLDivElement, LandingScreenProps>(
         <div className="relative z-10 w-full max-w-md flex flex-col items-center">
           {/* Logo */}
           <div className="flex items-center gap-2 mb-8 mt-8">
-            <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
-              <Search className="w-5 h-5 text-accent-foreground" />
-            </div>
-            <h1 className="text-2xl font-bold text-foreground tracking-tight">
-              STALKEA<span className="text-accent">.AI</span>
-            </h1>
+            <img 
+              src={instaespiaoLogo} 
+              alt="InstaEspião" 
+              className="w-16 h-16 object-contain"
+            />
           </div>
 
           {/* Main Title */}

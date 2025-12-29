@@ -54,14 +54,14 @@ const CTADirectSection = () => {
           {/* Received message */}
           <div className="flex justify-start">
             <div className="bg-muted rounded-2xl rounded-bl-md px-4 py-2 max-w-[80%]">
-              <p className="text-foreground text-sm">Já entrou no grupo VIP?</p>
+              <p className="text-foreground text-sm">Já pegou o acesso VIP?</p>
             </div>
           </div>
           
           {/* Sent message */}
           <div className="flex justify-end">
             <div className="bg-purple-500 rounded-2xl rounded-br-md px-4 py-2 max-w-[80%]">
-              <p className="text-white text-sm">Não ainda, é bom mesmo?</p>
+              <p className="text-white text-sm">Não ainda, funciona mesmo?</p>
             </div>
           </div>
           
@@ -75,7 +75,7 @@ const CTADirectSection = () => {
           {/* Sent message - CTA */}
           <div className="flex justify-end">
             <div className="bg-purple-500 rounded-2xl rounded-br-md px-4 py-2 max-w-[80%]">
-              <p className="text-white text-sm">Boraa, vou comprar meu acesso VIP 🔥</p>
+              <p className="text-white text-sm">Boraa, vou garantir meu acesso VIP 🔥</p>
             </div>
           </div>
         </div>
