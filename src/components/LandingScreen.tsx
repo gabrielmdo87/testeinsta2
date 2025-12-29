@@ -49,12 +49,12 @@ const LandingScreen = forwardRef<HTMLDivElement, LandingScreenProps>(
 
           {/* Main Title */}
           <h2 className="text-2xl font-bold text-foreground text-center mb-3 leading-tight">
-            O que seu <span className="text-accent">Cônjuge</span> faz quando está no Instagram?
+            Veja com quem seu parceiro conversa quando você não está perto.
           </h2>
 
           {/* Subtitle */}
           <p className="text-muted-foreground text-center text-sm mb-8">
-            Descubra com quem ele(a) conversa quando você não está perto.
+            Acesse o histórico completo: Mensagens apagadas, fotos de visualização única, áudios secretos e tudo o que ele esconde no Direct.
           </p>
 
           {/* Input Container */}
