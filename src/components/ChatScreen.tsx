@@ -161,29 +161,54 @@ const criMessages: Message[] = [
   { id: 18, type: "text", content: "Mais hi faz um mês do nosso", sent: false, showAvatar: true },
 ];
 
-// Conversa 4 - Val*** (Áudios dramáticos)
+// Conversa 4 - Ana****** (Áudios + conversa sobre amante)
 const valMessages: Message[] = [
-  // Mensagens antigas com blur
-  { id: 1, type: "audio", sent: true, audioDuration: "0:13", isBlurred: true },
-  { id: 2, type: "audio", sent: true, audioDuration: "0:05", isBlurred: true },
-  { id: 3, type: "audio", sent: false, audioDuration: "0:20", isBlurred: true },
-  { id: 4, type: "text", content: "Tá bom", sent: false, isBlurred: true },
-  { id: 5, type: "text", content: "", sent: false, dateBreak: "SAB., 09:31" },
-  // Mensagens liberadas
-  { id: 6, type: "text", content: "Tranquilo, vai lá", sent: true },
+  // Mensagens antigas com blur (imagem/vídeo no topo)
+  { id: 1, type: "image", sent: true, isBlurred: true },
+  
+  // Áudios enviados
+  { id: 2, type: "audio", sent: true, audioDuration: "0:13" },
+  { id: 3, type: "audio", sent: true, audioDuration: "0:05" },
+  
+  // Áudio recebido
+  { id: 4, type: "audio", sent: false, audioDuration: "0:20", showAvatar: true },
+  
+  // Texto enviado
+  { id: 5, type: "text", content: "Tranquilo, vai lá", sent: true },
+  
+  // Separador SAB, 09:31
+  { id: 6, type: "text", content: "", sent: false, dateBreak: "SAB, 09:31" },
+  
+  // Textos recebidos
   { id: 7, type: "text", content: "Bom dia bb", sent: false },
   { id: 8, type: "text", content: "Iai melhorou??", sent: false, showAvatar: true },
+  
+  // Áudio longo enviado
   { id: 9, type: "audio", sent: true, audioDuration: "4:25" },
+  
+  // Textos enviados
   { id: 10, type: "text", content: "Perdão pelo desafo", sent: true },
   { id: 11, type: "text", content: "Mas n sei o que eu faço", sent: true },
+  
+  // Texto recebido
   { id: 12, type: "text", content: "Imagina", sent: false },
+  
+  // Áudios recebidos
   { id: 13, type: "audio", sent: false, audioDuration: "0:41" },
-  { id: 14, type: "audio", sent: true, audioDuration: "0:12" },
-  { id: 15, type: "audio", sent: false, audioDuration: "0:29", showAvatar: true },
-  { id: 16, type: "text", content: "Simm, vc sabe", sent: false },
-  { id: 17, type: "text", content: "No rolo que eu tive com ******", sent: false },
-  { id: 18, type: "text", content: "****** era assim tbm", sent: false },
-  { id: 19, type: "text", content: "Se apaixonar por amante é foda né", sent: false, showAvatar: true },
+  { id: 14, type: "audio", sent: false, audioDuration: "0:12", showAvatar: true },
+  
+  // Textos recebidos
+  { id: 15, type: "text", content: "Simm, vc sabe", sent: false },
+  { id: 16, type: "text", content: "No rolo que eu tive com ██████ era assim tbm", sent: false },
+  { id: 17, type: "text", content: "Se apaixonar por amante é foda te entendo, ██████████", sent: false, showAvatar: true },
+  
+  // Áudios enviados
+  { id: 18, type: "audio", sent: true, audioDuration: "0:04" },
+  { id: 19, type: "audio", sent: true, audioDuration: "0:11" },
+  
+  // Textos recebidos
+  { id: 20, type: "text", content: "kkkkkkk", sent: false },
+  { id: 21, type: "text", content: "Blz depois a gente se fala", sent: false, showAvatar: true },
 ];
 
 // Conversa 5 - HOP*** (Normal - só reels)
