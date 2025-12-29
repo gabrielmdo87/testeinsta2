@@ -76,7 +76,8 @@ const IndexContent = () => {
   };
 
   const handleChatOpen = (chatType: "fer" | "hop" | "bru" | "cri" | "val", index: number = 0) => {
-    const isAmbiguous = chatType !== "hop";
+    // Todas as conversas agora são ambíguas
+    const isAmbiguous = true;
     const account = similarAccounts[index];
     
     const ambiguousNames: Record<string, string> = {
@@ -84,6 +85,7 @@ const IndexContent = () => {
       bru: "ana*****",
       cri: "And*****",
       val: "Ana******",
+      hop: "Bru****",
     };
     
     const ambiguousStatus: Record<string, string> = {

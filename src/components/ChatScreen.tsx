@@ -254,22 +254,49 @@ const valMessages: Message[] = [
   { id: 21, type: "text", content: "Blz depois a gente se fala", sent: false, showAvatar: true },
 ];
 
-// Conversa 5 - HOP*** (Normal - só reels)
+// Conversa 5 - Bru**** (Emocional/dramática com reels de relacionamento)
 const hopMessages: Message[] = [
-  { id: 1, type: "reel", sent: false, reelUsername: "jondouglas", reelCaption: "Quando o chefe fala que vai ter reunião às 17h de sexta 😂", reelImage: reelImages.reel1, showAvatar: true },
-  { id: 2, type: "text", content: "Mano olha esse reel kkkkk", sent: false, showAvatar: true },
-  { id: 3, type: "text", content: "Kkkkkkkkk muito bom", sent: true },
-  { id: 4, type: "reel", sent: true, reelUsername: "viraisdobrasil", reelCaption: "Todo mundo fazendo trend e eu aqui...", reelImage: reelImages.reel2 },
-  { id: 5, type: "text", content: "Esse achei triste", sent: true },
-  { id: 6, type: "reel", sent: false, reelUsername: "gamesbrasil", reelCaption: "POV: você esperando o GTA 6 🎮", reelImage: reelImages.reel5, showAvatar: true },
-  { id: 7, type: "text", content: "Kkkkk real demais", sent: true },
-  { id: 8, type: "reel", sent: true, reelUsername: "humordiario", reelCaption: "Segundou com força total 💪", reelImage: reelImages.reel6 },
-  { id: 9, type: "reel", sent: false, reelUsername: "memesbrasileiros", reelCaption: "Quando alguém pergunta se estou bem...", reelImage: reelImages.reel7, showAvatar: true },
-  { id: 10, type: "text", content: "Esse é vc kkkkk", sent: false },
-  { id: 11, type: "reel", sent: true, reelUsername: "risogarantido", reelCaption: "Eu fingindo que entendi a explicação", reelImage: reelImages.reel8 },
-  { id: 12, type: "reel", sent: false, reelUsername: "comédiabr", reelCaption: "Acordar cedo de fds vs semana", reelImage: reelImages.reel9, showAvatar: true },
-  { id: 13, type: "reel", sent: true, reelUsername: "zoeirabrasil", reelCaption: "Minha cara quando falam que é rápido", reelImage: reelImages.reel10 },
-  { id: 14, type: "audio", sent: false, audioDuration: "0:23", isLocked: true, showAvatar: true },
+  // Mensagens antigas com blur (topo)
+  { id: 1, type: "image", sent: false, isBlurred: true },
+  { id: 2, type: "text", content: "...", sent: false, isBlurred: true },
+  
+  // Textos enviados
+  { id: 3, type: "text", content: "De tdas as coisas que fiz na vida e arrependi, se envolver com vc esta no topo delas", sent: true },
+  { id: 4, type: "text", content: "E pensar que quase te assumi", sent: true },
+  
+  // Textos recebidos
+  { id: 5, type: "text", content: "Por favor", sent: false },
+  { id: 6, type: "text", content: "Vamos ser felizes a gente se ama", sent: false },
+  { id: 7, type: "text", content: "É um desperdício jogar fora tudo isso", sent: false },
+  { id: 8, type: "text", content: "Jamais eu me se sujeitaria a tudo isso se o sentimento nao tivesse no topo da minha vida.", sent: false, showAvatar: true },
+  
+  // Separador 22 DE OUT, 14:33
+  { id: 9, type: "text", content: "", sent: false, dateBreak: "22 DE OUT, 14:33" },
+  
+  // Reels de relacionamento
+  { id: 10, type: "reel", sent: false, reelUsername: "relacionamenen...", reelCaption: "O amor é uma escolha diária de fazer dar certo ❤️", reelImage: reelImages.reel9 },
+  { id: 11, type: "reel", sent: false, reelUsername: "relacionamenen...", reelCaption: "No fundo, eu ainda te amo...", reelImage: reelImages.reel10, showAvatar: true },
+  
+  // Separador 2 DE DEZ, 16:39
+  { id: 12, type: "text", content: "", sent: false, dateBreak: "2 DE DEZ, 16:39" },
+  
+  // Textos recebidos
+  { id: 13, type: "text", content: "Oi boa tarde", sent: false },
+  { id: 14, type: "text", content: "Sei que esta evitando falar comigo", sent: false },
+  { id: 15, type: "text", content: "Mais hj faz um mês do nosso último beijo", sent: false },
+  { id: 16, type: "text", content: "Dia 31 quarta feira devo ir pra Braço do Norte de novo", sent: false, showAvatar: true },
+  
+  // Reel
+  { id: 17, type: "reel", sent: false, reelUsername: "sentimentos_div...", reelCaption: "apesar de tudo que ele deixou... não consigo odia-lo pq ele foi o único que eu amei com a alma.", reelImage: reelImages.reel7, showAvatar: true },
+  
+  // Separador ONTEM, 18:21
+  { id: 18, type: "text", content: "", sent: false, dateBreak: "ONTEM, 18:21" },
+  
+  // Textos recebidos (novas mensagens)
+  { id: 19, type: "text", content: "???", sent: false },
+  { id: 20, type: "text", content: "Bom dia.", sent: false },
+  { id: 21, type: "text", content: "Porque não me responde mais?????", sent: false },
+  { id: 22, type: "text", content: "Estou na cidade e queria te ver", sent: false, showAvatar: true },
 ];
 
 const ChatScreen = ({ onBack, chatData }: ChatScreenProps) => {
