@@ -46,7 +46,7 @@ const MessageList = ({ onChatOpen, onLockedClick }: MessageListProps) => {
           onClick={onLockedClick}
           className="text-[#0095f6] text-sm font-semibold"
         >
-          Solicitações
+          Pedidos ({lockedMessages.length})
         </button>
       </div>
 
