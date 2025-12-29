@@ -1,33 +1,37 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
-import avatarUser2 from "@/assets/avatar-user2.jpg";
-import avatarUser3 from "@/assets/avatar-user3.jpg";
-import avatarStory5 from "@/assets/avatar-story5.jpg";
-import avatarStory6 from "@/assets/avatar-story6.jpg";
+import testimonialMaria from "@/assets/testimonial-maria.webp";
+import testimonialLuis from "@/assets/testimonial-luis.webp";
+import testimonialGustavo from "@/assets/testimonial-gustavo.webp";
+import testimonialElisa from "@/assets/testimonial-elisa.jpg";
 
 const testimonials = [
   {
-    name: "Maria S.",
-    avatar: avatarUser2,
-    text: "Descobri tudo que precisava saber. Incrível como funciona rápido!",
+    name: "Maria",
+    location: "São Paulo, SP",
+    avatar: testimonialMaria,
+    text: "gente eu tava desconfiada faz tempo e finalmente consegui ver tudo... agora sei oq tava acontecendo por trás. valeu muito a pena",
     rating: 5,
   },
   {
-    name: "João P.",
-    avatar: avatarUser3,
-    text: "Ferramenta muito útil, consegui ver as conversas que suspeitava.",
+    name: "Luis",
+    location: "Rio de Janeiro, RJ",
+    avatar: testimonialLuis,
+    text: "cara, funcionou em menos de 5 minutos. vi as conversas que eu precisava ver e agora to mais tranquilo. recomendo demais",
     rating: 5,
   },
   {
-    name: "Ana L.",
-    avatar: avatarStory5,
-    text: "Valeu cada centavo. Agora sei a verdade sobre meu relacionamento.",
+    name: "Gustavo",
+    location: "Belo Horizonte, MG",
+    avatar: testimonialGustavo,
+    text: "eu tinha certeza que tinha algo errado e com isso aqui consegui confirmar. dói saber a verdade mas é melhor do que ficar no escuro né",
     rating: 5,
   },
   {
-    name: "Carlos M.",
-    avatar: avatarStory6,
-    text: "Funcionou perfeitamente, recomendo a todos!",
+    name: "Elisa",
+    location: "Curitiba, PR",
+    avatar: testimonialElisa,
+    text: "no começo achei que era golpe kkkk mas resolvi testar e funcionou real. consegui ver stories e tudo mais. super indico!!",
     rating: 5,
   },
 ];
@@ -60,6 +64,7 @@ const CTATestimonials = () => {
           />
           <div>
             <span className="font-semibold text-foreground">{current.name}</span>
+            <p className="text-xs text-muted-foreground">{current.location}</p>
             <div className="flex gap-0.5">
               {[...Array(current.rating)].map((_, i) => (
                 <Star key={i} className="w-3 h-3 text-yellow-500 fill-yellow-500" />
