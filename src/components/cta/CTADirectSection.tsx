@@ -12,12 +12,12 @@ const CTADirectSection = () => {
         <div className="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center">
           <MessageCircle className="w-3.5 h-3.5 text-orange-500" />
         </div>
-        <h2 className="text-foreground font-bold text-lg">
-          Mensagens do Direct
+      <h2 className="text-foreground font-bold text-lg">
+          Veja com quem seu parceiro conversa quando você não está perto.
         </h2>
       </div>
       <p className="text-muted-foreground text-sm mb-4">
-        Veja literalmente todas as mensagens de {name}, incluindo mensagens temporárias
+        Acesse o histórico completo: Mensagens apagadas, fotos de visualização única, áudios secretos e tudo o que ele esconde no Direct.
       </p>
       
       {/* Chat preview card */}
