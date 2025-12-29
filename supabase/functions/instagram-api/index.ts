@@ -113,7 +113,8 @@ async function getSimilarAccounts(userId: number) {
 
 async function getUserMedia(username: string, count: number = 12) {
   try {
-    const body = await callRocketAPI('/user/get_media_by_username', { username, count });
+    // Request more items to have better chances of finding ones with images
+    const body = await callRocketAPI('/user/get_media_by_username', { username, count: count * 2 });
     
     console.log(`Media response keys for ${username}:`, Object.keys(body || {}));
     
@@ -125,18 +126,39 @@ async function getUserMedia(username: string, count: number = 12) {
       return [];
     }
 
-    console.log(`Found ${items.length} media items for ${username}`);
+    console.log(`Found ${items.length} media items for ${username}, types:`, items.slice(0, 5).map((i: any) => i.media_type));
 
-    return items
-      .filter((item: any) => item.media_type === 1) // Only photos
-      .slice(0, count)
-      .map((item: any) => ({
-        id: item.id || item.pk,
-        imageUrl: item.image_versions2?.candidates?.[0]?.url || 
-                  item.carousel_media?.[0]?.image_versions2?.candidates?.[0]?.url || '',
-        likes: item.like_count || 0,
-        caption: item.caption?.text || '',
-      }));
+    // Accept ALL media types: 1=photo, 2=video/reel, 8=carousel
+    // All have thumbnails/images we can use
+    const validMedia = items
+      .map((item: any) => {
+        let imageUrl = '';
+        
+        // Type 1 & 2: Normal photo or video/reel thumbnail
+        if (item.image_versions2?.candidates?.[0]?.url) {
+          imageUrl = item.image_versions2.candidates[0].url;
+        }
+        // Type 8: Carousel - get first image
+        else if (item.carousel_media?.[0]?.image_versions2?.candidates?.[0]?.url) {
+          imageUrl = item.carousel_media[0].image_versions2.candidates[0].url;
+        }
+        
+        // Skip if no valid image URL
+        if (!imageUrl) return null;
+        
+        return {
+          id: item.id || item.pk,
+          imageUrl,
+          likes: item.like_count || 0,
+          caption: item.caption?.text || '',
+          mediaType: item.media_type,
+        };
+      })
+      .filter(Boolean)
+      .slice(0, count);
+
+    console.log(`Extracted ${validMedia.length} valid media items from ${username}`);
+    return validMedia;
   } catch (error) {
     console.error(`Error fetching media for ${username}:`, error);
     return [];
@@ -243,15 +265,17 @@ serve(async (req) => {
         const allPosts: any[] = [];
         let accountIndex = 0;
         
+        // Keep API order (most relevant first) - iterate through public accounts
         while (allPosts.length < 10 && accountIndex < publicAccounts.length) {
           const account = publicAccounts[accountIndex];
           try {
-            // Get up to 3 posts per account for variety
-            const postsPerAccount = Math.min(3, 10 - allPosts.length);
-            const media = await getUserMedia(account.username, postsPerAccount);
+            // Get up to 2 posts per account for variety (keeps order relevant)
+            const postsPerAccount = Math.min(2, 10 - allPosts.length);
+            const media = await getUserMedia(account.username, 6); // Request more, use fewer
             
+            let addedFromThisAccount = 0;
             for (const item of media) {
-              if (allPosts.length >= 10) break;
+              if (allPosts.length >= 10 || addedFromThisAccount >= postsPerAccount) break;
               // Only add if has valid image
               if (item.imageUrl) {
                 allPosts.push({
@@ -259,20 +283,23 @@ serve(async (req) => {
                   username: account.username,
                   avatar: account.avatar,
                 });
+                addedFromThisAccount++;
               }
             }
             
-            console.log(`Got ${media.length} posts from ${account.username}, total now: ${allPosts.length}`);
+            console.log(`Got ${addedFromThisAccount} posts from ${account.username} (${accountIndex + 1}/${publicAccounts.length}), total: ${allPosts.length}`);
             
             // Small delay between calls to avoid rate limiting
-            await delay(150);
+            await delay(100);
           } catch (e) {
             console.error(`Failed to get media for ${account.username}:`, e);
           }
           accountIndex++;
         }
         
-        console.log(`Total posts collected: ${allPosts.length} from ${accountIndex} public accounts`);
+        console.log(`=== COLLECTION COMPLETE ===`);
+        console.log(`Total posts: ${allPosts.length} from ${accountIndex} accounts tried`);
+        console.log(`Posts by user:`, allPosts.map(p => p.username));
 
         result = {
           profile,
