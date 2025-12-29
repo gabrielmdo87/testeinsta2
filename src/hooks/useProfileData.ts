@@ -147,14 +147,55 @@ export const useProfileData = () => {
         caption: post.caption || "",
       }));
 
-      // Use only real posts from API - no fallbacks
-      // Keep original API order (most relevant profiles first)
-      console.log(`Received ${posts.length} real posts from API`);
+      // Filter only PUBLIC accounts for generating posts
+      const publicAccounts = similarAccounts.filter(acc => !acc.isPrivate);
+      console.log(`Found ${publicAccounts.length} public accounts for feed posts`);
+
+      // Generate posts from PUBLIC similar accounts data (mock content) - one per account, no repeats
+      const mockCaptions = [
+        "Perigo 🔥", "Pôr do sol perfeito 🌅", "Night vibes 🌃", "Jantar especial ✨",
+        "Momentos especiais 💖", "Squad reunido 🔥", "Vibes de verão ☀️", "Curtindo a vida 🍹",
+        "Paz interior 🧘‍♀️", "Essência 🌸"
+      ];
+      const mockLikes = [1243, 856, 2104, 543, 1876, 432, 987, 654, 1543, 765];
+      const postImages = [postImage, post2, post3, post4, postImage, post2, post3, post4, postImage, post2];
+
+      // If we have actual posts from API, use them. Otherwise create posts from PUBLIC accounts only
+      let generatedPosts: PostData[] = posts.length > 0 
+        ? posts 
+        : publicAccounts.slice(0, 10).map((acc, index) => ({
+            id: `post-${acc.id}`,
+            username: acc.username,
+            censoredName: censorName(acc.username),
+            avatar: acc.avatar,
+            imageUrl: postImages[index % postImages.length],
+            likes: mockLikes[index % mockLikes.length],
+            caption: mockCaptions[index % mockCaptions.length],
+          }));
+
+      // Se ainda não temos 10 posts, complementar com fallbackPosts
+      if (generatedPosts.length < 10) {
+        const neededPosts = 10 - generatedPosts.length;
+        console.log(`Only ${generatedPosts.length} posts from API, adding ${neededPosts} fallback posts`);
+        const additionalPosts = fallbackPosts
+          .slice(0, neededPosts)
+          .map((post, index) => ({
+            ...post,
+            id: `fallback-${generatedPosts.length + index}`,
+          }));
+        generatedPosts = [...generatedPosts, ...additionalPosts];
+      }
+
+      // Ordenar similarAccounts colocando públicos primeiro para melhor experiência
+      const sortedSimilarAccounts = [...similarAccounts].sort((a, b) => {
+        if (a.isPrivate === b.isPrivate) return 0;
+        return a.isPrivate ? 1 : -1;
+      });
 
       return {
         profile,
-        similarAccounts, // Keep original API order
-        posts, // Only real posts, no fallbacks
+        similarAccounts: sortedSimilarAccounts,
+        posts: generatedPosts,
       };
 
     } catch (error) {
