@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { Plus, Lock } from "lucide-react";
 import avatarMain from "@/assets/avatar-main.jpg";
 
 interface StoryAvatarProps {
@@ -7,9 +7,10 @@ interface StoryAvatarProps {
   isOwn?: boolean;
   hasStory?: boolean;
   isCloseFriend?: boolean;
+  isBlocked?: boolean;
 }
 
-const StoryAvatar = ({ image, name, isOwn = false, hasStory = true, isCloseFriend = false }: StoryAvatarProps) => {
+const StoryAvatar = ({ image, name, isOwn = false, hasStory = true, isCloseFriend = false, isBlocked = false }: StoryAvatarProps) => {
   const ringClass = isCloseFriend ? "story-ring-close-friends" : "story-ring";
 
   return (
@@ -21,13 +22,20 @@ const StoryAvatar = ({ image, name, isOwn = false, hasStory = true, isCloseFrien
               <img
                 src={image}
                 alt={name}
-                className="w-[68px] h-[68px] rounded-full object-cover pointer-events-none"
+                className={`w-[68px] h-[68px] rounded-full object-cover pointer-events-none ${isBlocked ? 'blur-[6px]' : ''}`}
                 draggable={false}
                 referrerPolicy="no-referrer"
                 onError={(e) => {
                   e.currentTarget.src = avatarMain;
                 }}
               />
+              {isBlocked && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-black/50 flex items-center justify-center">
+                    <Lock className="w-4 h-4 text-white" />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         ) : (
