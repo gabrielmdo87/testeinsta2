@@ -15,11 +15,10 @@ interface MessageItemProps {
 const MessageItem = ({ avatar, username, message, time, unread = false, isLocked = false, isBlurredAvatar = false, onClick }: MessageItemProps) => {
   return (
     <button
-      onClick={isLocked ? undefined : onClick}
-      disabled={isLocked}
+      onClick={onClick}
       className={`flex items-center justify-between px-4 py-3 w-full text-left transition-colors ${
         isLocked 
-          ? 'opacity-50 cursor-not-allowed' 
+          ? 'opacity-60 hover:bg-secondary/20' 
           : 'hover:bg-secondary/30'
       }`}
     >
