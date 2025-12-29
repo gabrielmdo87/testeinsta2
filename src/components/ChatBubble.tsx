@@ -123,6 +123,8 @@ const VideoCallMessage = ({ duration, isMissed, isEnded }: { duration?: string; 
   );
 };
 
+import reelsLogo from '@/assets/reels-logo.png';
+
 const ReelMessage = ({ 
   sent, 
   username, 
@@ -170,28 +172,13 @@ const ReelMessage = ({
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-muted/80 to-muted/60" />
           )}
-          {/* Play button overlay */}
+          {/* White play button in center */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-14 h-14 rounded-full bg-black/50 flex items-center justify-center backdrop-blur-sm">
-              <Play className="w-7 h-7 text-white ml-1" fill="white" />
-            </div>
+            <Play className="w-16 h-16 text-white drop-shadow-lg" fill="white" />
           </div>
-          {/* Side buttons */}
-          <div className="absolute right-2 bottom-2 flex flex-col gap-2">
-            <button className="w-9 h-9 rounded-full bg-black/40 flex items-center justify-center backdrop-blur-sm">
-              <Send className="w-4 h-4 text-white" />
-            </button>
-            <button className="w-9 h-9 rounded-full bg-black/40 flex items-center justify-center backdrop-blur-sm">
-              <Bookmark className="w-4 h-4 text-white" />
-            </button>
-          </div>
-        </div>
-        
-        {/* Reel Footer */}
-        <div className="flex items-center justify-between px-3 py-2 bg-black/20">
-          <div className="flex items-center gap-2">
-            <Play className="w-4 h-4 text-foreground" fill="currentColor" />
-            <span className="text-xs text-muted-foreground">Reels</span>
+          {/* Reels logo in bottom left */}
+          <div className="absolute left-2 bottom-2">
+            <img src={reelsLogo} alt="Reels" className="w-6 h-6" />
           </div>
         </div>
       </div>
