@@ -31,7 +31,7 @@ const CTAFooter = () => {
       
       {/* Copyright */}
       <p className="text-center text-muted-foreground text-xs mt-6">
-        © 2024 Stalkea.ai - Todos os direitos reservados
+        © 2024 InstaEspião - Todos os direitos reservados
       </p>
     </div>
   );
