@@ -8,10 +8,11 @@ interface MessageItemProps {
   time: string;
   unread?: boolean;
   isLocked?: boolean;
+  isBlurredAvatar?: boolean;
   onClick?: () => void;
 }
 
-const MessageItem = ({ avatar, username, message, time, unread = false, isLocked = false, onClick }: MessageItemProps) => {
+const MessageItem = ({ avatar, username, message, time, unread = false, isLocked = false, isBlurredAvatar = false, onClick }: MessageItemProps) => {
   return (
     <button
       onClick={isLocked ? undefined : onClick}
@@ -23,15 +24,20 @@ const MessageItem = ({ avatar, username, message, time, unread = false, isLocked
       }`}
     >
       <div className="flex items-center gap-3 flex-1 min-w-0">
-        <img
-          src={avatar}
-          alt={username}
-          className="w-14 h-14 rounded-full object-cover flex-shrink-0"
-          referrerPolicy="no-referrer"
-          onError={(e) => {
-            e.currentTarget.src = avatarMain;
-          }}
-        />
+        <div className="relative flex-shrink-0">
+          <img
+            src={avatar}
+            alt={username}
+            className={`w-14 h-14 rounded-full object-cover ${isBlurredAvatar ? 'blur-[6px]' : ''}`}
+            referrerPolicy="no-referrer"
+            onError={(e) => {
+              e.currentTarget.src = avatarMain;
+            }}
+          />
+          {isBlurredAvatar && (
+            <div className="absolute inset-0 rounded-full bg-black/10" />
+          )}
+        </div>
         <div className="flex-1 min-w-0">
           <h3 className="text-sm font-semibold text-foreground">{username}</h3>
           <p className="text-sm text-muted-foreground truncate">

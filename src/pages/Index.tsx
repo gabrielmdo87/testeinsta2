@@ -21,6 +21,7 @@ interface ChatData {
   username: string;
   status: string;
   type: "fer" | "hop" | "bru";
+  isAmbiguous?: boolean;
 }
 
 const statusMessages = ["Online", "Online há 22 h", "Online há 35 min", "Online há 6 h"];
@@ -77,22 +78,33 @@ const IndexContent = () => {
   };
 
   const handleChatOpen = (chatType: "fer" | "hop" | "bru", index: number = 0) => {
-    // Use real data from similarAccounts
+    // Conversas ambíguas (fer, bru) = avatar com blur
+    // Conversas normais (hop) = avatar real sem blur
+    const isAmbiguous = chatType === "fer" || chatType === "bru";
     const account = similarAccounts[index];
+    
+    // Nomes ambíguos para conversas suspeitas
+    const ambiguousNames: Record<string, string> = {
+      fer: "Fer***",
+      bru: "Bru***",
+    };
+    
     if (account) {
       setCurrentChat({
         avatar: account.avatar,
-        username: account.censoredName,
+        username: isAmbiguous ? ambiguousNames[chatType] || "***" : account.censoredName,
         status: statusMessages[index % statusMessages.length],
         type: chatType,
+        isAmbiguous,
       });
     } else {
       // Fallback if no account
       setCurrentChat({
-        avatar: "",
-        username: "Usuário",
+        avatar: "/placeholder.svg",
+        username: isAmbiguous ? ambiguousNames[chatType] || "***" : "Usuário",
         status: "Online",
         type: chatType,
+        isAmbiguous,
       });
     }
     setScreen("chat");
