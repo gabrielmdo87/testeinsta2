@@ -7,11 +7,14 @@ interface PostProps {
   username: string;
   image: string;
   likes?: number;
+  onLikeClick?: () => void;
+  onShareClick?: () => void;
+  onSaveClick?: () => void;
   caption?: string;
   onCommentClick?: () => void;
 }
 
-const Post = ({ avatar, username, image, likes = 0, caption, onCommentClick }: PostProps) => {
+const Post = ({ avatar, username, image, likes = 0, caption, onCommentClick, onLikeClick, onShareClick, onSaveClick }: PostProps) => {
   return (
     <article className="border-b border-border/20">
       {/* Post Header */}
@@ -50,17 +53,17 @@ const Post = ({ avatar, username, image, likes = 0, caption, onCommentClick }: P
       <div className="px-4 py-3">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-4">
-            <button className="text-foreground">
+            <button className="text-foreground" onClick={onLikeClick}>
               <Heart className="w-6 h-6" strokeWidth={1.5} />
             </button>
             <button className="text-foreground" onClick={onCommentClick}>
               <MessageCircle className="w-6 h-6" strokeWidth={1.5} />
             </button>
-            <button className="text-foreground">
+            <button className="text-foreground" onClick={onShareClick}>
               <Send className="w-6 h-6 -rotate-12" strokeWidth={1.5} />
             </button>
           </div>
-          <button className="text-foreground">
+          <button className="text-foreground" onClick={onSaveClick}>
             <Bookmark className="w-6 h-6" strokeWidth={1.5} />
           </button>
         </div>

@@ -16,15 +16,16 @@ const Feed = ({ onVIPClick }: FeedProps) => {
   // Show only first 10 posts
   const visiblePosts = posts.slice(0, 10);
 
-  const handleCommentClick = () => {
-    setVipFeature("aos comentários desta publicação");
+  const handleVIPAction = (feature: string) => {
+    setVipFeature(feature);
     setShowVIPModal(true);
   };
 
-  const handleViewMoreClick = () => {
-    setVipFeature("a mais publicações");
-    setShowVIPModal(true);
-  };
+  const handleCommentClick = () => handleVIPAction("aos comentários desta publicação");
+  const handleLikeClick = () => handleVIPAction("a curtir publicações");
+  const handleShareClick = () => handleVIPAction("a compartilhar publicações");
+  const handleSaveClick = () => handleVIPAction("a salvar publicações");
+  const handleViewMoreClick = () => handleVIPAction("a mais publicações");
 
   return (
     <div className="pb-4">
@@ -37,6 +38,9 @@ const Feed = ({ onVIPClick }: FeedProps) => {
           likes={post.likes}
           caption={post.caption}
           onCommentClick={handleCommentClick}
+          onLikeClick={handleLikeClick}
+          onShareClick={handleShareClick}
+          onSaveClick={handleSaveClick}
         />
       ))}
 
