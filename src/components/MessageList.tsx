@@ -5,58 +5,76 @@ interface MessageListProps {
   onChatOpen: (chatType: "fer" | "hop" | "bru", index: number) => void;
 }
 
-const messageTemplates = [
-  { message: "Jamais eu me se sujeitaria a...", time: "22 h", unread: true },
-  { message: "Oi delícia, adivinha o que vc ...", time: "Agora", unread: true },
-  { message: "Encaminhou um reel de jon...", time: "33 min", unread: true },
-  { message: "Reagiu com 👍 à sua mensagem", time: "6 h", unread: false },
+// Mensagens recentes (abertas/clicáveis)
+const recentMessages = [
+  { id: 1, username: "Fer***", message: "Oi delícia, adivinha o que vc ...", time: "Agora", unread: true, chatType: "fer" as const },
+  { id: 2, username: "HOP***", message: "Encaminhou um reel de jon...", time: "33 min", unread: true, chatType: "hop" as const },
+  { id: 3, username: "Ana***", message: "Blz depois a gente se fala", time: "2 h", unread: false, chatType: "bru" as const },
+  { id: 4, username: "And***", message: "Reagiu com 👍 à sua mensagem", time: "6 h", unread: false, chatType: "fer" as const },
+  { id: 5, username: "Bru***", message: "4 novas mensagens", time: "22 h", unread: true, chatType: "bru" as const },
 ];
 
-const chatTypes: Array<"fer" | "hop" | "bru"> = ["bru", "fer", "hop", "fer"];
+// Mensagens bloqueadas (com cadeado)
+const lockedMessages = [
+  { id: 6, username: "mak***", message: "Enviou um reel de dr.diegooficial", time: "2 d" },
+  { id: 7, username: "Val***", message: "Enviado sábado", time: "2 d" },
+  { id: 8, username: "Peu***", message: "Enviou uma mensagem de voz", time: "2 d" },
+  { id: 9, username: "Joa***", message: "kkkkkkkkkk", time: "2 d" },
+  { id: 10, username: "Car***", message: "Curtiu sua mensagem", time: "2 d" },
+  { id: 11, username: "Gab***", message: "🔥🔥", time: "3 d" },
+  { id: 12, username: "Raf***", message: "Enviado sexta-feira", time: "3 d" },
+  { id: 13, username: "*******", message: "Delícia você 😈😈", time: "4 d" },
+];
 
 const MessageList = ({ onChatOpen }: MessageListProps) => {
   const { similarAccounts } = useAppContext();
 
-  // Build messages from similar accounts
-  const messages = similarAccounts.slice(0, 4).map((account, index) => ({
-    id: account.id,
-    avatar: account.avatar,
-    username: account.censoredName,
-    message: messageTemplates[index % messageTemplates.length].message,
-    time: messageTemplates[index % messageTemplates.length].time,
-    unread: messageTemplates[index % messageTemplates.length].unread,
-    chatType: chatTypes[index % chatTypes.length],
-  }));
-
-  const hasMessages = messages.length > 0;
+  // Use avatars from similar accounts for messages
+  const getAvatar = (index: number) => {
+    if (similarAccounts.length > 0) {
+      return similarAccounts[index % similarAccounts.length].avatar;
+    }
+    return '/placeholder.svg';
+  };
 
   return (
     <div className="flex-1">
       <div className="flex items-center justify-between px-4 py-3">
         <h2 className="text-base font-bold text-foreground">Mensagens</h2>
         <button className="text-[#0095f6] text-sm font-semibold">
-          Pedidos ({messages.length})
+          Pedidos ({recentMessages.length + lockedMessages.length})
         </button>
       </div>
-      {hasMessages ? (
-        <div>
-          {messages.map((msg) => (
-            <MessageItem
-              key={msg.id}
-              avatar={msg.avatar}
-              username={msg.username}
-              message={msg.message}
-              time={msg.time}
-              unread={msg.unread}
-              onClick={() => onChatOpen(msg.chatType, messages.indexOf(msg))}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="px-4 py-8 text-center text-muted-foreground text-sm">
-          Nenhuma mensagem encontrada
-        </div>
-      )}
+
+      {/* Mensagens recentes (abertas) */}
+      <div>
+        {recentMessages.map((msg, index) => (
+          <MessageItem
+            key={msg.id}
+            avatar={getAvatar(index)}
+            username={msg.username}
+            message={msg.message}
+            time={msg.time}
+            unread={msg.unread}
+            onClick={() => onChatOpen(msg.chatType, index)}
+          />
+        ))}
+      </div>
+
+      {/* Mensagens bloqueadas */}
+      <div>
+        {lockedMessages.map((msg, index) => (
+          <MessageItem
+            key={msg.id}
+            avatar={getAvatar(index + recentMessages.length)}
+            username={msg.username}
+            message={msg.message}
+            time={msg.time}
+            unread={false}
+            isLocked={true}
+          />
+        ))}
+      </div>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { Camera } from "lucide-react";
+import { Camera, Lock } from "lucide-react";
 import avatarMain from "@/assets/avatar-main.jpg";
 
 interface MessageItemProps {
@@ -7,14 +7,20 @@ interface MessageItemProps {
   message: string;
   time: string;
   unread?: boolean;
+  isLocked?: boolean;
   onClick?: () => void;
 }
 
-const MessageItem = ({ avatar, username, message, time, unread = false, onClick }: MessageItemProps) => {
+const MessageItem = ({ avatar, username, message, time, unread = false, isLocked = false, onClick }: MessageItemProps) => {
   return (
     <button
-      onClick={onClick}
-      className="flex items-center justify-between px-4 py-3 w-full text-left hover:bg-secondary/30 transition-colors"
+      onClick={isLocked ? undefined : onClick}
+      disabled={isLocked}
+      className={`flex items-center justify-between px-4 py-3 w-full text-left transition-colors ${
+        isLocked 
+          ? 'opacity-50 cursor-not-allowed' 
+          : 'hover:bg-secondary/30'
+      }`}
     >
       <div className="flex items-center gap-3 flex-1 min-w-0">
         <img
@@ -34,8 +40,12 @@ const MessageItem = ({ avatar, username, message, time, unread = false, onClick 
         </div>
       </div>
       <div className="flex items-center gap-2 ml-2">
-        {unread && <span className="w-2 h-2 bg-blue-500 rounded-full" />}
-        <Camera className="w-6 h-6 text-muted-foreground" strokeWidth={1.5} />
+        {unread && !isLocked && <span className="w-2 h-2 bg-blue-500 rounded-full" />}
+        {isLocked ? (
+          <Lock className="w-5 h-5 text-muted-foreground" strokeWidth={1.5} />
+        ) : (
+          <Camera className="w-6 h-6 text-muted-foreground" strokeWidth={1.5} />
+        )}
       </div>
     </button>
   );
