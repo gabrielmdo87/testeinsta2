@@ -72,32 +72,68 @@ async function getSimilarAccounts(userId: number) {
   try {
     const body = await callRocketAPI('/user/get_similar_accounts', { id: userId });
     
-    console.log('Similar accounts response keys:', Object.keys(body || {}));
+    // DEBUG: Log FULL structure to understand the response
+    console.log('=== SIMILAR ACCOUNTS DEBUG ===');
+    console.log('Body type:', typeof body);
+    console.log('Body keys:', Object.keys(body || {}));
+    console.log('Full body (first 3000 chars):', JSON.stringify(body, null, 2).substring(0, 3000));
     
-    // The actual structure is: body.data.user.edge_chaining.edges[].node
     let users: any[] = [];
     
-    // Check the correct structure from RocketAPI
-    const edges = body?.data?.user?.edge_chaining?.edges;
-    
-    if (Array.isArray(edges) && edges.length > 0) {
-      console.log(`Found ${edges.length} similar accounts in edge_chaining.edges`);
-      users = edges.map((edge: any) => edge.node).filter(Boolean);
-    } else if (Array.isArray(body?.users)) {
+    // Try multiple possible structures
+    // Structure 1: GraphQL edge_chaining
+    if (body?.data?.user?.edge_chaining?.edges?.length > 0) {
+      users = body.data.user.edge_chaining.edges.map((e: any) => e.node).filter(Boolean);
+      console.log('FOUND in: data.user.edge_chaining.edges ->', users.length, 'users');
+    }
+    // Structure 2: users array directly
+    else if (Array.isArray(body?.users) && body.users.length > 0) {
       users = body.users;
-      console.log('Found users in body.users');
-    } else if (Array.isArray(body?.data)) {
+      console.log('FOUND in: users ->', users.length, 'users');
+    }
+    // Structure 3: data as array
+    else if (Array.isArray(body?.data) && body.data.length > 0) {
       users = body.data;
-      console.log('Found users in body.data (array)');
+      console.log('FOUND in: data (array) ->', users.length, 'users');
+    }
+    // Structure 4: data.users
+    else if (Array.isArray(body?.data?.users) && body.data.users.length > 0) {
+      users = body.data.users;
+      console.log('FOUND in: data.users ->', users.length, 'users');
+    }
+    // Structure 5: chaining_info
+    else if (Array.isArray(body?.chaining_info) && body.chaining_info.length > 0) {
+      users = body.chaining_info;
+      console.log('FOUND in: chaining_info ->', users.length, 'users');
+    }
+    // Structure 6: suggested_users
+    else if (Array.isArray(body?.suggested_users) && body.suggested_users.length > 0) {
+      users = body.suggested_users;
+      console.log('FOUND in: suggested_users ->', users.length, 'users');
+    }
+    // Structure 7: edge_chaining.users (alternative)
+    else if (Array.isArray(body?.edge_chaining?.users) && body.edge_chaining.users.length > 0) {
+      users = body.edge_chaining.users;
+      console.log('FOUND in: edge_chaining.users ->', users.length, 'users');
+    }
+    else {
+      console.log('NO USERS FOUND in any known structure');
+      // Extra debug: log nested keys
+      if (body?.data) {
+        console.log('body.data keys:', Object.keys(body.data));
+        if (body.data.user) {
+          console.log('body.data.user keys:', Object.keys(body.data.user));
+        }
+      }
     }
     
-    console.log(`Processing ${users.length} similar accounts`);
+    console.log(`Total users extracted: ${users.length}`);
 
     if (users.length === 0) {
       return [];
     }
 
-    // Return up to 50 similar accounts to have more options for finding public ones
+    // Return up to 50 similar accounts
     return users.slice(0, 50).map((user: any) => ({
       id: String(user.pk || user.pk_id || user.id),
       username: user.username,
