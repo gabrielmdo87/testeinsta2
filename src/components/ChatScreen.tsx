@@ -16,7 +16,7 @@ interface ChatScreenProps {
 
 interface Message {
   id: number;
-  type: "text" | "image" | "audio" | "reel" | "videoCall" | "missedCall";
+  type: "text" | "image" | "audio" | "reel" | "videoCall" | "missedCall" | "heart";
   content?: string;
   sent: boolean;
   isBlurred?: boolean;
@@ -30,44 +30,59 @@ interface Message {
   dateBreak?: string;
   videoCallDuration?: string;
   quoteText?: string;
+  quoteLabel?: string;
   isReelBlurred?: boolean;
 }
 
-// Conversa 1 - Fer*** (Flagrante íntimo)
+// Conversa 1 - Fer*** (Flagrante íntimo) - Baseado nos 5 prints
 const ferMessages: Message[] = [
-  // Mensagens antigas com blur
+  // Mensagens antigas com blur (topo)
   { id: 1, type: "text", content: "Oi meu amor", sent: false, isBlurred: true },
   { id: 2, type: "text", content: "Tava pensando em vc", sent: true, isBlurred: true },
-  { id: 3, type: "image", sent: false, isBlurred: true },
-  { id: 4, type: "audio", sent: true, audioDuration: "0:15", isBlurred: true },
+  { id: 3, type: "text", content: "Tbm to", sent: true, isBlurred: true },
+  { id: 4, type: "image", sent: false, isBlurred: true },
+  
+  // Separador SEX, 11:12
   { id: 5, type: "text", content: "", sent: false, dateBreak: "SEX., 11:12" },
-  // Mensagens recentes liberadas
-  { id: 6, type: "text", content: "Oi minha delícia", sent: false },
+  
+  // Conversa liberada
+  { id: 6, type: "text", content: "Oi minha delícia", sent: false, showAvatar: true },
   { id: 7, type: "text", content: "Oi amor da minha vidq", sent: true },
   { id: 8, type: "text", content: "vida*", sent: true },
   { id: 9, type: "text", content: "To com saudade", sent: false },
-  { id: 10, type: "image", sent: false, isBlurred: true },
+  { id: 10, type: "image", sent: false, isBlurred: true, reaction: "❤️" },
   { id: 11, type: "text", content: "Disso??", sent: false, showAvatar: true },
   { id: 12, type: "text", content: "😍😍😍😍😍😍", sent: true },
-  { id: 13, type: "audio", sent: true, audioDuration: "0:11" },
-  { id: 14, type: "text", content: "Tubarão", sent: false },
-  { id: 15, type: "text", content: "Dboa, amanhã ou domingo 👍", sent: true },
+  { id: 13, type: "text", content: "****** Tubarão", sent: false },
+  { id: 14, type: "audio", sent: true, audioDuration: "0:11" },
+  { id: 15, type: "text", content: "Dboa, amanhã ou domingo", sent: true, reaction: "👍" },
+  
+  // Separador ONTEM, 21:34
   { id: 16, type: "text", content: "", sent: false, dateBreak: "ONTEM, 21:34" },
+  
   { id: 17, type: "text", content: "Amor", sent: false },
-  { id: 18, type: "text", content: "Ta podendo falar?", sent: false },
-  { id: 19, type: "text", content: "Oii bb", sent: true, quoteText: "Amor" },
-  { id: 20, type: "text", content: "Perai que ****** tá aqui do lado", sent: false },
+  { id: 18, type: "text", content: "Ta podendo falar?", sent: false, showAvatar: true },
+  { id: 19, type: "text", content: "Oii bb", sent: true, quoteText: "Amor", quoteLabel: "Você respondeu" },
+  { id: 20, type: "text", content: "Perai que ██████ tá aqui do lado", sent: false },
   { id: 21, type: "text", content: "kkkkkkkkk", sent: true },
-  { id: 22, type: "text", content: "🦌🦌🦌 kkkk", sent: false, showAvatar: true, reaction: "❤️" },
-  { id: 23, type: "text", content: "Tô em Laguna já", sent: false },
-  { id: 24, type: "text", content: "🧡", sent: false },
+  { id: 22, type: "text", content: "🦌🦌🦌 kkkk", sent: false, reaction: "😂" },
+  { id: 23, type: "text", content: "Tô em Braço do Norte já, só pra avisar ██████", sent: false, showAvatar: true, reaction: "❤️" },
+  { id: 24, type: "heart", sent: false },
   { id: 25, type: "text", content: "Tá aonde", sent: true },
   { id: 26, type: "text", content: "Na sua prima?", sent: true },
-  { id: 27, type: "text", content: "Não", sent: false },
-  { id: 28, type: "text", content: "Casa de ******", sent: false, showAvatar: true },
-  { id: 29, type: "text", content: "Tá bom 😊", sent: true, reaction: "❤️" },
-  { id: 30, type: "text", content: "Vou ****** e depois passo aí blz??", sent: true },
+  { id: 27, type: "text", content: "Não", sent: false, quoteText: "Na sua prima?", quoteLabel: "respondeu a você" },
+  { id: 28, type: "text", content: "Casa de ██████", sent: false, showAvatar: true },
+  { id: 29, type: "text", content: "Tá bom 😘", sent: true },
+  { id: 30, type: "text", content: "Vou ██████ e depois passo aí blz??", sent: true, reaction: "❤️" },
   { id: 31, type: "audio", sent: false, audioDuration: "0:32", showAvatar: true },
+  { id: 32, type: "audio", sent: false, audioDuration: "0:07" },
+  { id: 33, type: "text", content: "Pode deixar", sent: true },
+  { id: 34, type: "heart", sent: false },
+  
+  // Separador 16:21
+  { id: 35, type: "text", content: "", sent: false, dateBreak: "16:21" },
+  
+  { id: 36, type: "text", content: "Oi delícia, adivinha o que vc esqueceu aqui? kkkk", sent: false, showAvatar: true },
 ];
 
 // Conversa 2 - Bru*** (Chamadas de vídeo + íntimo)
@@ -198,7 +213,7 @@ const ChatScreen = ({ onBack, chatData }: ChatScreenProps) => {
         isBlurredAvatar={chatData.isAmbiguous}
       />
 
-      <div className="flex-1 overflow-y-auto px-3 py-4 space-y-2 pb-24">
+      <div className="flex-1 overflow-y-auto px-3 py-4 space-y-2 pb-32">
         {/* Data inicial */}
         <div className="text-center py-3">
           <span className="text-[11px] text-muted-foreground tracking-wide uppercase">
@@ -240,13 +255,16 @@ const ChatScreen = ({ onBack, chatData }: ChatScreenProps) => {
               videoCallDuration={msg.videoCallDuration}
               isMissedCall={msg.type === "missedCall"}
               quoteText={msg.quoteText}
+              quoteLabel={msg.quoteLabel}
               isReelBlurred={msg.isReelBlurred}
+              isHeart={msg.type === "heart"}
             />
           );
         })}
       </div>
 
-      <div className="fixed bottom-20 left-0 right-0 max-w-md mx-auto">
+      {/* Input fixo no bottom */}
+      <div className="fixed bottom-16 left-0 right-0 max-w-md mx-auto z-10">
         <ChatInput />
       </div>
     </div>

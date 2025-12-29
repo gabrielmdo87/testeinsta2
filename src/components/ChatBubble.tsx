@@ -1,4 +1,4 @@
-import { Play, Send, Bookmark, Lock, Video, Phone, PhoneMissed, EyeOff } from "lucide-react";
+import { Play, Send, Bookmark, Lock, Video, PhoneMissed, EyeOff } from "lucide-react";
 
 interface ChatBubbleProps {
   content: string;
@@ -20,7 +20,9 @@ interface ChatBubbleProps {
   videoCallDuration?: string;
   isMissedCall?: boolean;
   quoteText?: string;
+  quoteLabel?: string;
   isReelBlurred?: boolean;
+  isHeart?: boolean;
 }
 
 // Generate random waveform bars
@@ -68,7 +70,8 @@ const AudioMessage = ({ sent, duration, isLocked, isBlurred }: { sent: boolean; 
           </div>
         )}
       </div>
-      {!sent && !isLocked && !isBlurred && (
+      {/* Ver transcrição - para todos os áudios não bloqueados */}
+      {!isLocked && !isBlurred && (
         <span className="text-xs text-muted-foreground ml-2">Ver transcrição</span>
       )}
     </div>
@@ -179,6 +182,15 @@ const ReelMessage = ({
   );
 };
 
+// Heart Message - Coração grande standalone
+const HeartMessage = ({ sent }: { sent: boolean }) => {
+  return (
+    <div className={`flex ${sent ? 'justify-end' : 'justify-start'} px-2`}>
+      <span className="text-5xl">❤️</span>
+    </div>
+  );
+};
+
 const ChatBubble = ({ 
   content, 
   sent, 
@@ -199,7 +211,9 @@ const ChatBubble = ({
   videoCallDuration,
   isMissedCall,
   quoteText,
-  isReelBlurred
+  quoteLabel,
+  isReelBlurred,
+  isHeart
 }: ChatBubbleProps) => {
   
   // Componente de avatar com suporte a blur
@@ -219,6 +233,17 @@ const ChatBubble = ({
       )}
     </div>
   );
+
+  // Heart message - coração grande
+  if (isHeart) {
+    return (
+      <div className={`flex ${sent ? "justify-end" : "justify-start"} items-end gap-2`}>
+        {!sent && showAvatar && avatar && <AvatarImage />}
+        {!sent && !showAvatar && <div className="w-7" />}
+        <HeartMessage sent={sent} />
+      </div>
+    );
+  }
 
   // Video call message
   if (isVideoCall || isMissedCall) {
@@ -260,26 +285,36 @@ const ChatBubble = ({
     );
   }
 
-  // Image message
+  // Image message - tom rosado para blur
   if (isImage) {
     return (
       <div className={`flex ${sent ? "justify-end" : "justify-start"} items-end gap-2`}>
         {!sent && showAvatar && avatar && <AvatarImage />}
         {!sent && !showAvatar && <div className="w-7" />}
-        <div
-          className={`w-[200px] h-[150px] rounded-2xl bg-muted/60 ${
-            sent ? 'rounded-br-md' : 'rounded-bl-md'
-          } flex items-center justify-center relative overflow-hidden`}
-        >
-          {isBlurred ? (
-            <>
-              <div className="absolute inset-0 bg-gradient-to-br from-muted/80 to-muted/60 blur-[2px]" />
-              <div className="relative z-10 w-12 h-12 rounded-full bg-black/40 flex items-center justify-center">
-                <EyeOff className="w-6 h-6 text-white/80" />
+        <div className="relative">
+          <div
+            className={`w-[200px] h-[150px] rounded-2xl ${
+              sent ? 'rounded-br-md' : 'rounded-bl-md'
+            } flex items-center justify-center relative overflow-hidden`}
+          >
+            {isBlurred ? (
+              <>
+                {/* Tom rosado/pele para imagens com blur */}
+                <div className="absolute inset-0 bg-[#D4A89A]" />
+                <div className="relative z-10 w-12 h-12 rounded-full bg-black/30 flex items-center justify-center">
+                  <EyeOff className="w-6 h-6 text-white/80" />
+                </div>
+              </>
+            ) : (
+              <div className="w-full h-full bg-muted/60 flex items-center justify-center">
+                <span className="text-xs text-muted-foreground">Imagem</span>
               </div>
-            </>
-          ) : (
-            <div className="text-xs text-muted-foreground">Imagem</div>
+            )}
+          </div>
+          {reaction && (
+            <div className="absolute -bottom-3 left-2 bg-secondary rounded-full px-1 py-0.5 border border-border/50">
+              <span className="text-sm">{reaction}</span>
+            </div>
           )}
         </div>
       </div>
@@ -291,15 +326,25 @@ const ChatBubble = ({
     <div className={`flex ${sent ? "justify-end" : "justify-start"} items-end gap-2`}>
       {!sent && showAvatar && avatar && <AvatarImage />}
       {!sent && !showAvatar && <div className="w-7" />}
-      <div className="relative">
-        {/* Quote reply */}
+      <div className="relative max-w-[280px]">
+        {/* Quote reply with label */}
         {quoteText && (
-          <div className={`mb-1 px-3 py-2 rounded-xl bg-muted/50 border-l-2 border-accent max-w-[240px] ${isBlurred ? 'blur-[8px]' : ''}`}>
-            <p className="text-xs text-muted-foreground line-clamp-2">{quoteText}</p>
+          <div className={`mb-1 ${isBlurred ? 'blur-[8px]' : ''}`}>
+            {/* Label acima da quote */}
+            <span className="text-[11px] text-muted-foreground block mb-1 ml-1">
+              {quoteLabel || (sent ? "Você respondeu" : "respondeu a você")}
+            </span>
+            <div className="flex">
+              {/* Barra roxa lateral */}
+              <div className="w-1 bg-accent rounded-full mr-2 flex-shrink-0" />
+              <div className="px-3 py-2 rounded-xl bg-muted/60">
+                <p className="text-[13px] text-muted-foreground line-clamp-2">{quoteText}</p>
+              </div>
+            </div>
           </div>
         )}
         <div
-          className={`max-w-[260px] px-4 py-2.5 rounded-[22px] ${
+          className={`px-4 py-2.5 rounded-[22px] ${
             sent
               ? "bg-accent rounded-br-md"
               : "bg-secondary rounded-bl-md"
