@@ -1,4 +1,4 @@
-import { ChevronLeft, Phone, Video } from "lucide-react";
+import { ChevronLeft, Phone, Video, Flag, SmilePlus } from "lucide-react";
 
 interface ChatHeaderProps {
   avatar: string;
@@ -9,27 +9,40 @@ interface ChatHeaderProps {
 
 const ChatHeader = ({ avatar, username, status, onBack }: ChatHeaderProps) => {
   return (
-    <header className="flex items-center justify-between px-2 py-3">
+    <header className="flex items-center justify-between px-2 py-3 border-b border-border/30">
       <div className="flex items-center gap-2">
         <button onClick={onBack} className="text-foreground p-1">
-          <ChevronLeft className="w-8 h-8" strokeWidth={1.5} />
+          <ChevronLeft className="w-7 h-7" strokeWidth={2} />
         </button>
         <img
           src={avatar}
           alt={username}
-          className="w-11 h-11 rounded-full object-cover"
+          className="w-10 h-10 rounded-full object-cover"
+          referrerPolicy="no-referrer"
+          onError={(e) => {
+            e.currentTarget.src = '/placeholder.svg';
+          }}
         />
-        <div className="ml-1">
-          <h1 className="text-[15px] font-semibold text-foreground">{username}</h1>
-          <p className="text-[13px] text-muted-foreground">{status}</p>
+        <div className="flex items-center gap-1">
+          <div>
+            <h1 className="text-[15px] font-semibold text-foreground leading-tight">{username}</h1>
+            <p className="text-[12px] text-muted-foreground">{status}</p>
+          </div>
+          <ChevronLeft className="w-4 h-4 text-muted-foreground rotate-180" />
         </div>
       </div>
-      <div className="flex items-center gap-6 pr-2">
+      <div className="flex items-center gap-5 pr-1">
+        <button className="text-foreground">
+          <SmilePlus className="w-6 h-6" strokeWidth={1.5} />
+        </button>
         <button className="text-foreground">
           <Phone className="w-6 h-6" strokeWidth={1.5} />
         </button>
         <button className="text-foreground">
-          <Video className="w-7 h-7" strokeWidth={1.5} />
+          <Video className="w-6 h-6" strokeWidth={1.5} />
+        </button>
+        <button className="text-foreground">
+          <Flag className="w-6 h-6" strokeWidth={1.5} />
         </button>
       </div>
     </header>
