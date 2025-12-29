@@ -16,7 +16,7 @@ interface ChatScreenProps {
 
 interface Message {
   id: number;
-  type: "text" | "image" | "audio" | "reel" | "videoCall" | "missedCall" | "heart";
+  type: "text" | "image" | "audio" | "reel" | "videoCall" | "missedCall" | "endedCall" | "heart";
   content?: string;
   sent: boolean;
   isBlurred?: boolean;
@@ -137,28 +137,71 @@ const anaMessages: Message[] = [
   { id: 17, type: "reel", sent: false, reelUsername: "jonas.milgrau", reelCaption: "João Pedro está no prime.", reelImage: reelImages.reel8, showAvatar: true },
 ];
 
-// Conversa 3 - Cri*** (Emocional/dramática)
+// Conversa 3 - And***** (Chamadas de vídeo + fotos íntimas)
 const criMessages: Message[] = [
-  // Mensagens antigas com blur
-  { id: 1, type: "text", content: "Oi tudo bem?", sent: false, isBlurred: true },
-  { id: 2, type: "text", content: "Preciso falar com vc", sent: false, isBlurred: true },
-  { id: 3, type: "audio", sent: true, audioDuration: "0:45", isBlurred: true },
-  { id: 4, type: "text", content: "", sent: false, dateBreak: "22 DE OUT., 14:33" },
-  // Mensagens liberadas
-  { id: 5, type: "text", content: "De tdas as coisas que fiz na vida e arrependi, se envolver com vc esta no topo delas", sent: true },
-  { id: 6, type: "text", content: "E pensar que quase te assumi", sent: true },
-  { id: 7, type: "audio", sent: false, audioDuration: "0:12" },
-  { id: 8, type: "text", content: "Por favor", sent: false },
-  { id: 9, type: "text", content: "Vamos ser felizes a gente se ama", sent: false },
-  { id: 10, type: "audio", sent: true, audioDuration: "0:05" },
-  { id: 11, type: "text", content: "É um desperdício jogar fora tudo isso", sent: false },
-  { id: 12, type: "text", content: "Jamais eu me sujeitaria a tudo isso se o sentimento nao tivesse no topo da minha vida.", sent: false, showAvatar: true },
-  { id: 13, type: "reel", sent: false, reelUsername: "relacionamenen...", reelCaption: "O amor é uma escolha diária...", reelImage: reelImages.reel9, isReelBlurred: true },
-  { id: 14, type: "reel", sent: false, reelUsername: "relacionamenen...", reelCaption: "No fundo, eu ainda te amo...", reelImage: reelImages.reel10, showAvatar: true, isReelBlurred: true },
-  { id: 15, type: "text", content: "", sent: false, dateBreak: "2 DE DEZ., 15:55" },
-  { id: 16, type: "text", content: "Oi boa tarde", sent: false },
-  { id: 17, type: "text", content: "Sei que está evitando falar comigo", sent: false },
-  { id: 18, type: "text", content: "Mais hi faz um mês do nosso", sent: false, showAvatar: true },
+  // Mensagens antigas com blur (topo)
+  { id: 1, type: "image", sent: false, isBlurred: true },
+  { id: 2, type: "text", content: "...", sent: true, isBlurred: true },
+  { id: 3, type: "text", content: "...", sent: true, isBlurred: true },
+  
+  // Chamada de vídeo
+  { id: 4, type: "videoCall", sent: false, videoCallDuration: "10:10" },
+  
+  // Ligação perdida
+  { id: 5, type: "missedCall", sent: false },
+  
+  // Textos enviados
+  { id: 6, type: "text", content: "Net tá ruim", sent: true },
+  { id: 7, type: "text", content: "To no 4G", sent: true },
+  { id: 8, type: "text", content: "Liga de novo", sent: true },
+  
+  // Chamada de vídeo
+  { id: 9, type: "videoCall", sent: false, videoCallDuration: "10:12" },
+  
+  // Ligação encerrada
+  { id: 10, type: "endedCall", sent: false, videoCallDuration: "08:26" },
+  
+  // Textos enviados
+  { id: 11, type: "text", content: "Delíciaaaaaaaaaaa", sent: true },
+  { id: 12, type: "text", content: "🥴🥴🥴", sent: true },
+  
+  // Texto recebido
+  { id: 13, type: "text", content: "Olha como me deixou", sent: false },
+  
+  // Imagem recebida com blur e reação
+  { id: 14, type: "image", sent: false, isBlurred: true, reaction: "❤️" },
+  
+  // Texto recebido
+  { id: 15, type: "text", content: "Kkkkk", sent: false, showAvatar: true },
+  
+  // Textos enviados
+  { id: 16, type: "text", content: "CARALHOOOOO", sent: true },
+  { id: 17, type: "text", content: "Delícia demais", sent: true },
+  { id: 18, type: "text", content: "🧡🧡🧡", sent: true },
+  
+  // Texto recebido
+  { id: 19, type: "text", content: "Manda mais sua tbm", sent: false, showAvatar: true },
+  
+  // 4 imagens enviadas com blur
+  { id: 20, type: "image", sent: true, isBlurred: true },
+  { id: 21, type: "image", sent: true, isBlurred: true },
+  { id: 22, type: "image", sent: true, isBlurred: true },
+  { id: 23, type: "image", sent: true, isBlurred: true, reaction: "😈" },
+  
+  // Textos recebidos
+  { id: 24, type: "text", content: "Pedi uma e mando 3", sent: false },
+  { id: 25, type: "text", content: "Por isso que te amo", sent: false, showAvatar: true },
+  
+  // Textos enviados
+  { id: 26, type: "text", content: "Vou ter que sair aqui ta perigoso", sent: true },
+  { id: 27, type: "text", content: "██████████ tá chegando", sent: true },
+  
+  // Texto recebido
+  { id: 28, type: "text", content: "Calma que a gente se vê logo", sent: false },
+  
+  // Textos enviados
+  { id: 29, type: "text", content: "Não aguento mais", sent: true },
+  { id: 30, type: "text", content: "Não amnda mais nada blz", sent: true, reaction: "👍" },
 ];
 
 // Conversa 4 - Ana****** (Áudios + conversa sobre amante)
@@ -295,6 +338,7 @@ const ChatScreen = ({ onBack, chatData }: ChatScreenProps) => {
               isVideoCall={msg.type === "videoCall"}
               videoCallDuration={msg.videoCallDuration}
               isMissedCall={msg.type === "missedCall"}
+              isEndedCall={msg.type === "endedCall"}
               quoteText={msg.quoteText}
               quoteLabel={msg.quoteLabel}
               isReelBlurred={msg.isReelBlurred}

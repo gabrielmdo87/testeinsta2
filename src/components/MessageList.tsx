@@ -10,7 +10,7 @@ interface MessageListProps {
 const recentMessages = [
   { id: 1, username: "Fer***", message: "Oi delícia, adivinha o que vc...", time: "Agora", unread: true, chatType: "fer" as const, isAmbiguous: true },
   { id: 2, username: "ana*****", message: "Encaminhou um reel de jonas.milgrau", time: "44 min", unread: true, chatType: "bru" as const, isAmbiguous: true },
-  { id: 3, username: "Cri***", message: "Sei que está evitando falar comigo", time: "2 h", unread: true, chatType: "cri" as const, isAmbiguous: true },
+  { id: 3, username: "And*****", message: "Não amnda mais nada blz", time: "2 h", unread: true, chatType: "cri" as const, isAmbiguous: true },
   { id: 4, username: "Ana******", message: "Blz depois a gente se fala", time: "6 h", unread: false, chatType: "val" as const, isAmbiguous: true },
   { id: 5, username: "HOP***", message: "Encaminhou um reel de jon...", time: "22 h", unread: false, chatType: "hop" as const, isAmbiguous: false },
 ];

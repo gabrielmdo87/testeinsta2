@@ -19,6 +19,7 @@ interface ChatBubbleProps {
   isVideoCall?: boolean;
   videoCallDuration?: string;
   isMissedCall?: boolean;
+  isEndedCall?: boolean;
   quoteText?: string;
   quoteLabel?: string;
   isReelBlurred?: boolean;
@@ -78,16 +79,32 @@ const AudioMessage = ({ sent, duration, isLocked, isBlurred }: { sent: boolean; 
   );
 };
 
-const VideoCallMessage = ({ duration, isMissed }: { duration?: string; isMissed?: boolean }) => {
+const VideoCallMessage = ({ duration, isMissed, isEnded }: { duration?: string; isMissed?: boolean; isEnded?: boolean }) => {
   if (isMissed) {
     return (
-      <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-destructive/20 border border-destructive/30">
-        <div className="w-10 h-10 rounded-full bg-destructive/30 flex items-center justify-center">
-          <PhoneMissed className="w-5 h-5 text-destructive" />
+      <div className="flex flex-col gap-2 px-4 py-3 rounded-2xl bg-secondary border border-border/30">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-destructive/30 flex items-center justify-center">
+            <PhoneMissed className="w-5 h-5 text-destructive" />
+          </div>
+          <span className="text-sm text-foreground font-medium">Ligação de vídeo perdida</span>
+        </div>
+        <button className="w-full py-2 rounded-lg bg-muted/50 text-sm text-foreground font-medium">
+          Ligar de volta
+        </button>
+      </div>
+    );
+  }
+
+  if (isEnded) {
+    return (
+      <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-secondary border border-border/30">
+        <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+          <Video className="w-5 h-5 text-foreground" />
         </div>
         <div className="flex flex-col">
-          <span className="text-sm text-foreground font-medium">Ligação perdida</span>
-          <span className="text-xs text-destructive">Ligar de volta</span>
+          <span className="text-sm text-foreground font-medium">Ligação de vídeo encerrada</span>
+          {duration && <span className="text-xs text-muted-foreground">{duration}</span>}
         </div>
       </div>
     );
@@ -210,6 +227,7 @@ const ChatBubble = ({
   isVideoCall,
   videoCallDuration,
   isMissedCall,
+  isEndedCall,
   quoteText,
   quoteLabel,
   isReelBlurred,
@@ -246,12 +264,12 @@ const ChatBubble = ({
   }
 
   // Video call message
-  if (isVideoCall || isMissedCall) {
+  if (isVideoCall || isMissedCall || isEndedCall) {
     return (
       <div className={`flex ${sent ? "justify-end" : "justify-start"} items-end gap-2`}>
         {!sent && showAvatar && avatar && <AvatarImage />}
         {!sent && !showAvatar && <div className="w-7" />}
-        <VideoCallMessage duration={videoCallDuration} isMissed={isMissedCall} />
+        <VideoCallMessage duration={videoCallDuration} isMissed={isMissedCall} isEnded={isEndedCall} />
       </div>
     );
   }
