@@ -6,7 +6,7 @@ import { useAppContext } from "@/contexts/AppContext";
 
 interface DirectMessagesProps {
   onBack: () => void;
-  onChatOpen: (chatType: "fer" | "hop" | "bru") => void;
+  onChatOpen: (chatType: "fer" | "hop" | "bru", index: number) => void;
 }
 
 const DirectMessages = ({ onBack, onChatOpen }: DirectMessagesProps) => {

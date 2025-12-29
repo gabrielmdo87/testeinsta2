@@ -6,14 +6,17 @@ interface StoryAvatarProps {
   name: string;
   isOwn?: boolean;
   hasStory?: boolean;
+  isCloseFriend?: boolean;
 }
 
-const StoryAvatar = ({ image, name, isOwn = false, hasStory = true }: StoryAvatarProps) => {
+const StoryAvatar = ({ image, name, isOwn = false, hasStory = true, isCloseFriend = false }: StoryAvatarProps) => {
+  const ringClass = isCloseFriend ? "story-ring-close-friends" : "story-ring";
+
   return (
     <div className="flex flex-col items-center gap-1.5 flex-shrink-0" style={{ minWidth: '76px' }}>
       <div className="relative">
         {hasStory && !isOwn ? (
-          <div className="p-[3px] rounded-full story-ring">
+          <div className={`p-[3px] rounded-full ${ringClass}`}>
             <div className="p-[2px] bg-background rounded-full">
               <img
                 src={image}

@@ -2,7 +2,7 @@ import MessageItem from "./MessageItem";
 import { useAppContext } from "@/contexts/AppContext";
 
 interface MessageListProps {
-  onChatOpen: (chatType: "fer" | "hop" | "bru") => void;
+  onChatOpen: (chatType: "fer" | "hop" | "bru", index: number) => void;
 }
 
 const messageTemplates = [
@@ -48,7 +48,7 @@ const MessageList = ({ onChatOpen }: MessageListProps) => {
               message={msg.message}
               time={msg.time}
               unread={msg.unread}
-              onClick={() => onChatOpen(msg.chatType)}
+              onClick={() => onChatOpen(msg.chatType, messages.indexOf(msg))}
             />
           ))}
         </div>
