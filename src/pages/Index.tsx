@@ -153,7 +153,7 @@ const IndexContent = () => {
 
       {screen === "feed" && (
         <div className="pb-48">
-          <InstagramHeader onDirectClick={() => setScreen("direct")} />
+          <InstagramHeader onDirectClick={() => setScreen("direct")} onHeartClick={handleVIPClick} />
           <Stories onVIPClick={handleVIPClick} />
           <Feed onVIPClick={handleVIPClick} />
         </div>
