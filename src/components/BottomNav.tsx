@@ -1,7 +1,13 @@
 import { Home, Search, Plus, Clapperboard } from "lucide-react";
+import { useAppContext } from "@/contexts/AppContext";
 import avatarMain from "@/assets/avatar-main.jpg";
 
 const BottomNav = () => {
+  const { profileData } = useAppContext();
+  
+  // Usar avatar do perfil buscado, com fallback para o estático
+  const avatarSrc = profileData?.avatar || avatarMain;
+
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-background border-t border-border/30 px-6 py-2.5 z-50">
       <div className="flex items-center justify-between max-w-md mx-auto">
@@ -19,7 +25,7 @@ const BottomNav = () => {
         </button>
         <button className="p-1">
           <img
-            src={avatarMain}
+            src={avatarSrc}
             alt="Profile"
             className="w-7 h-7 rounded-full object-cover"
           />

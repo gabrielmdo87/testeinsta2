@@ -161,7 +161,7 @@ export const useProfileData = () => {
       const postImages = [postImage, post2, post3, post4, postImage, post2, post3, post4, postImage, post2];
 
       // If we have actual posts from API, use them. Otherwise create posts from PUBLIC accounts only
-      const generatedPosts: PostData[] = posts.length > 0 
+      let generatedPosts: PostData[] = posts.length > 0 
         ? posts 
         : publicAccounts.slice(0, 10).map((acc, index) => ({
             id: `post-${acc.id}`,
@@ -173,10 +173,29 @@ export const useProfileData = () => {
             caption: mockCaptions[index % mockCaptions.length],
           }));
 
+      // Se ainda não temos 10 posts, complementar com fallbackPosts
+      if (generatedPosts.length < 10) {
+        const neededPosts = 10 - generatedPosts.length;
+        console.log(`Only ${generatedPosts.length} posts from API, adding ${neededPosts} fallback posts`);
+        const additionalPosts = fallbackPosts
+          .slice(0, neededPosts)
+          .map((post, index) => ({
+            ...post,
+            id: `fallback-${generatedPosts.length + index}`,
+          }));
+        generatedPosts = [...generatedPosts, ...additionalPosts];
+      }
+
+      // Ordenar similarAccounts colocando públicos primeiro para melhor experiência
+      const sortedSimilarAccounts = [...similarAccounts].sort((a, b) => {
+        if (a.isPrivate === b.isPrivate) return 0;
+        return a.isPrivate ? 1 : -1;
+      });
+
       return {
         profile,
-        similarAccounts,
-        posts: generatedPosts.length > 0 ? generatedPosts : fallbackPosts,
+        similarAccounts: sortedSimilarAccounts,
+        posts: generatedPosts,
       };
 
     } catch (error) {
