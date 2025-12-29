@@ -1,4 +1,4 @@
-import { Play, Send, Bookmark } from "lucide-react";
+import { Play, Send, Bookmark, Lock } from "lucide-react";
 
 interface ChatBubbleProps {
   content: string;
@@ -13,6 +13,7 @@ interface ChatBubbleProps {
   reelUsername?: string;
   reelCaption?: string;
   reaction?: string;
+  isLocked?: boolean;
 }
 
 // Generate random waveform bars
@@ -25,12 +26,12 @@ const generateWaveform = () => {
   return bars;
 };
 
-const AudioMessage = ({ sent, duration }: { sent: boolean; duration: string }) => {
+const AudioMessage = ({ sent, duration, isLocked }: { sent: boolean; duration: string; isLocked?: boolean }) => {
   const waveform = generateWaveform();
   
   return (
     <div className={`flex flex-col gap-1 ${sent ? 'items-end' : 'items-start'}`}>
-      <div className={`flex items-center gap-3 px-4 py-3 rounded-2xl ${
+      <div className={`relative flex items-center gap-3 px-4 py-3 rounded-2xl ${
         sent ? 'bg-accent rounded-br-md' : 'bg-secondary rounded-bl-md'
       }`}>
         <button className="flex-shrink-0">
@@ -52,8 +53,15 @@ const AudioMessage = ({ sent, duration }: { sent: boolean; duration: string }) =
         <span className={`text-sm ${sent ? 'text-white/80' : 'text-muted-foreground'}`}>
           {duration}
         </span>
+        
+        {/* Locked overlay */}
+        {isLocked && (
+          <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-2xl">
+            <Lock className="w-5 h-5 text-white" />
+          </div>
+        )}
       </div>
-      {!sent && (
+      {!sent && !isLocked && (
         <span className="text-xs text-muted-foreground ml-2">Ver transcrição</span>
       )}
     </div>
@@ -135,7 +143,8 @@ const ChatBubble = ({
   isReel,
   reelUsername,
   reelCaption,
-  reaction
+  reaction,
+  isLocked
 }: ChatBubbleProps) => {
   // Audio message
   if (isAudio) {
@@ -153,7 +162,7 @@ const ChatBubble = ({
           />
         )}
         {!sent && !showAvatar && <div className="w-7" />}
-        <AudioMessage sent={sent} duration={audioDuration} />
+        <AudioMessage sent={sent} duration={audioDuration} isLocked={isLocked} />
       </div>
     );
   }
