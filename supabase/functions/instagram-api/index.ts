@@ -73,36 +73,25 @@ async function getSimilarAccounts(userId: number) {
     const body = await callRocketAPI('/user/get_similar_accounts', { id: userId });
     
     console.log('Similar accounts response keys:', Object.keys(body || {}));
-    console.log('Similar accounts body.data type:', typeof body?.data);
-    console.log('Similar accounts full response (first 1000 chars):', JSON.stringify(body).substring(0, 1000));
     
-    // Try different possible response structures - RocketAPI may nest data differently
+    // The actual structure is: body.data.user.edge_chaining.edges[].node
     let users: any[] = [];
     
-    if (Array.isArray(body?.users)) {
+    // Check the correct structure from RocketAPI
+    const edges = body?.data?.user?.edge_chaining?.edges;
+    
+    if (Array.isArray(edges) && edges.length > 0) {
+      console.log(`Found ${edges.length} similar accounts in edge_chaining.edges`);
+      users = edges.map((edge: any) => edge.node).filter(Boolean);
+    } else if (Array.isArray(body?.users)) {
       users = body.users;
       console.log('Found users in body.users');
     } else if (Array.isArray(body?.data)) {
       users = body.data;
       console.log('Found users in body.data (array)');
-    } else if (body?.data && typeof body.data === 'object') {
-      // body.data might be an object with users inside
-      if (Array.isArray(body.data.users)) {
-        users = body.data.users;
-        console.log('Found users in body.data.users');
-      } else if (Array.isArray(body.data.similar_accounts)) {
-        users = body.data.similar_accounts;
-        console.log('Found users in body.data.similar_accounts');
-      } else if (Array.isArray(body.data.chaining_info?.accounts)) {
-        users = body.data.chaining_info.accounts;
-        console.log('Found users in body.data.chaining_info.accounts');
-      } else {
-        // Log all keys in body.data to understand structure
-        console.log('body.data keys:', Object.keys(body.data));
-      }
     }
     
-    console.log(`Found ${users.length} similar accounts to process`);
+    console.log(`Processing ${users.length} similar accounts`);
 
     if (users.length === 0) {
       return [];
