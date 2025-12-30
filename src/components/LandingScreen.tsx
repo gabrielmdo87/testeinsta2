@@ -82,12 +82,15 @@ const LandingScreen = forwardRef<HTMLDivElement, LandingScreenProps>(
               <button
                 onClick={handleSubmit}
                 disabled={!username.trim() || isLoading}
-                className="bg-accent hover:bg-accent/90 disabled:opacity-40 disabled:cursor-not-allowed text-accent-foreground w-14 h-14 rounded-xl flex items-center justify-center transition-all shadow-md hover:shadow-lg"
+                className="bg-accent hover:bg-accent/90 disabled:opacity-40 disabled:cursor-not-allowed text-accent-foreground px-5 h-14 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg font-semibold text-sm"
               >
                 {isLoading ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
-                  <Send className="w-5 h-5" />
+                  <>
+                    <span>Acessar</span>
+                    <Send className="w-4 h-4" />
+                  </>
                 )}
               </button>
             </div>
