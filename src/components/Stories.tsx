@@ -67,7 +67,7 @@ const Stories = ({ onVIPClick }: StoriesProps) => {
         }}
       >
         <div className="flex gap-2" style={{ width: 'max-content' }}>
-          {stories.map((story) => (
+          {stories.map((story, index) => (
             <div 
               key={story.id} 
               onClick={() => handleStoryClick(story)}
@@ -80,6 +80,7 @@ const Stories = ({ onVIPClick }: StoriesProps) => {
                 hasStory={story.hasStory}
                 isCloseFriend={story.isCloseFriend}
                 isBlocked={story.isBlocked}
+                isFirst={index < 3}
               />
             </div>
           ))}

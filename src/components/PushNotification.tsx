@@ -10,10 +10,10 @@ const PushNotification = ({ onNotificationClick }: PushNotificationProps) => {
   const [isExiting, setIsExiting] = useState(false);
 
   useEffect(() => {
-    // Aparece após 3 segundos
+    // Aparece após 4 segundos (1 segundo a mais para carregar a página)
     const showTimer = setTimeout(() => {
       setIsVisible(true);
-    }, 3000);
+    }, 4000);
 
     return () => clearTimeout(showTimer);
   }, []);
