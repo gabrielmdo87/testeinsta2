@@ -42,7 +42,9 @@ const IndexContent = () => {
     similarAccounts,
     setSimilarAccounts,
     setPosts,
-    setIsLoading 
+    setIsLoading,
+    hasShownPushNotification,
+    setHasShownPushNotification,
   } = useAppContext();
   
   const { fetchFullData } = useProfileData();
@@ -50,7 +52,9 @@ const IndexContent = () => {
   // Scroll to top when entering feed
   useEffect(() => {
     if (screen === "feed") {
-      window.scrollTo(0, 0);
+      setTimeout(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      }, 0);
     }
   }, [screen]);
   const handleUsernameSubmit = async (username: string) => {
@@ -167,7 +171,12 @@ const IndexContent = () => {
 
       {screen === "feed" && (
         <div className="pb-48">
-          <PushNotification onNotificationClick={() => handleChatOpen("fer", 0)} />
+          {!hasShownPushNotification && (
+            <PushNotification 
+              onNotificationClick={() => handleChatOpen("fer", 0)} 
+              onShown={() => setHasShownPushNotification(true)}
+            />
+          )}
           <InstagramHeader onDirectClick={() => setScreen("direct")} onHeartClick={handleVIPClick} />
           <Stories onVIPClick={handleVIPClick} />
           <Feed onVIPClick={handleVIPClick} />

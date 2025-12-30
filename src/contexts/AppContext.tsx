@@ -14,6 +14,8 @@ interface AppContextType {
   setIsLoading: (loading: boolean) => void;
   vipTimeLeft: number;
   setVipTimeLeft: (time: number) => void;
+  hasShownPushNotification: boolean;
+  setHasShownPushNotification: (shown: boolean) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -25,6 +27,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [posts, setPosts] = useState<PostData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [vipTimeLeft, setVipTimeLeft] = useState(10 * 60); // 10 minutes in seconds
+  const [hasShownPushNotification, setHasShownPushNotification] = useState(false);
 
   // Global timer that persists across screen changes
   useEffect(() => {
@@ -53,6 +56,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setIsLoading,
         vipTimeLeft,
         setVipTimeLeft,
+        hasShownPushNotification,
+        setHasShownPushNotification,
       }}
     >
       {children}
