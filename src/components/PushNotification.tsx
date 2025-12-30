@@ -1,32 +1,59 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import instagramIcon from "@/assets/instagram-icon.webp";
 
 interface PushNotificationProps {
+  enabled?: boolean;
+  alreadyShown?: boolean;
   onNotificationClick?: () => void;
   onShown?: () => void;
 }
 
-const PushNotification = ({ onNotificationClick, onShown }: PushNotificationProps) => {
+const PushNotification = ({ 
+  enabled = true, 
+  alreadyShown = false,
+  onNotificationClick, 
+  onShown 
+}: PushNotificationProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
+  const hasScheduled = useRef(false);
 
+  // Agendar a notificação quando enabled e não já mostrada
   useEffect(() => {
-    // Aparece após 4 segundos (1 segundo a mais para carregar a página)
+    // Só agenda se: enabled, não já mostrada, e não já agendou nesta montagem
+    if (!enabled || alreadyShown || hasScheduled.current) {
+      return;
+    }
+
+    hasScheduled.current = true;
+
+    // Aparece após 4 segundos
     const showTimer = setTimeout(() => {
       setIsVisible(true);
-      onShown?.(); // Marca como já mostrada no contexto global
+      onShown?.();
     }, 4000);
 
     return () => clearTimeout(showTimer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [enabled, alreadyShown]);
 
+  // Esconder se sair do feed (enabled = false)
   useEffect(() => {
-    if (isVisible) {
-      // Inicia saída após 5 segundos
+    if (!enabled && isVisible) {
+      setIsExiting(true);
+      const hideTimer = setTimeout(() => {
+        setIsVisible(false);
+        setIsExiting(false);
+      }, 300);
+      return () => clearTimeout(hideTimer);
+    }
+  }, [enabled, isVisible]);
+
+  // Timer para esconder após 5 segundos visível
+  useEffect(() => {
+    if (isVisible && !isExiting) {
       const hideTimer = setTimeout(() => {
         setIsExiting(true);
-        // Remove completamente após animação
         setTimeout(() => {
           setIsVisible(false);
         }, 300);
@@ -34,7 +61,7 @@ const PushNotification = ({ onNotificationClick, onShown }: PushNotificationProp
 
       return () => clearTimeout(hideTimer);
     }
-  }, [isVisible]);
+  }, [isVisible, isExiting]);
 
   if (!isVisible) return null;
 
