@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import InstagramHeader from "@/components/InstagramHeader";
 import Stories from "@/components/Stories";
 import Feed from "@/components/Feed";
@@ -47,6 +47,12 @@ const IndexContent = () => {
   
   const { fetchFullData } = useProfileData();
 
+  // Scroll to top when entering feed
+  useEffect(() => {
+    if (screen === "feed") {
+      window.scrollTo(0, 0);
+    }
+  }, [screen]);
   const handleUsernameSubmit = async (username: string) => {
     setTargetUsername(username);
     setIsLoadingProfile(true);

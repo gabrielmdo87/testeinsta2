@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Play, Send, Bookmark, Lock, Video, PhoneMissed, EyeOff } from "lucide-react";
 
 interface ChatBubbleProps {
@@ -38,7 +39,8 @@ const generateWaveform = () => {
 };
 
 const AudioMessage = ({ sent, duration, isLocked, isBlurred, onVIPClick }: { sent: boolean; duration: string; isLocked?: boolean; isBlurred?: boolean; onVIPClick?: () => void }) => {
-  const waveform = generateWaveform();
+  // Memoize waveform to prevent re-generation on each render
+  const waveform = useMemo(() => generateWaveform(), []);
   
   return (
     <div className={`flex flex-col gap-1 ${sent ? 'items-end' : 'items-start'}`}>
