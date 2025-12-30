@@ -3,9 +3,10 @@ import instagramIcon from "@/assets/instagram-icon.webp";
 
 interface PushNotificationProps {
   onNotificationClick?: () => void;
+  onShown?: () => void;
 }
 
-const PushNotification = ({ onNotificationClick }: PushNotificationProps) => {
+const PushNotification = ({ onNotificationClick, onShown }: PushNotificationProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
 
@@ -13,10 +14,11 @@ const PushNotification = ({ onNotificationClick }: PushNotificationProps) => {
     // Aparece após 4 segundos (1 segundo a mais para carregar a página)
     const showTimer = setTimeout(() => {
       setIsVisible(true);
+      onShown?.(); // Marca como já mostrada no contexto global
     }, 4000);
 
     return () => clearTimeout(showTimer);
-  }, []);
+  }, [onShown]);
 
   useEffect(() => {
     if (isVisible) {

@@ -74,7 +74,7 @@ const LandingScreen = forwardRef<HTMLDivElement, LandingScreenProps>(
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder="username"
+                  placeholder="ex. joanacarvalho"
                   disabled={isLoading}
                   className="w-full bg-secondary border border-border rounded-xl pl-9 pr-4 py-4 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent text-base transition-all disabled:opacity-50"
                 />
@@ -82,7 +82,7 @@ const LandingScreen = forwardRef<HTMLDivElement, LandingScreenProps>(
               <button
                 onClick={handleSubmit}
                 disabled={!username.trim() || isLoading}
-                className="bg-accent hover:bg-accent/90 disabled:opacity-40 disabled:cursor-not-allowed text-accent-foreground px-5 h-14 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg font-semibold text-sm"
+                className="bg-accent hover:bg-accent/90 disabled:opacity-40 disabled:cursor-not-allowed text-accent-foreground px-5 h-14 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg font-semibold text-sm animate-pulse-subtle"
               >
                 {isLoading ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
