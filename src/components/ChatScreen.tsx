@@ -18,7 +18,7 @@ interface ChatScreenProps {
 
 interface Message {
   id: number;
-  type: "text" | "image" | "audio" | "reel" | "videoCall" | "missedCall" | "endedCall" | "heart";
+  type: "text" | "image" | "audio" | "reel" | "videoCall" | "missedCall" | "endedCall" | "heart" | "deleted";
   content?: string;
   sent: boolean;
   isBlurred?: boolean;
@@ -34,6 +34,7 @@ interface Message {
   quoteText?: string;
   quoteLabel?: string;
   isReelBlurred?: boolean;
+  deletedPreview?: string;
 }
 
 // Conversa 1 - Fer*** (Flagrante íntimo) - Baseado nos 5 prints
@@ -53,11 +54,24 @@ const ferMessages: Message[] = [
   { id: 8, type: "text", content: "vida*", sent: true },
   { id: 9, type: "text", content: "To com saudade", sent: false },
   { id: 10, type: "image", sent: false, isBlurred: true, reaction: "❤️" },
+  
+  // MENSAGEM APAGADA após a imagem
+  { id: 101, type: "deleted", sent: false, deletedPreview: "Não acredito que você fez isso..." },
+  
   { id: 11, type: "text", content: "Disso??", sent: false, showAvatar: true },
   { id: 12, type: "text", content: "😍😍😍😍😍😍", sent: true },
   { id: 13, type: "text", content: "Te amo tanto ██████", sent: false },
+  
+  // MENSAGEM APAGADA antes do audio
+  { id: 102, type: "deleted", sent: true, deletedPreview: "Ontem a noite foi perfeita..." },
+  
   { id: 14, type: "audio", sent: true, audioDuration: "0:11" },
   { id: 15, type: "text", content: "Dboa, amanhã ou domingo", sent: true, reaction: "👍" },
+  
+  // Novas mensagens expandindo a conversa
+  { id: 103, type: "text", content: "Quero ver vc logo", sent: false },
+  { id: 104, type: "text", content: "Vc sabe que eu n aguento ficar longe", sent: false, showAvatar: true },
+  { id: 105, type: "text", content: "Tbm to morrendo de sdds", sent: true },
   
   // Separador ONTEM, 21:34
   { id: 16, type: "text", content: "", sent: false, dateBreak: "ONTEM, 21:34" },
@@ -77,14 +91,26 @@ const ferMessages: Message[] = [
   { id: 29, type: "text", content: "Tá bom 😘", sent: true },
   { id: 30, type: "text", content: "Vou ██████ e depois passo aí blz??", sent: true, reaction: "❤️" },
   { id: 31, type: "audio", sent: false, audioDuration: "0:32", showAvatar: true },
+  
+  // MENSAGEM APAGADA após o audio longo
+  { id: 106, type: "deleted", sent: false, deletedPreview: "Ontem foi incrível demais bb..." },
+  
   { id: 32, type: "audio", sent: false, audioDuration: "0:07" },
   { id: 33, type: "text", content: "Pode deixar", sent: true },
   { id: 34, type: "heart", sent: false },
+  
+  // Novas mensagens expandindo
+  { id: 107, type: "text", content: "Vc é tudo pra mim sabia", sent: false },
+  { id: 108, type: "text", content: "Ai para kkk", sent: true },
+  { id: 109, type: "text", content: "É vdd uai", sent: false, showAvatar: true },
   
   // Separador 16:21
   { id: 35, type: "text", content: "", sent: false, dateBreak: "16:21" },
   
   { id: 36, type: "text", content: "Oi delícia, adivinha o que vc esqueceu aqui? kkkk", sent: false, showAvatar: true },
+  { id: 110, type: "text", content: "O que??", sent: true },
+  { id: 111, type: "image", sent: false, isBlurred: true },
+  { id: 112, type: "text", content: "Olhaaa kkkkk", sent: false, showAvatar: true },
 ];
 
 // Conversa 2 - ana***** (Troca de reels/memes entre amigos)
@@ -170,6 +196,9 @@ const criMessages: Message[] = [
   // Texto recebido
   { id: 13, type: "text", content: "Olha como me deixou", sent: false },
   
+  // MENSAGEM APAGADA
+  { id: 201, type: "deleted", sent: false, deletedPreview: "Queria que você estivesse aqui agora..." },
+  
   // Imagem recebida com blur e reação
   { id: 14, type: "image", sent: false, isBlurred: true, reaction: "❤️" },
   
@@ -190,9 +219,15 @@ const criMessages: Message[] = [
   { id: 22, type: "image", sent: true, isBlurred: true },
   { id: 23, type: "image", sent: true, isBlurred: true, reaction: "😈" },
   
+  // MENSAGEM APAGADA após as imagens
+  { id: 202, type: "deleted", sent: false, deletedPreview: "Quando a gente vai se ver de novo..." },
+  
   // Textos recebidos
   { id: 24, type: "text", content: "Pedi uma e mando 3", sent: false },
   { id: 25, type: "text", content: "Por isso que te amo", sent: false, showAvatar: true },
+  
+  // MENSAGEM APAGADA
+  { id: 203, type: "deleted", sent: true, deletedPreview: "Vc me deixa louco..." },
   
   // Textos enviados
   { id: 26, type: "text", content: "Vou ter que sair aqui ta perigoso", sent: true },
@@ -201,9 +236,23 @@ const criMessages: Message[] = [
   // Texto recebido
   { id: 28, type: "text", content: "Calma que a gente se vê logo", sent: false },
   
+  // MENSAGEM APAGADA
+  { id: 204, type: "deleted", sent: false, deletedPreview: "Quero repetir tudo aquilo..." },
+  
+  // Novas mensagens expandindo a conversa
+  { id: 205, type: "text", content: "Eu sei bb", sent: true },
+  { id: 206, type: "text", content: "To contando os dias", sent: true },
+  { id: 207, type: "text", content: "Eu tbm amor", sent: false },
+  { id: 208, type: "text", content: "Não aguento mais fingir que nada tá acontecendo", sent: false, showAvatar: true },
+  
   // Textos enviados
   { id: 29, type: "text", content: "Não aguento mais", sent: true },
   { id: 30, type: "text", content: "Não amnda mais nada blz", sent: true, reaction: "👍" },
+  
+  // Novas mensagens
+  { id: 209, type: "text", content: "Blz amor", sent: false },
+  { id: 210, type: "text", content: "Depois me liga quando puder", sent: false, showAvatar: true },
+  { id: 211, type: "heart", sent: true },
 ];
 
 // Conversa 4 - Ana****** (Áudios + conversa sobre amante)
@@ -231,6 +280,9 @@ const valMessages: Message[] = [
   // Áudio longo enviado
   { id: 9, type: "audio", sent: true, audioDuration: "4:25" },
   
+  // MENSAGEM APAGADA após o audio longo
+  { id: 301, type: "deleted", sent: true, deletedPreview: "Não sei mais o que fazer com esse rolo..." },
+  
   // Textos enviados
   { id: 10, type: "text", content: "Perdão pelo desafo", sent: true },
   { id: 11, type: "text", content: "Mas n sei o que eu faço", sent: true },
@@ -247,6 +299,15 @@ const valMessages: Message[] = [
   { id: 16, type: "text", content: "No rolo que eu tive com ██████ era assim tbm", sent: false },
   { id: 17, type: "text", content: "Se apaixonar por amante é foda te entendo, ██████████", sent: false, showAvatar: true },
   
+  // MENSAGEM APAGADA
+  { id: 302, type: "deleted", sent: false, deletedPreview: "Lembra quando a gente quase foi pega..." },
+  
+  // Novas mensagens expandindo a conversa
+  { id: 303, type: "text", content: "É muito difícil", sent: true },
+  { id: 304, type: "text", content: "Pior que a gente nem planejou isso", sent: true },
+  { id: 305, type: "text", content: "Eu sei amg", sent: false },
+  { id: 306, type: "text", content: "Acontece quando menos espera né", sent: false, showAvatar: true },
+  
   // Áudios enviados
   { id: 18, type: "audio", sent: true, audioDuration: "0:04" },
   { id: 19, type: "audio", sent: true, audioDuration: "0:11" },
@@ -254,6 +315,12 @@ const valMessages: Message[] = [
   // Textos recebidos
   { id: 20, type: "text", content: "kkkkkkk", sent: false },
   { id: 21, type: "text", content: "Blz depois a gente se fala", sent: false, showAvatar: true },
+  
+  // Novas mensagens
+  { id: 307, type: "text", content: "Pode deixar", sent: true },
+  { id: 308, type: "text", content: "Vou ver o que eu faço", sent: true },
+  { id: 309, type: "text", content: "Qualquer coisa te mando msg", sent: true },
+  { id: 310, type: "heart", sent: false },
 ];
 
 // Conversa 5 - Bru**** (Emocional/dramática com reels de relacionamento)
@@ -269,8 +336,18 @@ const hopMessages: Message[] = [
   // Textos recebidos
   { id: 5, type: "text", content: "Por favor", sent: false },
   { id: 6, type: "text", content: "Vamos ser felizes a gente se ama", sent: false },
+  
+  // MENSAGEM APAGADA
+  { id: 401, type: "deleted", sent: false, deletedPreview: "Eu sei que você ainda pensa em mim..." },
+  
   { id: 7, type: "text", content: "É um desperdício jogar fora tudo isso", sent: false },
   { id: 8, type: "text", content: "Jamais eu me se sujeitaria a tudo isso se o sentimento nao tivesse no topo da minha vida.", sent: false, showAvatar: true },
+  
+  // Novas mensagens expandindo a conversa
+  { id: 402, type: "text", content: "Para de falar assim", sent: true },
+  { id: 403, type: "text", content: "Vc sabe q n da mais", sent: true },
+  { id: 404, type: "text", content: "Mas eu te amo", sent: false },
+  { id: 405, type: "text", content: "Vc tbm me ama", sent: false, showAvatar: true },
   
   // Separador 22 DE OUT, 14:33
   { id: 9, type: "text", content: "", sent: false, dateBreak: "22 DE OUT, 14:33" },
@@ -278,6 +355,11 @@ const hopMessages: Message[] = [
   // Reels de relacionamento
   { id: 10, type: "reel", sent: false, reelUsername: "relacionamenen...", reelCaption: "O amor é uma escolha diária de fazer dar certo ❤️", reelImage: reelImages.reel9 },
   { id: 11, type: "reel", sent: false, reelUsername: "relacionamenen...", reelCaption: "No fundo, eu ainda te amo...", reelImage: reelImages.reel10, showAvatar: true },
+  
+  // Novas mensagens
+  { id: 406, type: "text", content: "Para de mandar essas coisas", sent: true },
+  { id: 407, type: "text", content: "Vc n entende", sent: false },
+  { id: 408, type: "text", content: "Eu só quero ficar com vc", sent: false, showAvatar: true },
   
   // Separador 2 DE DEZ, 16:39
   { id: 12, type: "text", content: "", sent: false, dateBreak: "2 DE DEZ, 16:39" },
@@ -287,6 +369,9 @@ const hopMessages: Message[] = [
   { id: 14, type: "text", content: "Sei que esta evitando falar comigo", sent: false },
   { id: 15, type: "text", content: "Mais hj faz um mês do nosso último beijo", sent: false },
   { id: 16, type: "text", content: "Dia 31 quarta feira devo ir aí na sua cidade de novo", sent: false, showAvatar: true },
+  
+  // MENSAGEM APAGADA
+  { id: 409, type: "deleted", sent: false, deletedPreview: "Podemos nos ver escondido..." },
   
   // Reel
   { id: 17, type: "reel", sent: false, reelUsername: "sentimentos_div...", reelCaption: "apesar de tudo que ele deixou... não consigo odia-lo pq ele foi o único que eu amei com a alma.", reelImage: reelImages.reel7, showAvatar: true },
@@ -299,6 +384,14 @@ const hopMessages: Message[] = [
   { id: 20, type: "text", content: "Bom dia.", sent: false },
   { id: 21, type: "text", content: "Porque não me responde mais?????", sent: false },
   { id: 22, type: "text", content: "Estou aqui pertinho e queria te ver", sent: false, showAvatar: true },
+  
+  // MENSAGEM APAGADA final
+  { id: 410, type: "deleted", sent: false, deletedPreview: "Se você não me responder eu vou..." },
+  
+  // Novas mensagens finais
+  { id: 411, type: "text", content: "Por favor", sent: false },
+  { id: 412, type: "text", content: "Só me responde", sent: false },
+  { id: 413, type: "text", content: "Eu preciso de vc", sent: false, showAvatar: true },
 ];
 
 const ChatScreen = ({ onBack, chatData }: ChatScreenProps) => {
@@ -382,6 +475,8 @@ const ChatScreen = ({ onBack, chatData }: ChatScreenProps) => {
               quoteLabel={msg.quoteLabel}
               isReelBlurred={msg.isReelBlurred}
               isHeart={msg.type === "heart"}
+              isDeleted={msg.type === "deleted"}
+              deletedPreview={msg.deletedPreview}
               onVIPClick={handleVIPClick}
             />
           );

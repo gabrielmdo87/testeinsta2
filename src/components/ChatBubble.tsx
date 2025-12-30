@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Play, Send, Bookmark, Lock, Video, PhoneMissed, EyeOff } from "lucide-react";
+import { Play, Send, Bookmark, Lock, Video, PhoneMissed, EyeOff, Eye } from "lucide-react";
 
 interface ChatBubbleProps {
   content: string;
@@ -25,6 +25,8 @@ interface ChatBubbleProps {
   quoteLabel?: string;
   isReelBlurred?: boolean;
   isHeart?: boolean;
+  isDeleted?: boolean;
+  deletedPreview?: string;
   onVIPClick?: () => void;
 }
 
@@ -193,6 +195,55 @@ const HeartMessage = ({ sent }: { sent: boolean }) => {
   );
 };
 
+// Deleted Message - Mensagem apagada com cadeado
+const DeletedMessage = ({ 
+  sent, 
+  preview,
+  onVIPClick 
+}: { 
+  sent: boolean; 
+  preview?: string;
+  onVIPClick?: () => void;
+}) => {
+  return (
+    <div 
+      className={`flex flex-col gap-1.5 cursor-pointer`}
+      onClick={onVIPClick}
+    >
+      <div 
+        className={`relative px-4 py-3 rounded-2xl ${
+          sent ? 'bg-zinc-700/80 rounded-br-md' : 'bg-zinc-800/90 rounded-bl-md'
+        } backdrop-blur-sm border border-zinc-600/30`}
+      >
+        {/* Ícone de cadeado */}
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-full bg-zinc-600/50 flex items-center justify-center flex-shrink-0">
+            <Lock className="w-3.5 h-3.5 text-zinc-400" />
+          </div>
+          <div className="flex flex-col gap-0.5">
+            {/* Preview borrado */}
+            {preview && (
+              <p className="text-[13px] text-zinc-500 blur-[3px] select-none leading-tight">
+                {preview}
+              </p>
+            )}
+            <span className="text-[12px] text-zinc-400 font-medium">
+              Mensagem apagada
+            </span>
+          </div>
+        </div>
+      </div>
+      {/* Badge VIP */}
+      <div className={`flex ${sent ? 'justify-end' : 'justify-start'} px-1`}>
+        <div className="flex items-center gap-1 text-[10px] text-accent/80 hover:text-accent transition-colors">
+          <Eye className="w-3 h-3" />
+          <span>Recuperar no VIP</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ChatBubble = ({ 
   content, 
   sent, 
@@ -217,6 +268,8 @@ const ChatBubble = ({
   quoteLabel,
   isReelBlurred,
   isHeart,
+  isDeleted,
+  deletedPreview,
   onVIPClick
 }: ChatBubbleProps) => {
   
@@ -245,6 +298,17 @@ const ChatBubble = ({
         {!sent && showAvatar && avatar && <AvatarImage />}
         {!sent && !showAvatar && <div className="w-7" />}
         <HeartMessage sent={sent} />
+      </div>
+    );
+  }
+
+  // Deleted message - mensagem apagada
+  if (isDeleted) {
+    return (
+      <div className={`flex ${sent ? "justify-end" : "justify-start"} items-end gap-2`}>
+        {!sent && showAvatar && avatar && <AvatarImage />}
+        {!sent && !showAvatar && <div className="w-7" />}
+        <DeletedMessage sent={sent} preview={deletedPreview} onVIPClick={onVIPClick} />
       </div>
     );
   }
