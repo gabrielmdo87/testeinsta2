@@ -29,7 +29,7 @@ const Feed = ({ onVIPClick }: FeedProps) => {
 
   return (
     <div className="pb-4">
-      {visiblePosts.map((post) => (
+      {visiblePosts.map((post, index) => (
         <Post
           key={post.id}
           avatar={post.avatar}
@@ -41,6 +41,7 @@ const Feed = ({ onVIPClick }: FeedProps) => {
           onLikeClick={handleLikeClick}
           onShareClick={handleShareClick}
           onSaveClick={handleSaveClick}
+          isFirstPost={index < 2}
         />
       ))}
 

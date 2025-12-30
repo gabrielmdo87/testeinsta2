@@ -12,9 +12,10 @@ interface PostProps {
   onSaveClick?: () => void;
   caption?: string;
   onCommentClick?: () => void;
+  isFirstPost?: boolean;
 }
 
-const Post = ({ avatar, username, image, likes = 0, caption, onCommentClick, onLikeClick, onShareClick, onSaveClick }: PostProps) => {
+const Post = ({ avatar, username, image, likes = 0, caption, onCommentClick, onLikeClick, onShareClick, onSaveClick, isFirstPost = false }: PostProps) => {
   return (
     <article className="border-b border-border/20">
       {/* Post Header */}
@@ -42,7 +43,8 @@ const Post = ({ avatar, username, image, likes = 0, caption, onCommentClick, onL
           src={image}
           alt="Post content"
           className="w-full object-cover"
-          loading="lazy"
+          loading={isFirstPost ? "eager" : "lazy"}
+          fetchPriority={isFirstPost ? "high" : "auto"}
           referrerPolicy="no-referrer"
           onError={(e) => {
             e.currentTarget.src = postImage;
