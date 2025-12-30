@@ -12,6 +12,7 @@ import LoadingScreen from "@/components/LoadingScreen";
 import ConfirmProfileScreen from "@/components/ConfirmProfileScreen";
 import LoginScreen from "@/components/LoginScreen";
 import CTAPage from "@/components/cta/CTAPage";
+import PushNotification from "@/components/PushNotification";
 import { AppProvider, useAppContext } from "@/contexts/AppContext";
 import { useProfileData } from "@/hooks/useProfileData";
 
@@ -160,6 +161,7 @@ const IndexContent = () => {
 
       {screen === "feed" && (
         <div className="pb-48">
+          <PushNotification onNotificationClick={() => handleChatOpen("fer", 0)} />
           <InstagramHeader onDirectClick={() => setScreen("direct")} onHeartClick={handleVIPClick} />
           <Stories onVIPClick={handleVIPClick} />
           <Feed onVIPClick={handleVIPClick} />
