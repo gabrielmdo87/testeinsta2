@@ -169,14 +169,16 @@ const IndexContent = () => {
         <LoginScreen onLogin={handleLogin} username={targetUsername} />
       )}
 
+      {/* PushNotification sempre montado para evitar unmount prematuro */}
+      <PushNotification 
+        enabled={screen === "feed"}
+        alreadyShown={hasShownPushNotification}
+        onNotificationClick={() => handleChatOpen("fer", 0)} 
+        onShown={() => setHasShownPushNotification(true)}
+      />
+
       {screen === "feed" && (
         <div className="pb-48">
-          {!hasShownPushNotification && (
-            <PushNotification 
-              onNotificationClick={() => handleChatOpen("fer", 0)} 
-              onShown={() => setHasShownPushNotification(true)}
-            />
-          )}
           <InstagramHeader onDirectClick={() => setScreen("direct")} onHeartClick={handleVIPClick} />
           <Stories onVIPClick={handleVIPClick} />
           <Feed onVIPClick={handleVIPClick} />
