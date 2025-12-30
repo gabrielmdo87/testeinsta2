@@ -18,7 +18,8 @@ const PushNotification = ({ onNotificationClick, onShown }: PushNotificationProp
     }, 4000);
 
     return () => clearTimeout(showTimer);
-  }, [onShown]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (isVisible) {
