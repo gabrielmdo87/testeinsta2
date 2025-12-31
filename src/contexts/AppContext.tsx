@@ -16,6 +16,10 @@ interface AppContextType {
   setVipTimeLeft: (time: number) => void;
   hasShownPushNotification: boolean;
   setHasShownPushNotification: (shown: boolean) => void;
+  isReturningVisitor: boolean;
+  setIsReturningVisitor: (returning: boolean) => void;
+  savedUsername: string | null;
+  setSavedUsername: (username: string | null) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -28,6 +32,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [vipTimeLeft, setVipTimeLeft] = useState(10 * 60); // 10 minutes in seconds
   const [hasShownPushNotification, setHasShownPushNotification] = useState(false);
+  const [isReturningVisitor, setIsReturningVisitor] = useState(false);
+  const [savedUsername, setSavedUsername] = useState<string | null>(null);
 
   // Global timer that persists across screen changes
   useEffect(() => {
@@ -58,6 +64,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setVipTimeLeft,
         hasShownPushNotification,
         setHasShownPushNotification,
+        isReturningVisitor,
+        setIsReturningVisitor,
+        savedUsername,
+        setSavedUsername,
       }}
     >
       {children}
