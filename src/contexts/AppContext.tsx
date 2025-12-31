@@ -30,7 +30,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [similarAccounts, setSimilarAccounts] = useState<SimilarAccount[]>([]);
   const [posts, setPosts] = useState<PostData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [vipTimeLeft, setVipTimeLeft] = useState(10 * 60); // 10 minutes in seconds
+  const [vipTimeLeft, setVipTimeLeft] = useState(15 * 60); // 15 minutes in seconds
   const [hasShownPushNotification, setHasShownPushNotification] = useState(false);
   const [isReturningVisitor, setIsReturningVisitor] = useState(false);
   const [savedUsername, setSavedUsername] = useState<string | null>(null);
