@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Check, Zap, Shield, Clock, AlertTriangle } from "lucide-react";
 import { useAppContext } from "@/contexts/AppContext";
 import { useVisitorHistory } from "@/hooks/useVisitorHistory";
@@ -67,9 +68,23 @@ const CountdownTimer = ({ timeLeft, name }: CountdownTimerProps) => {
 };
 
 const CTAPricingSection = () => {
-  const { profileData, vipTimeLeft, isReturningVisitor } = useAppContext();
+  const { profileData, isReturningVisitor } = useAppContext();
   const { getTimeSinceFirstVisit } = useVisitorHistory();
   const name = profileData?.fullName?.split(" ")[0] || "Usuário";
+
+  // Local timer that starts when CTA page is mounted (15 minutes)
+  const [ctaTimeLeft, setCtaTimeLeft] = useState(15 * 60);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCtaTimeLeft(prev => {
+        if (prev <= 0) return 0;
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   // Calculate time left based on visitor type
   const calculateTimeLeft = () => {
@@ -81,7 +96,8 @@ const CTAPricingSection = () => {
         return Math.floor(remaining / 1000); // in seconds
       }
     }
-    return vipTimeLeft;
+    // For new visitors, use local timer that started when they arrived at CTA
+    return ctaTimeLeft;
   };
 
   const timeLeft = calculateTimeLeft();
