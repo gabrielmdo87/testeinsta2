@@ -76,8 +76,8 @@ const CTAPricingSection = () => {
     if (isReturningVisitor) {
       const timeSince = getTimeSinceFirstVisit();
       if (timeSince) {
-        const oneHour = 60 * 60 * 1000; // 1 hour in ms
-        const remaining = Math.max(0, oneHour - timeSince);
+        const fifteenMinutes = 15 * 60 * 1000; // 15 minutes in ms
+        const remaining = Math.max(0, fifteenMinutes - timeSince);
         return Math.floor(remaining / 1000); // in seconds
       }
     }
