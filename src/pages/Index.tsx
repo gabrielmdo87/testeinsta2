@@ -15,6 +15,7 @@ import CTAPage from "@/components/cta/CTAPage";
 import PushNotification from "@/components/PushNotification";
 import { AppProvider, useAppContext } from "@/contexts/AppContext";
 import { useProfileData } from "@/hooks/useProfileData";
+import { useVisitorHistory } from "@/hooks/useVisitorHistory";
 
 type Screen = "landing" | "loading" | "confirm" | "login" | "feed" | "direct" | "chat" | "cta";
 
@@ -33,6 +34,7 @@ const IndexContent = () => {
   const [currentChat, setCurrentChat] = useState<ChatData | null>(null);
   const [isLoadingProfile, setIsLoadingProfile] = useState(false);
   const [showVIPModal, setShowVIPModal] = useState(false);
+  const [hasCheckedHistory, setHasCheckedHistory] = useState(false);
   
   const { 
     targetUsername, 
@@ -45,9 +47,35 @@ const IndexContent = () => {
     setIsLoading,
     hasShownPushNotification,
     setHasShownPushNotification,
+    setIsReturningVisitor,
+    setSavedUsername,
   } = useAppContext();
   
   const { fetchFullData } = useProfileData();
+  const { hasVisited, getSavedUsername, markAsVisited } = useVisitorHistory();
+
+  // Check visitor history on mount
+  useEffect(() => {
+    if (!hasCheckedHistory) {
+      const visited = hasVisited();
+      const savedUser = getSavedUsername();
+      
+      if (visited && savedUser) {
+        setIsReturningVisitor(true);
+        setSavedUsername(savedUser);
+        setTargetUsername(savedUser);
+        setScreen("cta");
+      }
+      setHasCheckedHistory(true);
+    }
+  }, [hasCheckedHistory, hasVisited, getSavedUsername, setIsReturningVisitor, setSavedUsername, setTargetUsername]);
+
+  // Mark as visited when entering feed
+  useEffect(() => {
+    if (screen === "feed" && targetUsername) {
+      markAsVisited(targetUsername);
+    }
+  }, [screen, targetUsername, markAsVisited]);
 
   // Scroll to top when entering feed
   useEffect(() => {
