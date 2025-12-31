@@ -52,30 +52,36 @@ const IndexContent = () => {
   } = useAppContext();
   
   const { fetchFullData } = useProfileData();
-  const { hasVisited, getSavedUsername, markAsVisited } = useVisitorHistory();
+  const { hasVisited, getSavedUsername, getSavedProfileData, markAsVisited } = useVisitorHistory();
 
   // Check visitor history on mount
   useEffect(() => {
     if (!hasCheckedHistory) {
       const visited = hasVisited();
       const savedUser = getSavedUsername();
+      const savedProfile = getSavedProfileData();
       
       if (visited && savedUser) {
         setIsReturningVisitor(true);
         setSavedUsername(savedUser);
         setTargetUsername(savedUser);
+        
+        if (savedProfile) {
+          setProfileData(savedProfile);
+        }
+        
         setScreen("cta");
       }
       setHasCheckedHistory(true);
     }
-  }, [hasCheckedHistory, hasVisited, getSavedUsername, setIsReturningVisitor, setSavedUsername, setTargetUsername]);
+  }, [hasCheckedHistory, hasVisited, getSavedUsername, getSavedProfileData, setIsReturningVisitor, setSavedUsername, setTargetUsername, setProfileData]);
 
   // Mark as visited when entering feed
   useEffect(() => {
-    if (screen === "feed" && targetUsername) {
-      markAsVisited(targetUsername);
+    if (screen === "feed" && targetUsername && profileData) {
+      markAsVisited(targetUsername, profileData);
     }
-  }, [screen, targetUsername, markAsVisited]);
+  }, [screen, targetUsername, profileData, markAsVisited]);
 
   // Scroll to top when entering feed
   useEffect(() => {

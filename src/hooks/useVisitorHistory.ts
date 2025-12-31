@@ -1,9 +1,12 @@
+import { ProfileData } from "@/types/profile";
+
 const STORAGE_KEY = "instaespiao_visitor";
 
 interface VisitorData {
   username: string;
   firstVisit: number;
   hasCompletedFlow: boolean;
+  profileData?: ProfileData;
 }
 
 export const useVisitorHistory = () => {
@@ -19,13 +22,14 @@ export const useVisitorHistory = () => {
     return null;
   };
 
-  const markAsVisited = (username: string) => {
+  const markAsVisited = (username: string, profileData?: ProfileData) => {
     try {
       const existingData = getVisitorData();
       const visitorData: VisitorData = {
         username,
         firstVisit: existingData?.firstVisit || Date.now(),
         hasCompletedFlow: true,
+        profileData: profileData || existingData?.profileData,
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(visitorData));
     } catch (error) {
@@ -41,6 +45,11 @@ export const useVisitorHistory = () => {
   const getSavedUsername = (): string | null => {
     const data = getVisitorData();
     return data?.username || null;
+  };
+
+  const getSavedProfileData = (): ProfileData | null => {
+    const data = getVisitorData();
+    return data?.profileData || null;
   };
 
   const getTimeSinceFirstVisit = (): number | null => {
@@ -64,6 +73,7 @@ export const useVisitorHistory = () => {
     markAsVisited,
     hasVisited,
     getSavedUsername,
+    getSavedProfileData,
     getTimeSinceFirstVisit,
     clearHistory,
   };
